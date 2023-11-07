@@ -5,7 +5,9 @@ public class Rating {
     private int rating;
     private String comment;
 
-    public Rating() {
-        //TODO: Implement constructor
+    public Rating(String username, int rating, String comment) {
+        this.username = username;
+        this.rating = rating;
+        this.comment = comment;
     }
 }
