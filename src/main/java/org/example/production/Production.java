@@ -35,10 +35,6 @@ public abstract class Production implements Comparable<Production>, Listing {
         this.averageRating = averageRating;
     }
 
-    public String getType() {
-        return type;
-    }
-
     public abstract void displayInfo();
 
     @Override

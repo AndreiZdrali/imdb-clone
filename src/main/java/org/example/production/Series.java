@@ -9,18 +9,17 @@ import java.util.Map;
 
 @JsonDeserialize(builder = Series.SeriesBuilder.class)
 public class Series extends Production {
-    private int duration;
+    private String duration;
     private int year;
-    private int seasons;
-    private Map<String, List<Episode>> episodes;
+    private int numSeasons;
+    private Map<String, List<Episode>> seasons;
 
     public Series(SeriesBuilder builder) {
         super(builder.title, builder.directors, builder.actors, builder.genres, builder.ratings, builder.plot, builder.averageRating);
         this.duration = builder.duration;
         this.year = builder.year;
-        this.seasons = builder.numSeasons;
-        this.episodes = builder.seasons;
-
+        this.numSeasons = builder.numSeasons;
+        this.seasons = builder.seasons;
     }
 
     @Override
@@ -35,17 +34,22 @@ public class Series extends Production {
 
         System.out.println("Duration: " + duration);
         System.out.println("Year: " + year);
+        System.out.println("Number of seasons: " + numSeasons);
         System.out.println("Seasons: " + seasons);
     }
 
     public String toString() {
-        return title + " " + type;
+        return title + " - " + type;
     }
 
     public static class SeriesBuilder extends ProductionBuilder {
-        private int duration;
+        @JsonProperty("duration")
+        private String duration;
+        @JsonProperty("year")
         private int year;
+        @JsonProperty("numSeasons")
         private int numSeasons;
+        @JsonProperty("seasons")
         private Map<String, List<Episode>> seasons;
 
         @JsonCreator
@@ -60,7 +64,7 @@ public class Series extends Production {
             super(title, type, directors, actors, genres, ratings, description, averageRating);
         }
 
-        public SeriesBuilder setDuration(int duration) {
+        public SeriesBuilder setDuration(String duration) {
             this.duration = duration;
             return this;
         }

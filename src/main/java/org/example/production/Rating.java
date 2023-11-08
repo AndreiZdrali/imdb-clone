@@ -17,4 +17,9 @@ public class Rating {
         this.rating = rating;
         this.comment = comment;
     }
+
+    public String toString() {
+        //TODO: Implement toString
+        return "TO IMPLEMENT";
+    }
 }

@@ -18,8 +18,6 @@ public class IMDB {
     private List<Movie> movies;
     private List<Series> series;
 
-
-
     private static IMDB instance = null;
 
     private IMDB() {
@@ -43,8 +41,10 @@ public class IMDB {
             return; //TODO: rescrie partea asta sa fie mai eleganta
         }
 
-        for (Production p : productions)
-            System.out.println(p);
+        for (Production p : productions) {
+            p.displayInfo();
+            System.out.println("=================");
+        }
     }
 
     public static void main(String[] args) {

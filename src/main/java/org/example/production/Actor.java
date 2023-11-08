@@ -1,15 +1,22 @@
 package org.example.production;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Map;
 
 public class Actor implements Listing {
+    @JsonProperty("name")
     private String name;
-    private Map<String, Genre> appearances;
+    @JsonProperty("performances")
+    private Map<String, Genre> performances;
+    @JsonProperty("biography")
     private String biography;
 
-    public Actor() {
-        //TODO: Implement constructor
+    public Actor(@JsonProperty("name") String name,
+                 @JsonProperty("performances") Map<String, Genre> performances,
+                 @JsonProperty("biography") String biography) {
+        this.name = name;
+        this.performances = performances;
+        this.biography = biography;
     }
 }
