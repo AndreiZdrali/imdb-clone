@@ -20,7 +20,7 @@ public class Episode {
     }
 
     public String toString() {
-        //TODO: Implement toString
-        return "TO IMPLEMENT";
+        return "Episode name: " + episodeName + "\n" +
+                "Duration: " + duration + "\n";
     }
 }

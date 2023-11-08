@@ -19,7 +19,8 @@ public class Rating {
     }
 
     public String toString() {
-        //TODO: Implement toString
-        return "TO IMPLEMENT";
+        return "Username: " + username + "\n" +
+                "Rating: " + rating + "\n" +
+                "Comment: " + comment + "\n";
     }
 }
