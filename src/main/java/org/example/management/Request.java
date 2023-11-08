@@ -38,5 +38,6 @@ public class Request {
     public String toString() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         //TODO: Implement toString
+        return "";
     }
 }

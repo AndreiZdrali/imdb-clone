@@ -13,5 +13,6 @@ public enum Genre {
     Thriller,
     Crime,
     Biography,
-    War
+    War,
+    Cooking
 }

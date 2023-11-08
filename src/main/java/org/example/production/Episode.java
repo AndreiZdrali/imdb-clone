@@ -1,10 +1,11 @@
 package org.example.production;
 
 public class Episode {
-    private String title;
+    private String episodeName;
     private int duration;
 
-    public Episode() {
-        //TODO: Implement constructor
+    public Episode(String episodeName, int duration) {
+        this.episodeName = episodeName;
+        this.duration = duration;
     }
 }

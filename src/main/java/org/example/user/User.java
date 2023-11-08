@@ -1,7 +1,10 @@
 package org.example.user;
 
+import org.example.production.Listing;
+
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.SortedSet;
 
 public abstract class User {
     private Information information;
@@ -9,17 +12,17 @@ public abstract class User {
     private String username;
     private int experience;
     private List<String> notifications;
-    private SortedSet<T> favorites;
+    private SortedSet<Listing> favorites;
 
     public User() {
         //TODO: Implement constructor
     }
 
-    public void addFavorite(T favorite) {
+    public void addFavorite(Listing favorite) {
         //TODO: Implement addFavorite
     }
 
-    public void removeFavorite(T favorite) {
+    public void removeFavorite(Listing favorite) {
         //TODO: Implement removeFavorite
     }
 
