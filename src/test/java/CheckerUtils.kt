@@ -4,6 +4,12 @@ import com.fasterxml.jackson.databind.node.ArrayNode
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.example.*
 import org.example.Observer
+import org.example.management.Request
+import org.example.production.Production
+import org.example.production.Actor
+import org.example.production.Movie
+import org.example.production.Series
+import org.example.user.*
 /*
  *   FIXME: Pentru a functiona checker-ul aceste clase trebuie sa existe si sa aiba functiile si membrii necesari
  */

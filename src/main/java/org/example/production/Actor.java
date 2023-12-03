@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-public class Actor implements Listing {
+public class Actor implements Comparable, Listing {
     @JsonProperty("name")
     private String name;
     @JsonProperty("performances")
@@ -19,6 +19,23 @@ public class Actor implements Listing {
         this.name = name;
         this.performances = performances;
         this.biography = biography;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public List<Performance> getPerformances() {
+        return performances;
+    }
+
+    public String getBiography() {
+        return biography;
+    }
+
+    public int compareTo(Object o) {
+        Actor other = (Actor) o;
+        return name.compareTo(other.name);
     }
 
     public String toString() {

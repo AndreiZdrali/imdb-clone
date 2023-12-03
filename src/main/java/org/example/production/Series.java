@@ -15,7 +15,7 @@ public class Series extends Production {
     private Map<String, List<Episode>> seasons;
 
     public Series(SeriesBuilder builder) {
-        super(builder.title, builder.directors, builder.actors, builder.genres, builder.ratings, builder.plot, builder.averageRating);
+        super(builder);
         this.duration = builder.duration;
         this.year = builder.year;
         this.numSeasons = builder.numSeasons;

@@ -14,11 +14,10 @@ import org.example.management.*;
 
 public class IMDB {
     private List<Regular> regular;
-    private List<Contribuitor> contributors;
+    private List<Contributor> contributors;
     private List<Admin> admins;
     private List<Actor> actors;
-    private List<Movie> movies;
-    private List<Series> series;
+    private List<Production> productions;
 
     private static IMDB instance = null;
 
@@ -59,9 +58,11 @@ public class IMDB {
             return; //TODO: rescrie partea asta sa fie mai eleganta
         }
 
-        for (Request r : RequestHolder.getAllRequests()) {
-            System.out.println(r);
+        for (Production production : productions) {
+            production.displayInfo();
         }
+
+        Series s = new Series.SeriesBuilder()
     }
 
     public static void main(String[] args) {

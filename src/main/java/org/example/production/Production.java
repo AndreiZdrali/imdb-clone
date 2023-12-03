@@ -14,7 +14,7 @@ import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
         @JsonSubTypes.Type(value = Movie.class, name = "Movie"),
         @JsonSubTypes.Type(value = Series.class, name = "Series")
 })
-public abstract class Production implements Comparable<Production>, Listing {
+public abstract class Production implements Comparable, Listing {
     protected String title;
     protected String type; // pentru deserializare
     protected List<String> directors;
@@ -24,22 +24,26 @@ public abstract class Production implements Comparable<Production>, Listing {
     protected String plot;
     protected double averageRating;
 
-    // astea sunt obligatorii pentru fiecare productie
-    public Production(String title, List<String> directors, List<String> actors, List<Genre> genres, List<Rating> ratings, String plot, double averageRating) {
-        this.title = title;
-        this.directors = directors;
-        this.actors = actors;
-        this.genres = genres;
-        this.ratings = ratings;
-        this.plot = plot;
-        this.averageRating = averageRating;
+    public Production(ProductionBuilder builder) {
+        this.title = builder.title;
+        this.directors = builder.directors;
+        this.actors = builder.actors;
+        this.genres = builder.genres;
+        this.ratings = builder.ratings;
+        this.plot = builder.plot;
+        this.averageRating = builder.averageRating;
     }
 
     public abstract void displayInfo();
 
     @Override
-    public int compareTo(Production other) {
+    public int compareTo(Object o) {
+        Production other = (Production) o;
         return title.compareTo(other.title);
+    }
+
+    public String getTitle() {
+        return title;
     }
 
     public static abstract class ProductionBuilder {
@@ -60,6 +64,7 @@ public abstract class Production implements Comparable<Production>, Listing {
         @JsonProperty("averageRating")
         protected double averageRating;
 
+        // astea sunt obligatorii pentru fiecare productie
         public ProductionBuilder(@JsonProperty("title") String title,
                                  @JsonProperty("type") String type,
                                  @JsonProperty("directors") List<String> directors,

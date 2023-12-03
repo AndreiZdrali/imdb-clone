@@ -12,7 +12,7 @@ public class Movie extends Production {
     private int releaseYear;
 
     public Movie(MovieBuilder builder) {
-        super(builder.title, builder.directors, builder.actors, builder.genres, builder.ratings, builder.plot, builder.averageRating);
+        super(builder);
         this.duration = builder.duration;
         this.releaseYear = builder.releaseYear;
     }
@@ -53,7 +53,6 @@ public class Movie extends Production {
             super(title, type, directors, actors, genres, ratings, description, averageRating);
         }
 
-        // Durata e in format "[duration] minutes" si trebuie luat doar numarul
         @JsonProperty("duration")
         public MovieBuilder setDuration(String duration) {
             this.duration = duration;
