@@ -13,11 +13,10 @@ import org.example.management.*;
 
 
 public class IMDB {
-    private List<Regular> regular;
-    private List<Contributor> contributors;
-    private List<Admin> admins;
-    private List<Actor> actors;
-    private List<Production> productions;
+    public List<User> users;
+    public List<Actor> actors;
+    public List<Production> productions;
+    public List<Request> requests;
 
     private static IMDB instance = null;
 
@@ -31,7 +30,42 @@ public class IMDB {
         return instance;
     }
 
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
+
+    public List<Actor> getActors() {
+        return actors;
+    }
+
+    public void setActors(List<Actor> actors) {
+        this.actors = actors;
+    }
+
+    public List<Production> getProductions() {
+        return productions;
+    }
+
+    public void setProductions(List<Production> productions) {
+        this.productions = productions;
+    }
+
+    public List<Request> getRequests() {
+        return requests;
+    }
+
+    public void setRequests(List<Request> requests) {
+        this.requests = requests;
+    }
+
+    //TODO: Implement run
     public void run() {
+        System.out.println(User.Information.InformationBuilder.class.getCanonicalName());
+
         File productionsFile = new File("src/main/resources/input/production.json");
         ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         List<Production> productions;
@@ -52,17 +86,19 @@ public class IMDB {
 
         File requestsFile = new File("src/main/resources/input/requests.json");
         try {
-            RequestHolder.setRequests(mapper.readValue(requestsFile, mapper.getTypeFactory().constructCollectionType(List.class, Request.class)));
+            requests =  mapper.readValue(requestsFile, mapper.getTypeFactory().constructCollectionType(List.class, Request.class));
         } catch (IOException e) {
             e.printStackTrace();
             return; //TODO: rescrie partea asta sa fie mai eleganta
         }
 
-        for (Production production : productions) {
-            production.displayInfo();
+        for (Request request : requests) {
+            System.out.println(request);
         }
 
-        Series s = new Series.SeriesBuilder()
+        //Series s = new Series.SeriesBuilder()
+
+        //TODO: Implement Jackson pt User si subclase, ca la Production
     }
 
     public static void main(String[] args) {

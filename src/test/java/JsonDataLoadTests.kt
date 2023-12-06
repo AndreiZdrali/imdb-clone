@@ -6,16 +6,16 @@ import CheckerUtils.Companion.loadUsers
 /*
  *   FIXME: Pentru a functiona checker-ul aceste clase trebuie sa existe si sa aiba functiile si membrii necesari
  */
-import org.example.Actor
+import org.example.production.Actor
 import org.example.IMDB
-import org.example.Request
-import org.example.Movie
-import org.example.Production
-import org.example.Series
-import org.example.Admin
-import org.example.Contributor
-import org.example.Regular
-import org.example.User
+import org.example.management.Request
+import org.example.production.Movie
+import org.example.production.Production
+import org.example.production.Series
+import org.example.user.Admin
+import org.example.user.Contributor
+import org.example.user.Regular
+import org.example.user.User
 
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test

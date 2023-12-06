@@ -10,6 +10,8 @@ import java.time.format.DateTimeFormatter;
 
 @JsonDeserialize(builder = Request.RequestBuilder.class)
 public class Request {
+    //private List<Observer> observers = new ArrayList<Observer>();
+
     private RequestType type;
     private LocalDateTime createdDate;
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -41,6 +43,10 @@ public class Request {
     }
 
     //TODO: Implement getters and setters
+
+    public void notifyObservers() {
+        //TODO: Subject notify specific observers
+    }
 
     public String toString() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");

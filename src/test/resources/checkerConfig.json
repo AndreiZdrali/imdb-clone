@@ -4,14 +4,52 @@
   ],
   "builders": [
     {
-      "builder" : "org.example.User$Information$InformationBuilder",
-      "built" : "org.example.User$Information"
+      "builder" : "org.example.user.User$UserBuilder",
+      "built" : "org.example.user.User"
+    },
+    {
+      "builder" : "org.example.user.User$Information$InformationBuilder",
+      "built" : "org.example.user.User$Information"
+    },
+    {
+      "builder" : "org.example.user.Staff$StaffBuilder",
+      "built" : "org.example.user.Staff"
+    },
+    {
+      "builder" : "org.example.user.Admin$AdminBuilder",
+      "built" : "org.example.user.Admin"
+    },
+    {
+      "builder" : "org.example.user.Contributor$ContributorBuilder",
+      "built" : "org.example.user.Contributor"
+    },
+    {
+      "builder" : "org.example.user.Regular$RegularBuilder",
+      "built" : "org.example.user.Regular"
+    },
+
+    {
+      "builder" : "org.example.production.Production$ProductionBuilder",
+      "built" : "org.example.production.Production"
+    },
+    {
+      "builder" : "org.example.production.Movie$MovieBuilder",
+      "built" : "org.example.production.Movie"
+    },
+    {
+      "builder" : "org.example.production.Series$SeriesBuilder",
+      "built" : "org.example.production.Series"
+    },
+
+    {
+      "builder" : "org.example.Request$RequestBuilder",
+      "built" : "org.example.Request"
     }
   ],
   "factories": [
     {
-      "name": "org.example.UserFactory",
-      "enum": "org.example.AccountType"
+      "name": "org.example.user.UserFactory",
+      "enum": "org.example.user.AccountType"
     }
   ],
   "observers": [

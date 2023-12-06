@@ -22,5 +22,9 @@ public class Admin extends Staff {
                             @JsonProperty("userType") AccountType userType) {
             super(username, experience, information, userType);
         }
+
+        public Admin build() {
+            return new Admin(this);
+        }
     }
 }

@@ -8,14 +8,18 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import org.example.IMDB;
 import org.example.management.Request;
 import org.example.production.*;
 import org.example.utils.serializers.ActorToStringSerializer;
 import org.example.utils.serializers.ProductionToStringSerializer;
 
 public class Staff extends User implements StaffInterface {
+    //TODO: Sa vad cum initializez personalRequests
     @JsonIgnore
     private List<Request> personalRequests;
+    @JsonIgnore
+    public SortedSet<Comparable> contributions;
     @JsonProperty("productionsContribution")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonSerialize(using = ProductionToStringSerializer.class, as = String.class)
@@ -29,7 +33,51 @@ public class Staff extends User implements StaffInterface {
         super(builder);
         this.productionsContribution = builder.productionsContribution;
         this.actorsContribution = builder.actorsContribution;
-        //TODO: Sa vad ce fac cu personalRequests
+
+        this.contributions = new TreeSet<>();
+        this.contributions.addAll(this.productionsContribution);
+        this.contributions.addAll(this.actorsContribution);
+    }
+
+    //TODO: Implement setters and getters
+    public List<Request> getPersonalRequests() {
+        return personalRequests;
+    }
+
+    public void setPersonalRequests(List<Request> personalRequests) {
+        this.personalRequests = personalRequests;
+    }
+
+    public SortedSet<Comparable> getContributions() {
+        return contributions;
+    }
+
+    public void setContributions(SortedSet<Comparable> contributions) {
+        this.contributions = contributions;
+    }
+
+    public SortedSet<Production> getProductionsContribution() {
+        return productionsContribution;
+    }
+
+    public void setProductionsContribution(SortedSet<Production> productionsContribution) {
+        this.productionsContribution = productionsContribution;
+    }
+
+    public SortedSet<Actor> getActorsContribution() {
+        return actorsContribution;
+    }
+
+    public void setActorsContribution(SortedSet<Actor> actorsContribution) {
+        this.actorsContribution = actorsContribution;
+    }
+
+    public void addPersonalRequest(Request request) {
+        personalRequests.add(request);
+    }
+
+    public void removePersonalRequest(Request request) {
+        personalRequests.remove(request);
     }
 
     //TODO: Implement methods from StaffInterface
@@ -72,7 +120,17 @@ public class Staff extends User implements StaffInterface {
 
         @JsonProperty("productionsContribution")
         public StaffBuilder setProductionsContribution(List<String> productionsContribution) {
-            //TODO: pentru fiecare string sa gasesc productia aia
+            //TODO: Sa nu uit ca in load mai intai sa citesc productions si abia dupa users
+            List<Production> productions = IMDB.getInstance().getProductions();
+            for (String productionName : productionsContribution) {
+                Production p = productions.stream()
+                        .filter(production -> production.getTitle().equals(productionName))
+                        .findFirst()
+                        .orElse(null);
+                if (p != null) {
+                    this.productionsContribution.add(p);
+                }
+            }
             return this;
         }
 
@@ -83,7 +141,17 @@ public class Staff extends User implements StaffInterface {
 
         @JsonProperty("productionsContribution")
         public StaffBuilder setActorsContribution(List<String> actorsContribution) {
-            //TODO: pentru fiecare string sa gasesc actorul ala
+            //TODO: Sa nu uit ca in load mai intai sa citesc actors si abia dupa users
+            List<Actor> actors = IMDB.getInstance().getActors();
+            for (String actorName : actorsContribution) {
+                Actor a = actors.stream()
+                        .filter(actor -> actor.getName().equals(actorName))
+                        .findFirst()
+                        .orElse(null);
+                if (a != null) {
+                    this.actorsContribution.add(a);
+                }
+            }
             return this;
         }
 

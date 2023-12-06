@@ -14,7 +14,6 @@ public class Credentials {
         this.password = password;
     }
 
-    //TODO: Use encapsulation????
     public String getEmail() {
         return email;
     }

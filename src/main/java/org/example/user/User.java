@@ -1,6 +1,7 @@
 package org.example.user;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
@@ -36,6 +37,9 @@ public abstract class User {
     @JsonSerialize(using = ActorToStringSerializer.class, as = String.class)
     private SortedSet<Actor> favoriteActors;
 
+    @JsonIgnore
+    public SortedSet<Comparable> favorites;
+
     @JsonProperty("notifications")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<String> notifications;
@@ -49,13 +53,17 @@ public abstract class User {
         this.favoriteProductions = builder.favoriteProductions;
         this.favoriteActors = builder.favoriteActors;
         this.notifications = builder.notifications;
+
+        this.favorites = new TreeSet<>();
+        this.favorites.addAll(this.favoriteProductions);
+        this.favorites.addAll(this.favoriteActors);
     }
 
-    public void addFavorite(Listing favorite) {
+    public void addFavorite(Comparable favorite) {
         //TODO: Implement addFavorite
     }
 
-    public void removeFavorite(Listing favorite) {
+    public void removeFavorite(Comparable favorite) {
         //TODO: Implement removeFavorite
     }
 

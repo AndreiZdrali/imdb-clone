@@ -37,9 +37,16 @@ public abstract class Production implements Comparable, Listing {
     public abstract void displayInfo();
 
     @Override
-    public int compareTo(Object o) {
-        Production other = (Production) o;
-        return title.compareTo(other.title);
+    public int compareTo(Object object) {
+        if (object instanceof Production) {
+            Production prod = (Production) object;
+            return title.compareTo(prod.getTitle());
+        } else if (object instanceof Actor) {
+            Actor actor = (Actor) object;
+            return title.compareTo(actor.getName());
+        } else {
+            return 0;
+        }
     }
 
     public String getTitle() {

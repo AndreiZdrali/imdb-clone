@@ -33,9 +33,16 @@ public class Actor implements Comparable, Listing {
         return biography;
     }
 
-    public int compareTo(Object o) {
-        Actor other = (Actor) o;
-        return name.compareTo(other.name);
+    public int compareTo(Object object) {
+        if (object instanceof Production) {
+            Production prod = (Production) object;
+            return name.compareTo(prod.getTitle());
+        } else if (object instanceof Actor) {
+            Actor actor = (Actor) object;
+            return name.compareTo(actor.name);
+        } else {
+            return 0;
+        }
     }
 
     public String toString() {
