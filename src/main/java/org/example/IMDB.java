@@ -1,11 +1,6 @@
 package org.example;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
-
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.example.user.*;
 import org.example.production.*;
@@ -17,11 +12,12 @@ public class IMDB {
     public List<Actor> actors;
     public List<Production> productions;
     public List<Request> requests;
+    public JSONContext jsonContext;
 
     private static IMDB instance = null;
 
     private IMDB() {
-        // CONSTRUCTOR
+        jsonContext = new JSONContext();
     }
 
     public static IMDB getInstance() {
@@ -62,43 +58,57 @@ public class IMDB {
         this.requests = requests;
     }
 
+
+    public void addActor(Actor a) {
+        actors.add(a);
+    }
+
+    public void removeActor(Actor a) {
+        //TODO: Implement removeActor dupa enunt
+    }
+
+    public void addProduction(Production p) {
+        productions.add(p);
+    }
+
+    public void removeProduction(Production p) {
+        //TODO: Implement removeProduction dupa enunt
+    }
+
+    /** Adauga si in shared/personal requests */
+    public void addRequest(Request r) {
+        requests.add(r);
+
+        RequestType type = r.getType();
+        if (type == RequestType.DELETE_ACCOUNT || type == RequestType.OTHERS) {
+            RequestHolder.addSharedRequest(r);
+        } else {
+            for (User u : users) {
+                if (!(u instanceof Staff s))
+                    continue;
+                if (s.getUsername().equals(r.getTo())) {
+                    s.addPersonalRequest(r);
+                    break;
+                }
+            }
+        }
+
+        //TODO: Save JSON
+    }
+
+    public void removeRequest(Request r) {
+        //TODO: Implement removeRequest dupa enunt
+    }
+
     //TODO: Implement run
     public void run() {
         System.out.println(User.Information.InformationBuilder.class.getCanonicalName());
 
-        File productionsFile = new File("src/main/resources/input/production.json");
-        ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        List<Production> productions;
-        try {
-            productions = mapper.readValue(productionsFile, mapper.getTypeFactory().constructCollectionType(List.class, Production.class));
-        } catch (IOException e) {
-            e.printStackTrace();
-            return; //TODO: rescrie partea asta sa fie mai eleganta
+        jsonContext.LoadJSONData();
+
+        for (User u : users) {
+            System.out.println(u);
         }
-
-        File actorsFile = new File("src/main/resources/input/actors.json");
-        try {
-            actors = mapper.readValue(actorsFile, mapper.getTypeFactory().constructCollectionType(List.class, Actor.class));
-        } catch (IOException e) {
-            e.printStackTrace();
-            return; //TODO: rescrie partea asta sa fie mai eleganta
-        }
-
-        File requestsFile = new File("src/main/resources/input/requests.json");
-        try {
-            requests =  mapper.readValue(requestsFile, mapper.getTypeFactory().constructCollectionType(List.class, Request.class));
-        } catch (IOException e) {
-            e.printStackTrace();
-            return; //TODO: rescrie partea asta sa fie mai eleganta
-        }
-
-        for (Request request : requests) {
-            System.out.println(request);
-        }
-
-        //Series s = new Series.SeriesBuilder()
-
-        //TODO: Implement Jackson pt User si subclase, ca la Production
     }
 
     public static void main(String[] args) {

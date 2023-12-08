@@ -1,15 +1,14 @@
 package org.example.user;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.sun.source.tree.Tree;
-import org.example.production.Actor;
-import org.example.production.Production;
-import org.example.production.Listing;
+import org.example.IMDB;
+import org.example.management.Request;
+import org.example.management.RequestsManager;
+import org.example.production.*;
 import org.example.utils.serializers.ActorToStringSerializer;
 import org.example.utils.serializers.ProductionToStringSerializer;
 
@@ -19,30 +18,40 @@ import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-public abstract class User {
+//TODO: Subtypes (cred ca e gata)
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        property = "userType"
+)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = User.class, name = "User"),
+        @JsonSubTypes.Type(value = Contributor.class, name = "Contributor"),
+        @JsonSubTypes.Type(value = Admin.class, name = "Admin")
+})
+public abstract class User implements RequestsManager {
     @JsonProperty("username")
-    private String username;
+    protected String username;
     @JsonProperty("experience")
-    private int experience;
+    protected int experience;
     @JsonProperty("information")
-    private Information information;
+    protected Information information;
     @JsonProperty("userType")
-    private AccountType userType;
+    protected AccountType userType;
     @JsonProperty("favoriteProductions")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonSerialize(using = ProductionToStringSerializer.class, as = String.class)
-    private SortedSet<Production> favoriteProductions;
+    protected SortedSet<Production> favoriteProductions;
     @JsonProperty("favoriteActors")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonSerialize(using = ActorToStringSerializer.class, as = String.class)
-    private SortedSet<Actor> favoriteActors;
+    protected SortedSet<Actor> favoriteActors;
 
     @JsonIgnore
     public SortedSet<Comparable> favorites;
 
     @JsonProperty("notifications")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private List<String> notifications;
+    protected List<String> notifications;
 
     // posibil sa trb sa adaug @JsonProperty la fiecare
     public User(UserBuilder builder) {
@@ -57,6 +66,10 @@ public abstract class User {
         this.favorites = new TreeSet<>();
         this.favorites.addAll(this.favoriteProductions);
         this.favorites.addAll(this.favoriteActors);
+    }
+
+    public String getUsername() {
+        return username;
     }
 
     public void addFavorite(Comparable favorite) {
@@ -75,6 +88,21 @@ public abstract class User {
         //TODO: Implement logout
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "username='" + username + '\'' +
+                ", experience=" + experience +
+                ", information=" + information +
+                ", userType=" + userType +
+                ", favoriteProductions=" + favoriteProductions +
+                ", favoriteActors=" + favoriteActors +
+                ", favorites=" + favorites +
+                ", notifications=" + notifications +
+                '}';
+    }
+
+    @JsonDeserialize(builder = Information.InformationBuilder.class)
     public static class Information {
         @JsonProperty("credentials")
         private Credentials credentials;
@@ -150,6 +178,7 @@ public abstract class User {
             @JsonProperty("birthDate")
             public InformationBuilder setBirthDate(String birthDate) {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                //TODO: Aici cica sa folosesc LocalDate in loc de LocalDateTime
                 this.birthDate = LocalDateTime.parse(birthDate, formatter);
                 return this;
             }

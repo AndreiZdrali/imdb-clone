@@ -15,13 +15,21 @@ import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
         @JsonSubTypes.Type(value = Series.class, name = "Series")
 })
 public abstract class Production implements Comparable, Listing {
+    @JsonProperty("title")
     protected String title;
+    @JsonProperty("type")
     protected String type; // pentru deserializare
+    @JsonProperty("directors")
     protected List<String> directors;
+    @JsonProperty("actors")
     protected List<String> actors;
+    @JsonProperty("genres")
     protected List<Genre> genres;
+    @JsonProperty("ratings")
     protected List<Rating> ratings;
+    @JsonProperty("plot")
     protected String plot;
+    @JsonProperty("averageRating")
     protected double averageRating;
 
     public Production(ProductionBuilder builder) {

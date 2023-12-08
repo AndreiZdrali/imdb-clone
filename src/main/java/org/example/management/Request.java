@@ -30,19 +30,20 @@ public class Request {
         this.username = builder.username;
         this.to = builder.to;
         this.description = builder.description;
-
-        if (type == RequestType.DELETE_ACCOUNT || type == RequestType.OTHERS) {
-            //TODO: In lista tuturor adminilor
-        } else if  (type == RequestType.ACTOR_ISSUE) {
-            //TODO: Gaseste user-ul care l-a introdus
-        } else {
-            //TODO: Gaseste user-ul care l-a introdus
-        }
-
-        //Mai usor daca fac o interfata comuna pentru Production si Actor
     }
 
     //TODO: Implement getters and setters
+    public String getUsername() {
+        return username;
+    }
+
+    public RequestType getType() {
+        return type;
+    }
+
+    public String getTo() {
+        return to;
+    }
 
     public void notifyObservers() {
         //TODO: Subject notify specific observers

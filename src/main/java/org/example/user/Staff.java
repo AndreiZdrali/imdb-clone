@@ -14,20 +14,20 @@ import org.example.production.*;
 import org.example.utils.serializers.ActorToStringSerializer;
 import org.example.utils.serializers.ProductionToStringSerializer;
 
-public class Staff extends User implements StaffInterface {
-    //TODO: Sa vad cum initializez personalRequests
+public abstract class Staff extends User implements StaffInterface {
+    //TODO: Sa vad cum initializez personalRequests, probabil in load
     @JsonIgnore
-    private List<Request> personalRequests;
+    protected List<Request> personalRequests;
     @JsonIgnore
     public SortedSet<Comparable> contributions;
     @JsonProperty("productionsContribution")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonSerialize(using = ProductionToStringSerializer.class, as = String.class)
-    private SortedSet<Production> productionsContribution;
+    protected SortedSet<Production> productionsContribution;
     @JsonProperty("actorsContribution")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonSerialize(using = ActorToStringSerializer.class, as = String.class)
-    private SortedSet<Actor> actorsContribution;
+    protected SortedSet<Actor> actorsContribution;
 
     public Staff(StaffBuilder builder) {
         super(builder);
@@ -73,24 +73,37 @@ public class Staff extends User implements StaffInterface {
     }
 
     public void addPersonalRequest(Request request) {
+        //TODO: Implement logic dupa enunt (observer)
         personalRequests.add(request);
     }
 
     public void removePersonalRequest(Request request) {
+        //TODO: Implement logic dupa enunt, experienta utilizator (observer?)
         personalRequests.remove(request);
     }
 
     //TODO: Implement methods from StaffInterface
     public void addProductionSystem(Production production) {
+        IMDB imdb = IMDB.getInstance();
 
+        productionsContribution.add(production);
+        contributions.add(production);
+
+        imdb.addProduction(production);
     }
 
     public void addActorSystem(Actor a) {
+        IMDB imdb = IMDB.getInstance();
 
+        actorsContribution.add(a);
+        contributions.add(a);
+
+        imdb.addActor(a);
     }
 
     public void removeProductionSystem(String name) {
-
+        IMDB imdb = IMDB.getInstance();
+        //TODO: Posibil sa scot experienta de la user
     }
 
     public void removeActorSystem(String name) {
@@ -139,7 +152,7 @@ public class Staff extends User implements StaffInterface {
             return this;
         }
 
-        @JsonProperty("productionsContribution")
+        @JsonProperty("actorsContribution")
         public StaffBuilder setActorsContribution(List<String> actorsContribution) {
             //TODO: Sa nu uit ca in load mai intai sa citesc actors si abia dupa users
             List<Actor> actors = IMDB.getInstance().getActors();

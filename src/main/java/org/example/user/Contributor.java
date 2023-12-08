@@ -1,5 +1,7 @@
 package org.example.user;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.management.RequestsManager;
 import org.example.management.Request;
 import org.example.production.Actor;
@@ -8,6 +10,7 @@ import org.example.production.Production;
 import java.util.List;
 import java.util.SortedSet;
 
+@JsonDeserialize(builder = Contributor.ContributorBuilder.class)
 public class Contributor extends Staff implements RequestsManager {
     public Contributor(ContributorBuilder builder) {
         super(builder);
@@ -22,10 +25,10 @@ public class Contributor extends Staff implements RequestsManager {
     }
 
     public static class ContributorBuilder extends StaffBuilder {
-        public ContributorBuilder(String username,
-                                  int experience,
-                                  Information information,
-                                  AccountType userType) {
+        public ContributorBuilder(@JsonProperty("username") String username,
+                                  @JsonProperty("experience") int experience,
+                                  @JsonProperty("information") Information information,
+                                  @JsonProperty("userType") AccountType userType) {
             super(username, experience, information, userType);
         }
 
