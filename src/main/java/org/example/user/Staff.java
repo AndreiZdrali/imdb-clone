@@ -11,8 +11,8 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.example.IMDB;
 import org.example.management.Request;
 import org.example.production.*;
-import org.example.utils.serializers.ActorToStringSerializer;
-import org.example.utils.serializers.ProductionToStringSerializer;
+import org.example.serializers.ActorToStringSerializer;
+import org.example.serializers.ProductionToStringSerializer;
 
 public abstract class Staff extends User implements StaffInterface {
     @JsonIgnore

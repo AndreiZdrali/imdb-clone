@@ -1,4 +1,4 @@
-package org.example.utils.serializers;
+package org.example.serializers;
 
 import com.fasterxml.jackson.databind.JsonSerializer;
 import org.example.production.Production;

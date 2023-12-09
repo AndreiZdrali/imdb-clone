@@ -1,4 +1,4 @@
-package org.example.ui.cli;
+package org.example.ui;
 
 import org.example.ui.UserInterface;
 

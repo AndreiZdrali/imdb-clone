@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Scanner;
 
 import org.example.ui.UserInterface;
-import org.example.ui.cli.CLI;
-import org.example.ui.gui.GUI;
+import org.example.ui.CLI;
+import org.example.ui.GUI;
 import org.example.user.*;
 import org.example.production.*;
 import org.example.management.*;

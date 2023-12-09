@@ -2,15 +2,11 @@ package org.example.user;
 
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.sun.source.tree.Tree;
-import org.example.IMDB;
-import org.example.management.Request;
 import org.example.management.RequestsManager;
 import org.example.production.*;
-import org.example.utils.serializers.ActorToStringSerializer;
-import org.example.utils.serializers.ProductionToStringSerializer;
+import org.example.serializers.ActorToStringSerializer;
+import org.example.serializers.ProductionToStringSerializer;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
