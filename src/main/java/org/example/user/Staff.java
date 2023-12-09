@@ -15,7 +15,6 @@ import org.example.utils.serializers.ActorToStringSerializer;
 import org.example.utils.serializers.ProductionToStringSerializer;
 
 public abstract class Staff extends User implements StaffInterface {
-    //TODO: Sa vad cum initializez personalRequests, probabil in load
     @JsonIgnore
     protected List<Request> personalRequests;
     @JsonIgnore
@@ -103,11 +102,11 @@ public abstract class Staff extends User implements StaffInterface {
 
     public void removeProductionSystem(String name) {
         IMDB imdb = IMDB.getInstance();
-        //TODO: Posibil sa scot experienta de la user
+        //TODO: Posibil sa trb sa scot experienta de la user
     }
 
     public void removeActorSystem(String name) {
-
+        //TODO: Implement removeActorSystem
     }
 
     public void updateProduction(Production p) {
@@ -131,9 +130,9 @@ public abstract class Staff extends User implements StaffInterface {
             super(username, experience, information, userType);
         }
 
+        /** Se apeleaza doar la load */
         @JsonProperty("productionsContribution")
         public StaffBuilder setProductionsContribution(List<String> productionsContribution) {
-            //TODO: Sa nu uit ca in load mai intai sa citesc productions si abia dupa users
             List<Production> productions = IMDB.getInstance().getProductions();
             for (String productionName : productionsContribution) {
                 Production p = productions.stream()
@@ -152,6 +151,7 @@ public abstract class Staff extends User implements StaffInterface {
             return this;
         }
 
+        /** Se apeleaza doar la load */
         @JsonProperty("actorsContribution")
         public StaffBuilder setActorsContribution(List<String> actorsContribution) {
             //TODO: Sa nu uit ca in load mai intai sa citesc actors si abia dupa users

@@ -1,7 +1,12 @@
 package org.example;
 
+import java.util.InputMismatchException;
 import java.util.List;
+import java.util.Scanner;
 
+import org.example.ui.UserInterface;
+import org.example.ui.cli.CLI;
+import org.example.ui.gui.GUI;
 import org.example.user.*;
 import org.example.production.*;
 import org.example.management.*;
@@ -13,11 +18,14 @@ public class IMDB {
     public List<Production> productions;
     public List<Request> requests;
     public JSONContext jsonContext;
+    public Scanner scanner;
+    public UserInterface userInterface;
 
     private static IMDB instance = null;
 
     private IMDB() {
         jsonContext = new JSONContext();
+        scanner = new Scanner(System.in);
     }
 
     public static IMDB getInstance() {
@@ -100,15 +108,58 @@ public class IMDB {
         //TODO: Implement removeRequest dupa enunt
     }
 
-    //TODO: Implement run
-    public void run() {
-        System.out.println(User.Information.InformationBuilder.class.getCanonicalName());
+    private void login() {
+        System.out.println("Welcome back! Enter your credentials!");
 
-        jsonContext.LoadJSONData();
+        System.out.println("\tEmail:");
+        String email = scanner.nextLine();
+        System.out.println("\tPassword:");
+        String password = scanner.nextLine();
 
         for (User u : users) {
-            System.out.println(u);
+            if (u.checkLogin(email, password)) {
+                System.out.println("Welcome back, " + u.getUsername() + "!");
+                if (u.getUserType() == AccountType.Admin)
+                    System.out.println("User experience: -");
+                else
+                    System.out.println("User experience: " + u.getExperience());
+                return;
+            }
         }
+
+        System.out.println("Invalid credentials!");
+        login();
+    }
+
+    private void askForUserInterface() {
+        try {
+            int option = scanner.nextInt();
+            switch (option) {
+                case 1:
+                    userInterface = new CLI();
+                    break;
+                case 2:
+                    userInterface = new GUI();
+                    break;
+                default:
+                    throw new InputMismatchException();
+            }
+        } catch (InputMismatchException e) {
+            System.out.println("Invalid option");
+            scanner.next();
+            askForUserInterface();
+        }
+    }
+
+    //TODO: Implement run
+    public void run() {
+        jsonContext.LoadJSONData();
+
+        login();
+
+        askForUserInterface();
+
+        userInterface.run();
     }
 
     public static void main(String[] args) {

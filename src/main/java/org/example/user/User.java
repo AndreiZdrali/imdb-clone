@@ -72,6 +72,17 @@ public abstract class User implements RequestsManager {
         return username;
     }
 
+    public int getExperience() {
+        return experience;
+    }
+
+    public AccountType getUserType() {
+        return userType;
+    }
+
+    public boolean checkLogin(String email, String password) {
+        return information.credentials.getEmail().equals(email) && information.credentials.getPassword().equals(password);
+    }
     public void addFavorite(Comparable favorite) {
         //TODO: Implement addFavorite
     }
