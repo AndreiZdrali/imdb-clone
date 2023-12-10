@@ -1,17 +1,13 @@
 package org.example.ui.menus;
 
 import kotlin.NotImplementedError;
-import org.example.ui.UserOption;
+import org.example.ui.MenuOption;
 import org.example.user.AccountType;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainMenuProvider implements MenuProvider {
-    private static List<UserOption> regularOptions = null;
-    private static List<UserOption> contributorOptions = null;
-    private static List<UserOption> adminOptions = null;
-
+public class MainMenuProvider extends MenuProvider {
     private static MainMenuProvider instance = null;
 
     private MainMenuProvider() { }
@@ -22,47 +18,64 @@ public class MainMenuProvider implements MenuProvider {
         return instance;
     }
 
-    public List<UserOption> getUserOptions(AccountType accountType) {
-        switch (accountType) {
-            case Regular:
-                return getRegularOptions();
-            case Contributor:
-                return getContributorOptions();
-            case Admin:
-                return getAdminOptions();
-            default:
-                throw new NotImplementedError("Account type not existent");
-        }
-    }
-
-    private List<UserOption> getRegularOptions() {
+    @Override
+    protected List<MenuOption> getRegularOptions() {
         if (regularOptions != null)
             return regularOptions;
 
         regularOptions = new ArrayList<>();
 
-        regularOptions.add(UserOption.List.VIEW_PRODUCTIONS_DETAILS);
-        regularOptions.add(UserOption.List.VIEW_ACTORS_DETAILS);
-        regularOptions.add(UserOption.List.VIEW_NOTIFICATIONS);
+        regularOptions.add(MenuOption.List.VIEW_PRODUCTIONS_DETAILS);
+        regularOptions.add(MenuOption.List.VIEW_ACTORS_DETAILS);
+        regularOptions.add(MenuOption.List.VIEW_NOTIFICATIONS);
+        regularOptions.add(MenuOption.List.SEARCH_FOR_LISTING);
+        regularOptions.add(MenuOption.List.ADD_DELETE_FAVORITE);
+        regularOptions.add(MenuOption.List.CREATE_REMOVE_REQUEST);
+        regularOptions.add(MenuOption.List.ADD_DELETE_REVIEW);
+        regularOptions.add(MenuOption.List.LOGOUT);
 
         return regularOptions;
     }
 
-    private List<UserOption> getContributorOptions() {
+    @Override
+    protected List<MenuOption> getContributorOptions() {
         if (contributorOptions != null)
             return contributorOptions;
 
-        contributorOptions = getRegularOptions();
+        contributorOptions = new ArrayList<>();
 
-        return null;
+        contributorOptions.add(MenuOption.List.VIEW_PRODUCTIONS_DETAILS);
+        contributorOptions.add(MenuOption.List.VIEW_ACTORS_DETAILS);
+        contributorOptions.add(MenuOption.List.VIEW_NOTIFICATIONS);
+        contributorOptions.add(MenuOption.List.SEARCH_FOR_LISTING);
+        contributorOptions.add(MenuOption.List.ADD_DELETE_FAVORITE);
+        contributorOptions.add(MenuOption.List.CREATE_REMOVE_REQUEST);
+        contributorOptions.add(MenuOption.List.ADD_DELETE_LISTING);
+        contributorOptions.add(MenuOption.List.UPDATE_LISTING);
+        contributorOptions.add(MenuOption.List.SOLVE_REQUEST);
+        contributorOptions.add(MenuOption.List.LOGOUT);
+
+        return contributorOptions;
     }
 
-    private List<UserOption> getAdminOptions() {
+    @Override
+    protected List<MenuOption> getAdminOptions() {
         if (adminOptions != null)
             return adminOptions;
 
-        adminOptions = getContributorOptions();
+        adminOptions = new ArrayList<>();
 
-        return null;
+        adminOptions.add(MenuOption.List.VIEW_PRODUCTIONS_DETAILS);
+        adminOptions.add(MenuOption.List.VIEW_ACTORS_DETAILS);
+        adminOptions.add(MenuOption.List.VIEW_NOTIFICATIONS);
+        adminOptions.add(MenuOption.List.SEARCH_FOR_LISTING);
+        adminOptions.add(MenuOption.List.ADD_DELETE_FAVORITE);
+        adminOptions.add(MenuOption.List.ADD_DELETE_LISTING);
+        adminOptions.add(MenuOption.List.UPDATE_LISTING);
+        adminOptions.add(MenuOption.List.SOLVE_REQUEST);
+        adminOptions.add(MenuOption.List.ADD_DELETE_USER);
+        adminOptions.add(MenuOption.List.LOGOUT);
+
+        return adminOptions;
     }
 }

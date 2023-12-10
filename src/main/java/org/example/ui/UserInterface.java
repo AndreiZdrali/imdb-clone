@@ -7,4 +7,20 @@ public abstract class UserInterface {
     protected User currentUser = null;
     protected MenuProvider menuProvider = null;
     public abstract void run();
+
+    public User getCurrentUser() {
+        return currentUser;
+    }
+
+    public void setCurrentUser(User currentUser) {
+        this.currentUser = currentUser;
+    }
+
+    public MenuProvider getMenuProvider() {
+        return menuProvider;
+    }
+
+    public void setMenuProvider(MenuProvider menuProvider) {
+        this.menuProvider = menuProvider;
+    }
 }

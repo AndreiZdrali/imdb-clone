@@ -22,7 +22,7 @@ public class JSONContext {
     ObjectMapper mapper;
 
     public JSONContext() {
-        accountsJSONPath = "src/main/resources/input/actors.json";
+        accountsJSONPath = "src/main/resources/input/accounts.json";
         actorsJSONPath = "src/main/resources/input/actors.json";
         productionsJSONPath = "src/main/resources/input/production.json";
         requestsJSONPath = "src/main/resources/input/requests.json";
@@ -63,10 +63,10 @@ public class JSONContext {
     }
 
     public void LoadJSONData() {
-        LoadAccountsJSONData();
         LoadActorsJSONData();
         LoadProductionsJSONData();
         LoadRequestsJSONData();
+        LoadAccountsJSONData();
 
         LinkRequestsToUsers();
     }

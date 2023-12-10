@@ -1,5 +1,6 @@
 package org.example.user;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.IMDB;
 import org.example.management.Request;
@@ -33,10 +34,10 @@ public class Regular extends User implements RequestsManager {
     }
 
     public static class RegularBuilder extends UserBuilder {
-        public RegularBuilder(String username,
-                              int experience,
-                              Information information,
-                              AccountType userType) {
+        public RegularBuilder(@JsonProperty("username") String username,
+                              @JsonProperty("experience") int experience,
+                              @JsonProperty("information") Information information,
+                              @JsonProperty("userType") AccountType userType) {
             super(username, experience, information, userType);
         }
 

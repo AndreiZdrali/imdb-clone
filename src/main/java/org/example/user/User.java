@@ -8,6 +8,7 @@ import org.example.production.*;
 import org.example.serializers.ActorToStringSerializer;
 import org.example.serializers.ProductionToStringSerializer;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -20,11 +21,11 @@ import java.util.TreeSet;
         property = "userType"
 )
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = User.class, name = "User"),
+        @JsonSubTypes.Type(value = Regular.class, name = "Regular"),
         @JsonSubTypes.Type(value = Contributor.class, name = "Contributor"),
         @JsonSubTypes.Type(value = Admin.class, name = "Admin")
 })
-public abstract class User implements RequestsManager {
+public abstract class User {
     @JsonProperty("username")
     protected String username;
     @JsonProperty("experience")
@@ -60,8 +61,10 @@ public abstract class User implements RequestsManager {
         this.notifications = builder.notifications;
 
         this.favorites = new TreeSet<>();
-        this.favorites.addAll(this.favoriteProductions);
-        this.favorites.addAll(this.favoriteActors);
+        if (this.favoriteProductions != null)
+            this.favorites.addAll(this.favoriteProductions);
+        if (this.favoriteActors != null)
+            this.favorites.addAll(this.favoriteActors);
     }
 
     public String getUsername() {
@@ -70,6 +73,10 @@ public abstract class User implements RequestsManager {
 
     public int getExperience() {
         return experience;
+    }
+
+    public List<String> getNotifications() {
+        return notifications;
     }
 
     public AccountType getUserType() {
@@ -122,7 +129,7 @@ public abstract class User implements RequestsManager {
         @JsonProperty("gender")
         private String gender;
         @JsonProperty("birthDate")
-        private LocalDateTime birthDate;
+        private LocalDate birthDate;
 
         private Information(InformationBuilder builder) {
             this.credentials = builder.credentials;
@@ -146,7 +153,7 @@ public abstract class User implements RequestsManager {
             @JsonProperty("gender")
             private String gender;
             @JsonProperty("birthDate")
-            private LocalDateTime birthDate;
+            private LocalDate birthDate;
 
             public InformationBuilder() {
 
@@ -186,11 +193,11 @@ public abstract class User implements RequestsManager {
             public InformationBuilder setBirthDate(String birthDate) {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                 //TODO: Aici cica sa folosesc LocalDate in loc de LocalDateTime
-                this.birthDate = LocalDateTime.parse(birthDate, formatter);
+                this.birthDate = LocalDate.parse(birthDate, formatter);
                 return this;
             }
 
-            public InformationBuilder setBirthDate(LocalDateTime birthDate) {
+            public InformationBuilder setBirthDate(LocalDate birthDate) {
                 this.birthDate = birthDate;
                 return this;
             }

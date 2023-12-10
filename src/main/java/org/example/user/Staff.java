@@ -34,11 +34,12 @@ public abstract class Staff extends User implements StaffInterface {
         this.actorsContribution = builder.actorsContribution;
 
         this.contributions = new TreeSet<>();
-        this.contributions.addAll(this.productionsContribution);
-        this.contributions.addAll(this.actorsContribution);
+        if (this.productionsContribution != null)
+            this.contributions.addAll(this.productionsContribution);
+        if (this.actorsContribution != null)
+            this.contributions.addAll(this.actorsContribution);
     }
 
-    //TODO: Implement setters and getters
     public List<Request> getPersonalRequests() {
         return personalRequests;
     }
@@ -71,6 +72,7 @@ public abstract class Staff extends User implements StaffInterface {
         this.actorsContribution = actorsContribution;
     }
 
+    //StaffInterface methods
     public void addPersonalRequest(Request request) {
         //TODO: Implement logic dupa enunt (observer)
         personalRequests.add(request);
@@ -128,6 +130,8 @@ public abstract class Staff extends User implements StaffInterface {
                             @JsonProperty("information") Information information,
                             @JsonProperty("userType") AccountType userType) {
             super(username, experience, information, userType);
+            this.productionsContribution = new TreeSet<>();
+            this.actorsContribution = new TreeSet<>();
         }
 
         /** Se apeleaza doar la load */
