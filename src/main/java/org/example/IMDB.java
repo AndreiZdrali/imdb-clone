@@ -108,7 +108,7 @@ public class IMDB {
         //TODO: Implement removeRequest dupa enunt
     }
 
-    private void login() {
+    private User login() {
         System.out.println("Welcome back! Enter your credentials!");
 
         System.out.println("\tEmail:");
@@ -123,7 +123,7 @@ public class IMDB {
                     System.out.println("User experience: -");
                 else
                     System.out.println("User experience: " + u.getExperience());
-                return;
+                return u;
             }
         }
 
@@ -131,15 +131,15 @@ public class IMDB {
         login();
     }
 
-    private void askForUserInterface() {
+    private void askForUserInterface(User user) {
         try {
             int option = scanner.nextInt();
             switch (option) {
                 case 1:
-                    userInterface = new CLI();
+                    userInterface = new CLI(user);
                     break;
                 case 2:
-                    userInterface = new GUI();
+                    userInterface = new GUI(user);
                     break;
                 default:
                     throw new InputMismatchException();
@@ -147,7 +147,7 @@ public class IMDB {
         } catch (InputMismatchException e) {
             System.out.println("Invalid option");
             scanner.next();
-            askForUserInterface();
+            askForUserInterface(user);
         }
     }
 
@@ -155,9 +155,9 @@ public class IMDB {
     public void run() {
         jsonContext.LoadJSONData();
 
-        login();
+        User user = login();
 
-        askForUserInterface();
+        askForUserInterface(user);
 
         userInterface.run();
     }
