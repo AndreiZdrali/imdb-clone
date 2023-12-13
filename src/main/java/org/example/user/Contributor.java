@@ -1,5 +1,6 @@
 package org.example.user;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.management.RequestsManager;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.SortedSet;
 
 @JsonDeserialize(builder = Contributor.ContributorBuilder.class)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Contributor extends Staff implements RequestsManager {
     public Contributor(ContributorBuilder builder) {
         super(builder);

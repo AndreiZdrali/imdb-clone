@@ -1,6 +1,7 @@
 package org.example.production;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -14,6 +15,7 @@ import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
         @JsonSubTypes.Type(value = Movie.class, name = "Movie"),
         @JsonSubTypes.Type(value = Series.class, name = "Series")
 })
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public abstract class Production implements Comparable, Listing {
     @JsonProperty("title")
     protected String title;
@@ -46,37 +48,38 @@ public abstract class Production implements Comparable, Listing {
 
     @Override
     public int compareTo(Object object) {
-        if (object instanceof Production) {
-            Production prod = (Production) object;
+        if (object instanceof Production prod)
             return title.compareTo(prod.getTitle());
-        } else if (object instanceof Actor) {
-            Actor actor = (Actor) object;
+        else if (object instanceof Actor actor)
             return title.compareTo(actor.getName());
-        } else {
+        else
             return 0;
-        }
     }
 
     public String getTitle() {
         return title;
     }
 
+    @JsonProperty("type")
+    public String getType() {
+        if (type != null)
+            return type;
+        else if (this instanceof Movie)
+            return "Movie";
+        else if (this instanceof Series)
+            return "Series";
+        else
+            throw new RuntimeException("Unknown type, nu stiu cum s-a ajuns aici");
+    }
+
     public static abstract class ProductionBuilder {
-        @JsonProperty("title")
         protected String title;
-        @JsonProperty("type")
         protected String type;
-        @JsonProperty("directors")
         protected List<String> directors;
-        @JsonProperty("actors")
         protected List<String> actors;
-        @JsonProperty("genres")
         protected List<Genre> genres;
-        @JsonProperty("ratings")
         protected List<Rating> ratings;
-        @JsonProperty("plot")
         protected String plot;
-        @JsonProperty("averageRating")
         protected double averageRating;
 
         // astea sunt obligatorii pentru fiecare productie
@@ -86,7 +89,7 @@ public abstract class Production implements Comparable, Listing {
                                  @JsonProperty("actors") List<String> actors,
                                  @JsonProperty("genres") List<Genre> genres,
                                  @JsonProperty("ratings") List<Rating> ratings,
-                                 @JsonProperty("description") String description,
+                                 @JsonProperty("plot") String plot,
                                  @JsonProperty("averageRating") double averageRating) {
             this.title = title;
             this.type = type;
@@ -94,7 +97,7 @@ public abstract class Production implements Comparable, Listing {
             this.actors = actors;
             this.genres = genres;
             this.ratings = ratings;
-            this.plot = description;
+            this.plot = plot;
             this.averageRating = averageRating;
         }
     }

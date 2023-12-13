@@ -9,14 +9,13 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @JsonDeserialize(builder = Request.RequestBuilder.class)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Request {
     //private List<Observer> observers = new ArrayList<Observer>();
 
     private RequestType type;
     private LocalDateTime createdDate;
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String movieTitle;
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String actorName;
     private String username;
     private String to;
@@ -55,19 +54,12 @@ public class Request {
     }
 
     public static class RequestBuilder {
-        @JsonProperty("type")
         private RequestType type;
-        @JsonProperty("createdDate")
         private LocalDateTime createdDate;
-        @JsonProperty("movieTitle")
         private String movieTitle;
-        @JsonProperty("actorName")
         private String actorName;
-        @JsonProperty("username")
         private String username;
-        @JsonProperty("to")
         private String to;
-        @JsonProperty("description")
         private String description;
 
         @JsonCreator

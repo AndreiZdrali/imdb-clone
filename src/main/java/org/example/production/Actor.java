@@ -1,10 +1,12 @@
 package org.example.production;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 import java.util.Map;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Actor implements Comparable, Listing {
     @JsonProperty("name")
     private String name;
@@ -34,15 +36,12 @@ public class Actor implements Comparable, Listing {
     }
 
     public int compareTo(Object object) {
-        if (object instanceof Production) {
-            Production prod = (Production) object;
+        if (object instanceof Production prod)
             return name.compareTo(prod.getTitle());
-        } else if (object instanceof Actor) {
-            Actor actor = (Actor) object;
+        else if (object instanceof Actor actor)
             return name.compareTo(actor.name);
-        } else {
+        else
             return 0;
-        }
     }
 
     public String toString() {

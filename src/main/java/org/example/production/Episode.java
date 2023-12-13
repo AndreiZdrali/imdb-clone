@@ -8,7 +8,6 @@ public class Episode {
     @JsonProperty("duration")
     private int duration;
 
-    // Overload pentru formatarea din json
     public Episode(@JsonProperty("episodeName") String episodeName,
                    @JsonProperty("duration") String duration) {
         this.episodeName = episodeName;

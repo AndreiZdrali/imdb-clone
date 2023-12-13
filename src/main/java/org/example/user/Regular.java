@@ -1,5 +1,6 @@
 package org.example.user;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.IMDB;
@@ -8,25 +9,27 @@ import org.example.management.RequestsManager;
 import org.example.production.Actor;
 import org.example.production.Production;
 import org.example.production.Series;
+import org.example.services.RequestService;
 
 import java.util.List;
 import java.util.SortedSet;
 
 @JsonDeserialize(builder = Regular.RegularBuilder.class)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Regular extends User implements RequestsManager {
     public Regular(RegularBuilder builder) {
         super(builder);
     }
 
     public void createRequest(Request request) {
-        IMDB.getInstance().addRequest(request);
+        RequestService.addRequest(request);
     }
 
     public void removeRequest(Request request) {
         //TODO: throw la eroare???
         if (!request.getUsername().equals(this.username))
             return;
-        IMDB.getInstance().removeRequest(request);
+        RequestService.removeRequest(request);
     }
 
     public void addRating() {

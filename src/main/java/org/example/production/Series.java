@@ -1,6 +1,7 @@
 package org.example.production;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
@@ -8,16 +9,17 @@ import java.util.List;
 import java.util.Map;
 
 @JsonDeserialize(builder = Series.SeriesBuilder.class)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Series extends Production {
     private String duration;
-    private int year;
+    private int releaseYear;
     private int numSeasons;
     private Map<String, List<Episode>> seasons;
 
     public Series(SeriesBuilder builder) {
         super(builder);
         this.duration = builder.duration;
-        this.year = builder.year;
+        this.releaseYear = builder.releaseYear;
         this.numSeasons = builder.numSeasons;
         this.seasons = builder.seasons;
     }
@@ -33,7 +35,7 @@ public class Series extends Production {
         System.out.println("Grade: " + averageRating);
 
         System.out.println("Duration: " + duration);
-        System.out.println("Year: " + year);
+        System.out.println("Year: " + releaseYear);
         System.out.println("Number of seasons: " + numSeasons);
         System.out.println("Seasons: " + seasons);
     }
@@ -43,13 +45,9 @@ public class Series extends Production {
     }
 
     public static class SeriesBuilder extends ProductionBuilder {
-        @JsonProperty("duration")
         private String duration;
-        @JsonProperty("year")
-        private int year;
-        @JsonProperty("numSeasons")
+        private int releaseYear;
         private int numSeasons;
-        @JsonProperty("seasons")
         private Map<String, List<Episode>> seasons;
 
         @JsonCreator
@@ -59,26 +57,30 @@ public class Series extends Production {
                             @JsonProperty("actors") List<String> actors,
                             @JsonProperty("genres") List<Genre> genres,
                             @JsonProperty("ratings") List<Rating> ratings,
-                            @JsonProperty("description") String description,
+                            @JsonProperty("plot") String plot,
                             @JsonProperty("averageRating") double averageRating) {
-            super(title, type, directors, actors, genres, ratings, description, averageRating);
+            super(title, type, directors, actors, genres, ratings, plot, averageRating);
         }
 
+        @JsonProperty("duration")
         public SeriesBuilder setDuration(String duration) {
             this.duration = duration;
             return this;
         }
 
-        public SeriesBuilder setYear(int year) {
-            this.year = year;
+        @JsonProperty("releaseYear")
+        public SeriesBuilder setReleaseYear(int releaseYear) {
+            this.releaseYear = releaseYear;
             return this;
         }
 
+        @JsonProperty("numSeasons")
         public SeriesBuilder setNumSeasons(int numSeasons) {
             this.numSeasons = numSeasons;
             return this;
         }
 
+        @JsonProperty("seasons")
         public SeriesBuilder setSeasons(Map<String, List<Episode>> seasons) {
             this.seasons = seasons;
             return this;

@@ -2,6 +2,7 @@ package org.example.ui;
 
 import org.example.IMDB;
 import org.example.ui.menus.MainMenuProvider;
+import org.example.ui.menus.MenuOption;
 import org.example.user.AccountType;
 import org.example.user.User;
 

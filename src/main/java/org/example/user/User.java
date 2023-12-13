@@ -7,10 +7,13 @@ import org.example.management.RequestsManager;
 import org.example.production.*;
 import org.example.serializers.ActorToStringSerializer;
 import org.example.serializers.ProductionToStringSerializer;
+import org.example.services.ActorService;
+import org.example.services.ProductionService;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -25,6 +28,7 @@ import java.util.TreeSet;
         @JsonSubTypes.Type(value = Contributor.class, name = "Contributor"),
         @JsonSubTypes.Type(value = Admin.class, name = "Admin")
 })
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public abstract class User {
     @JsonProperty("username")
     protected String username;
@@ -33,13 +37,12 @@ public abstract class User {
     @JsonProperty("information")
     protected Information information;
     @JsonProperty("userType")
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     protected AccountType userType;
     @JsonProperty("favoriteProductions")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonSerialize(using = ProductionToStringSerializer.class, as = String.class)
     protected SortedSet<Production> favoriteProductions;
     @JsonProperty("favoriteActors")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonSerialize(using = ActorToStringSerializer.class, as = String.class)
     protected SortedSet<Actor> favoriteActors;
 
@@ -50,7 +53,6 @@ public abstract class User {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     protected List<String> notifications;
 
-    // posibil sa trb sa adaug @JsonProperty la fiecare
     public User(UserBuilder builder) {
         this.username = builder.username;
         this.experience = builder.experience;
@@ -109,8 +111,6 @@ public abstract class User {
                 ", experience=" + experience +
                 ", information=" + information +
                 ", userType=" + userType +
-                ", favoriteProductions=" + favoriteProductions +
-                ", favoriteActors=" + favoriteActors +
                 ", favorites=" + favorites +
                 ", notifications=" + notifications +
                 '}';
@@ -209,21 +209,15 @@ public abstract class User {
     }
 
     public static class UserBuilder {
-        @JsonProperty("username")
         private String username;
-        @JsonProperty("experience")
         private int experience;
-        @JsonProperty("information")
         private Information information;
-        @JsonProperty("userType")
         private AccountType userType;
-        @JsonProperty("favoriteProductions")
         private SortedSet<Production> favoriteProductions;
-        @JsonProperty("favoriteActors")
         private SortedSet<Actor> favoriteActors;
-        @JsonProperty("notifications")
         private List<String> notifications;
 
+        //FIXME: Sa vad cum citesc AccountType ca String, cred ca serializer custom
         public UserBuilder(@JsonProperty("username") String username,
                            @JsonProperty("experience") int experience,
                            @JsonProperty("information") Information information,
@@ -236,7 +230,14 @@ public abstract class User {
 
         @JsonProperty("favoriteProductions")
         public UserBuilder setFavoriteProductions(List<String> favoriteProductions) {
-            //TODO: pentru fiecare string sa gasesc productia aia
+            if (this.favoriteProductions == null)
+                this.favoriteProductions = new TreeSet<>();
+
+            for (String production : favoriteProductions) {
+                Production p = ProductionService.getProductionByTitle(production);
+                if (p != null)
+                    this.favoriteProductions.add(p);
+            }
             return this;
         }
 
@@ -247,7 +248,14 @@ public abstract class User {
 
         @JsonProperty("favoriteActors")
         public UserBuilder setFavoriteActors(List<String> favoriteActors) {
-            //TODO: pentru fiecare string sa gasesc actorul ala
+            if (this.favoriteActors == null)
+                this.favoriteActors = new TreeSet<>();
+
+            for (String actor : favoriteActors) {
+                Actor a = ActorService.getActorByName(actor);
+                if (a != null)
+                    this.favoriteActors.add(a);
+            }
             return this;
         }
 

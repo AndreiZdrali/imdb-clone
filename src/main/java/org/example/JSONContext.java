@@ -6,11 +6,16 @@ import org.example.management.Request;
 import org.example.management.RequestHolder;
 import org.example.production.Actor;
 import org.example.production.Production;
+import org.example.services.ActorService;
+import org.example.services.ProductionService;
+import org.example.services.RequestService;
+import org.example.services.UserService;
 import org.example.user.Staff;
 import org.example.user.User;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 //TODO: Implement write methods
@@ -27,7 +32,7 @@ public class JSONContext {
         productionsJSONPath = "src/main/resources/input/production.json";
         requestsJSONPath = "src/main/resources/input/requests.json";
 
-        mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
     }
 
     public String getAccountsJSONPath() {
@@ -74,7 +79,7 @@ public class JSONContext {
     //TODO: Implement Jackson pt User si subclase, ca la Production (cred ca e gata)
     public void LoadAccountsJSONData() {
         try {
-            IMDB.getInstance().setUsers(mapper
+            UserService.setUsers(mapper
                     .readValue(new File(accountsJSONPath), mapper.getTypeFactory().constructCollectionType(List.class, User.class)));
         } catch (IOException e) {
             e.printStackTrace();
@@ -82,10 +87,18 @@ public class JSONContext {
         }
     }
 
+    public void SaveAccountsJSONData() {
+        try {
+            mapper.writeValue(new File(accountsJSONPath), UserService.getUsers());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void LoadActorsJSONData() {
         File actorsFile = new File(actorsJSONPath);
         try {
-            IMDB.getInstance().setActors(mapper
+            ActorService.setActors(mapper
                     .readValue(actorsFile, mapper.getTypeFactory().constructCollectionType(List.class, Actor.class)));
         } catch (IOException e) {
             e.printStackTrace();
@@ -93,10 +106,18 @@ public class JSONContext {
         }
     }
 
+    public void SaveActorsJSONData() {
+        try {
+            mapper.writeValue(new File(actorsJSONPath), ActorService.getActors());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void LoadProductionsJSONData() {
         File productionsFile = new File(productionsJSONPath);
         try {
-            IMDB.getInstance().setProductions(mapper
+            ProductionService.setProductions(mapper
                     .readValue(productionsFile, mapper.getTypeFactory().constructCollectionType(List.class, Production.class)));
         } catch (IOException e) {
             e.printStackTrace();
@@ -117,16 +138,16 @@ public class JSONContext {
 
     public void LinkRequestsToUsers() {
         //Shared requests
-        for (Request request : IMDB.getInstance().getRequests())
-            if (request.getUsername() == "ADMIN")
+        for (Request request : RequestService.getAllRequests())
+            if (request.getUsername().equals("ADMIN"))
                 RequestHolder.addSharedRequest(request);
 
         //Personal requests
-        for (User user : IMDB.getInstance().getUsers()) {
+        for (User user : UserService.getUsers()) {
             if (!(user instanceof Staff s))
                 continue;
-            for (Request request : IMDB.getInstance().getRequests())
-                if (request.getUsername().equals(s.getUsername()))
+            for (Request request : RequestService.getAllRequests())
+                if (request.getTo().equals(s.getUsername()))
                     s.addPersonalRequest(request);
         }
     }

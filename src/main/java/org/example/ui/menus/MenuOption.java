@@ -1,4 +1,4 @@
-package org.example.ui;
+package org.example.ui.menus;
 
 import kotlin.NotImplementedError;
 import org.example.ui.cli.MainMenuCLI;
@@ -32,7 +32,7 @@ public class MenuOption {
 
     public void executeGUI() {
         actionGui.run();
-        //TODO: Remove asta, incredibil de inutila
+        //TODO: Remove asta, incredibil de inutila, gui o sa mearga altfel cred
         throw new NotImplementedError("GUI not implemented yet");
     }
 
@@ -51,61 +51,61 @@ public class MenuOption {
 
         public static final MenuOption VIEW_NOTIFICATIONS = new MenuOption(
                 "View your notifications",
-                null,
+                MainMenuCLI::viewNotifications,
                 null
         );
 
         public static final MenuOption SEARCH_FOR_LISTING = new MenuOption(
                 "Search for a listing",
-                null,
+                MainMenuCLI::searchForListing,
                 null
         );
 
         public static final MenuOption ADD_DELETE_FAVORITE = new MenuOption(
                 "Manage your favorites",
-                null,
+                MainMenuCLI::addDeleteFavorite,
                 null
         );
 
         public static final MenuOption CREATE_REMOVE_REQUEST = new MenuOption(
                 "Create/Remove a request",
-                null,
+                MainMenuCLI::createRemoveRequest,
                 null
         );
 
         public static final MenuOption ADD_DELETE_LISTING = new MenuOption(
                 "Add/Delete a listing",
-                null,
+                MainMenuCLI::addDeleteListing,
                 null
         );
 
         public static final MenuOption UPDATE_LISTING = new MenuOption(
                 "Update a listing",
-                null,
+                MainMenuCLI::updateListing,
                 null
         );
 
         public static final MenuOption SOLVE_REQUEST = new MenuOption(
                 "Solve a request",
-                null,
+                MainMenuCLI::solveRequest,
                 null
         );
         
         public static final MenuOption ADD_DELETE_REVIEW = new MenuOption(
                 "Add/Delete a review",
-                null,
+                MainMenuCLI::addDeleteReview,
                 null
         );
 
         public static final MenuOption ADD_DELETE_USER = new MenuOption(
                 "Add/Delete user",
-                null,
+                MainMenuCLI::addDeleteUser,
                 null
         );
 
         public static final MenuOption LOGOUT = new MenuOption(
                 "Logout",
-                null,
+                MainMenuCLI::logout,
                 null
         );
     }

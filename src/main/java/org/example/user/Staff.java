@@ -1,5 +1,6 @@
 package org.example.user;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -13,18 +14,19 @@ import org.example.management.Request;
 import org.example.production.*;
 import org.example.serializers.ActorToStringSerializer;
 import org.example.serializers.ProductionToStringSerializer;
+import org.example.services.ActorService;
+import org.example.services.ProductionService;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public abstract class Staff extends User implements StaffInterface {
     @JsonIgnore
     protected List<Request> personalRequests;
     @JsonIgnore
     public SortedSet<Comparable> contributions;
     @JsonProperty("productionsContribution")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonSerialize(using = ProductionToStringSerializer.class, as = String.class)
     protected SortedSet<Production> productionsContribution;
     @JsonProperty("actorsContribution")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonSerialize(using = ActorToStringSerializer.class, as = String.class)
     protected SortedSet<Actor> actorsContribution;
 
@@ -38,6 +40,8 @@ public abstract class Staff extends User implements StaffInterface {
             this.contributions.addAll(this.productionsContribution);
         if (this.actorsContribution != null)
             this.contributions.addAll(this.actorsContribution);
+
+        this.personalRequests = new ArrayList<>();
     }
 
     public List<Request> getPersonalRequests() {
@@ -75,35 +79,32 @@ public abstract class Staff extends User implements StaffInterface {
     //StaffInterface methods
     public void addPersonalRequest(Request request) {
         //TODO: Implement logic dupa enunt (observer)
+        //TODO: Posibil sa trb defapt sa o fac in RequestService, DAR NU CRED
         personalRequests.add(request);
     }
 
     public void removePersonalRequest(Request request) {
         //TODO: Implement logic dupa enunt, experienta utilizator (observer?)
+        //TODO: Posibil sa trb defapt sa o fac in RequestService, DAR NU CRED
         personalRequests.remove(request);
     }
 
     //TODO: Implement methods from StaffInterface
     public void addProductionSystem(Production production) {
-        IMDB imdb = IMDB.getInstance();
-
         productionsContribution.add(production);
         contributions.add(production);
 
-        imdb.addProduction(production);
+        ProductionService.addProduction(production);
     }
 
     public void addActorSystem(Actor a) {
-        IMDB imdb = IMDB.getInstance();
-
         actorsContribution.add(a);
         contributions.add(a);
 
-        imdb.addActor(a);
+        ActorService.addActor(a);
     }
 
     public void removeProductionSystem(String name) {
-        IMDB imdb = IMDB.getInstance();
         //TODO: Posibil sa trb sa scot experienta de la user
     }
 
@@ -130,22 +131,18 @@ public abstract class Staff extends User implements StaffInterface {
                             @JsonProperty("information") Information information,
                             @JsonProperty("userType") AccountType userType) {
             super(username, experience, information, userType);
-            this.productionsContribution = new TreeSet<>();
-            this.actorsContribution = new TreeSet<>();
         }
 
         /** Se apeleaza doar la load */
         @JsonProperty("productionsContribution")
         public StaffBuilder setProductionsContribution(List<String> productionsContribution) {
-            List<Production> productions = IMDB.getInstance().getProductions();
+            if (this.productionsContribution == null)
+                this.productionsContribution = new TreeSet<>();
+
             for (String productionName : productionsContribution) {
-                Production p = productions.stream()
-                        .filter(production -> production.getTitle().equals(productionName))
-                        .findFirst()
-                        .orElse(null);
-                if (p != null) {
+                Production p = ProductionService.getProductionByTitle(productionName);
+                if (p != null)
                     this.productionsContribution.add(p);
-                }
             }
             return this;
         }
@@ -158,16 +155,13 @@ public abstract class Staff extends User implements StaffInterface {
         /** Se apeleaza doar la load */
         @JsonProperty("actorsContribution")
         public StaffBuilder setActorsContribution(List<String> actorsContribution) {
-            //TODO: Sa nu uit ca in load mai intai sa citesc actors si abia dupa users
-            List<Actor> actors = IMDB.getInstance().getActors();
+            if (this.actorsContribution == null)
+                this.actorsContribution = new TreeSet<>();
+
             for (String actorName : actorsContribution) {
-                Actor a = actors.stream()
-                        .filter(actor -> actor.getName().equals(actorName))
-                        .findFirst()
-                        .orElse(null);
-                if (a != null) {
+                Actor a = ActorService.getActorByName(actorName);
+                if (a != null)
                     this.actorsContribution.add(a);
-                }
             }
             return this;
         }

@@ -1,5 +1,6 @@
 package org.example.user;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.management.Request;
@@ -10,6 +11,7 @@ import java.util.List;
 import java.util.SortedSet;
 
 @JsonDeserialize(builder = Admin.AdminBuilder.class)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Admin extends Staff {
     public Admin(AdminBuilder builder) {
         super(builder);
