@@ -9,18 +9,19 @@ import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 @JsonTypeInfo (
     use = JsonTypeInfo.Id.NAME,
-    property = "type"
+    property = "type",
+    visible = true
 )
 @JsonSubTypes({
         @JsonSubTypes.Type(value = Movie.class, name = "Movie"),
         @JsonSubTypes.Type(value = Series.class, name = "Series")
 })
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public abstract class Production implements Comparable, Listing {
     @JsonProperty("title")
     protected String title;
     @JsonProperty("type")
-    protected String type; // pentru deserializare
+    protected ProductionType type; // pentru deserializare
     @JsonProperty("directors")
     protected List<String> directors;
     @JsonProperty("actors")
@@ -36,6 +37,7 @@ public abstract class Production implements Comparable, Listing {
 
     public Production(ProductionBuilder builder) {
         this.title = builder.title;
+        this.type = builder.type;
         this.directors = builder.directors;
         this.actors = builder.actors;
         this.genres = builder.genres;
@@ -60,21 +62,21 @@ public abstract class Production implements Comparable, Listing {
         return title;
     }
 
-    @JsonProperty("type")
-    public String getType() {
-        if (type != null)
-            return type;
-        else if (this instanceof Movie)
-            return "Movie";
-        else if (this instanceof Series)
-            return "Series";
-        else
-            throw new RuntimeException("Unknown type, nu stiu cum s-a ajuns aici");
-    }
+//    @JsonProperty("type")
+//    public String getType() {
+//        if (type != null)
+//            return type;
+//        else if (this instanceof Movie)
+//            return "Movie";
+//        else if (this instanceof Series)
+//            return "Series";
+//        else
+//            throw new RuntimeException("Unknown type, nu stiu cum s-a ajuns aici");
+//    }
 
     public static abstract class ProductionBuilder {
         protected String title;
-        protected String type;
+        protected ProductionType type;
         protected List<String> directors;
         protected List<String> actors;
         protected List<Genre> genres;
@@ -84,7 +86,7 @@ public abstract class Production implements Comparable, Listing {
 
         // astea sunt obligatorii pentru fiecare productie
         public ProductionBuilder(@JsonProperty("title") String title,
-                                 @JsonProperty("type") String type,
+                                 @JsonProperty("type") ProductionType type,
                                  @JsonProperty("directors") List<String> directors,
                                  @JsonProperty("actors") List<String> actors,
                                  @JsonProperty("genres") List<Genre> genres,

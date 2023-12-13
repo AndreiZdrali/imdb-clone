@@ -17,7 +17,7 @@ import org.example.serializers.ProductionToStringSerializer;
 import org.example.services.ActorService;
 import org.example.services.ProductionService;
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public abstract class Staff extends User implements StaffInterface {
     @JsonIgnore
     protected List<Request> personalRequests;
@@ -36,10 +36,8 @@ public abstract class Staff extends User implements StaffInterface {
         this.actorsContribution = builder.actorsContribution;
 
         this.contributions = new TreeSet<>();
-        if (this.productionsContribution != null)
-            this.contributions.addAll(this.productionsContribution);
-        if (this.actorsContribution != null)
-            this.contributions.addAll(this.actorsContribution);
+        this.contributions.addAll(this.productionsContribution);
+        this.contributions.addAll(this.actorsContribution);
 
         this.personalRequests = new ArrayList<>();
     }
@@ -121,9 +119,7 @@ public abstract class Staff extends User implements StaffInterface {
     }
 
     public static class StaffBuilder extends UserBuilder {
-        @JsonProperty("productionsContribution")
         private SortedSet<Production> productionsContribution;
-        @JsonProperty("actorsContribution")
         private SortedSet<Actor> actorsContribution;
 
         public StaffBuilder(@JsonProperty("username") String username,
@@ -131,14 +127,14 @@ public abstract class Staff extends User implements StaffInterface {
                             @JsonProperty("information") Information information,
                             @JsonProperty("userType") AccountType userType) {
             super(username, experience, information, userType);
+
+            this.productionsContribution = new TreeSet<>();
+            this.actorsContribution = new TreeSet<>();
         }
 
         /** Se apeleaza doar la load */
         @JsonProperty("productionsContribution")
         public StaffBuilder setProductionsContribution(List<String> productionsContribution) {
-            if (this.productionsContribution == null)
-                this.productionsContribution = new TreeSet<>();
-
             for (String productionName : productionsContribution) {
                 Production p = ProductionService.getProductionByTitle(productionName);
                 if (p != null)
@@ -155,9 +151,6 @@ public abstract class Staff extends User implements StaffInterface {
         /** Se apeleaza doar la load */
         @JsonProperty("actorsContribution")
         public StaffBuilder setActorsContribution(List<String> actorsContribution) {
-            if (this.actorsContribution == null)
-                this.actorsContribution = new TreeSet<>();
-
             for (String actorName : actorsContribution) {
                 Actor a = ActorService.getActorByName(actorName);
                 if (a != null)

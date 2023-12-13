@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.example.management.RequestsManager;
 import org.example.production.*;
 import org.example.serializers.ActorToStringSerializer;
+import org.example.serializers.LocalDateToStringSerializer;
 import org.example.serializers.ProductionToStringSerializer;
 import org.example.services.ActorService;
 import org.example.services.ProductionService;
@@ -21,14 +22,15 @@ import java.util.TreeSet;
 //TODO: Subtypes (cred ca e gata)
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
-        property = "userType"
+        property = "userType",
+        visible = true
 )
 @JsonSubTypes({
         @JsonSubTypes.Type(value = Regular.class, name = "Regular"),
         @JsonSubTypes.Type(value = Contributor.class, name = "Contributor"),
         @JsonSubTypes.Type(value = Admin.class, name = "Admin")
 })
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public abstract class User {
     @JsonProperty("username")
     protected String username;
@@ -45,12 +47,10 @@ public abstract class User {
     @JsonProperty("favoriteActors")
     @JsonSerialize(using = ActorToStringSerializer.class, as = String.class)
     protected SortedSet<Actor> favoriteActors;
-
     @JsonIgnore
     public SortedSet<Comparable> favorites;
 
     @JsonProperty("notifications")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     protected List<String> notifications;
 
     public User(UserBuilder builder) {
@@ -63,10 +63,8 @@ public abstract class User {
         this.notifications = builder.notifications;
 
         this.favorites = new TreeSet<>();
-        if (this.favoriteProductions != null)
-            this.favorites.addAll(this.favoriteProductions);
-        if (this.favoriteActors != null)
-            this.favorites.addAll(this.favoriteActors);
+        this.favorites.addAll(this.favoriteProductions);
+        this.favorites.addAll(this.favoriteActors);
     }
 
     public String getUsername() {
@@ -129,6 +127,7 @@ public abstract class User {
         @JsonProperty("gender")
         private String gender;
         @JsonProperty("birthDate")
+        @JsonSerialize(using = LocalDateToStringSerializer.class)
         private LocalDate birthDate;
 
         private Information(InformationBuilder builder) {
@@ -141,18 +140,11 @@ public abstract class User {
         }
 
         public static class InformationBuilder {
-            @JsonProperty("credentials")
             private Credentials credentials;
-            @JsonProperty("name")
-            @JsonAlias({"nume"}) // doar pt deserializare
             private String name;
-            @JsonProperty("country")
             private String country;
-            @JsonProperty("age")
             private int age;
-            @JsonProperty("gender")
             private String gender;
-            @JsonProperty("birthDate")
             private LocalDate birthDate;
 
             public InformationBuilder() {
@@ -166,6 +158,7 @@ public abstract class User {
             }
 
             @JsonProperty("name")
+            @JsonAlias("nume")
             public InformationBuilder setName(String name) {
                 this.name = name;
                 return this;
@@ -192,7 +185,6 @@ public abstract class User {
             @JsonProperty("birthDate")
             public InformationBuilder setBirthDate(String birthDate) {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-                //TODO: Aici cica sa folosesc LocalDate in loc de LocalDateTime
                 this.birthDate = LocalDate.parse(birthDate, formatter);
                 return this;
             }
@@ -217,7 +209,6 @@ public abstract class User {
         private SortedSet<Actor> favoriteActors;
         private List<String> notifications;
 
-        //FIXME: Sa vad cum citesc AccountType ca String, cred ca serializer custom
         public UserBuilder(@JsonProperty("username") String username,
                            @JsonProperty("experience") int experience,
                            @JsonProperty("information") Information information,
@@ -226,13 +217,13 @@ public abstract class User {
             this.experience = experience;
             this.information = information;
             this.userType = userType;
+
+            this.favoriteProductions = new TreeSet<>();
+            this.favoriteActors = new TreeSet<>();
         }
 
         @JsonProperty("favoriteProductions")
         public UserBuilder setFavoriteProductions(List<String> favoriteProductions) {
-            if (this.favoriteProductions == null)
-                this.favoriteProductions = new TreeSet<>();
-
             for (String production : favoriteProductions) {
                 Production p = ProductionService.getProductionByTitle(production);
                 if (p != null)
@@ -248,9 +239,6 @@ public abstract class User {
 
         @JsonProperty("favoriteActors")
         public UserBuilder setFavoriteActors(List<String> favoriteActors) {
-            if (this.favoriteActors == null)
-                this.favoriteActors = new TreeSet<>();
-
             for (String actor : favoriteActors) {
                 Actor a = ActorService.getActorByName(actor);
                 if (a != null)

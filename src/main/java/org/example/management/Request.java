@@ -4,16 +4,19 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import org.example.serializers.LocalDateTimeToStringSerializer;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @JsonDeserialize(builder = Request.RequestBuilder.class)
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Request {
     //private List<Observer> observers = new ArrayList<Observer>();
 
     private RequestType type;
+    @JsonSerialize(using = LocalDateTimeToStringSerializer.class, as = String.class)
     private LocalDateTime createdDate;
     private String movieTitle;
     private String actorName;

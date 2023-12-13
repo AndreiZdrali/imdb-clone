@@ -36,14 +36,12 @@ public class Movie extends Production {
     }
 
     public static class MovieBuilder extends ProductionBuilder {
-        @JsonProperty("duration")
         private int duration;
-        @JsonProperty("releaseYear")
         private int releaseYear;
 
         @JsonCreator
         public MovieBuilder(@JsonProperty("title") String title,
-                            @JsonProperty("type") String type,
+                            @JsonProperty("type") ProductionType type,
                             @JsonProperty("directors") List<String> directors,
                             @JsonProperty("actors") List<String> actors,
                             @JsonProperty("genres") List<Genre> genres,

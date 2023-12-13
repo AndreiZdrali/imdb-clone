@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.SortedSet;
 
 @JsonDeserialize(builder = Admin.AdminBuilder.class)
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Admin extends Staff {
     public Admin(AdminBuilder builder) {
         super(builder);
