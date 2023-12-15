@@ -16,7 +16,7 @@ import java.util.SortedSet;
 
 @JsonDeserialize(builder = Regular.RegularBuilder.class)
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class Regular extends User implements RequestsManager {
+public class Regular<T> extends User<T> implements RequestsManager {
     public Regular(RegularBuilder builder) {
         super(builder);
     }

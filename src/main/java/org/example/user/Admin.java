@@ -12,7 +12,7 @@ import java.util.SortedSet;
 
 @JsonDeserialize(builder = Admin.AdminBuilder.class)
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class Admin extends Staff {
+public class Admin<T> extends Staff<T> {
     public Admin(AdminBuilder builder) {
         super(builder);
     }

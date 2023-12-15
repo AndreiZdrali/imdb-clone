@@ -16,10 +16,7 @@ public class MainMenuProvider extends MenuProvider {
 
     @Override
     protected List<MenuOption> getRegularOptions() {
-        if (regularOptions != null)
-            return regularOptions;
-
-        regularOptions = new ArrayList<>();
+        List<MenuOption> regularOptions = new ArrayList<>();
 
         regularOptions.add(MenuOption.List.VIEW_PRODUCTIONS_DETAILS);
         regularOptions.add(MenuOption.List.VIEW_ACTORS_DETAILS);
@@ -35,10 +32,7 @@ public class MainMenuProvider extends MenuProvider {
 
     @Override
     protected List<MenuOption> getContributorOptions() {
-        if (contributorOptions != null)
-            return contributorOptions;
-
-        contributorOptions = new ArrayList<>();
+        List<MenuOption> contributorOptions = new ArrayList<>();
 
         contributorOptions.add(MenuOption.List.VIEW_PRODUCTIONS_DETAILS);
         contributorOptions.add(MenuOption.List.VIEW_ACTORS_DETAILS);
@@ -56,10 +50,7 @@ public class MainMenuProvider extends MenuProvider {
 
     @Override
     protected List<MenuOption> getAdminOptions() {
-        if (adminOptions != null)
-            return adminOptions;
-
-        adminOptions = new ArrayList<>();
+        List<MenuOption> adminOptions = new ArrayList<>();
 
         adminOptions.add(MenuOption.List.VIEW_PRODUCTIONS_DETAILS);
         adminOptions.add(MenuOption.List.VIEW_ACTORS_DETAILS);

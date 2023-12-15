@@ -13,7 +13,7 @@ import java.util.SortedSet;
 
 @JsonDeserialize(builder = Contributor.ContributorBuilder.class)
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class Contributor extends Staff implements RequestsManager {
+public class Contributor<T> extends Staff<T> implements RequestsManager {
     public Contributor(ContributorBuilder builder) {
         super(builder);
     }

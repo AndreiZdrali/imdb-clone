@@ -12,11 +12,11 @@ import java.util.List;
 
 public class RequestService {
     public static List<Request> getAllRequests() {
-        return IMDB.getInstance().requests;
+        return IMDB.getInstance().getRequests();
     }
 
     public static void setAllRequests(List<Request> requests) {
-        IMDB.getInstance().requests = requests;
+        IMDB.getInstance().setRequests(requests);
     }
 
     public static List<Request> getSharedRequests() {
@@ -29,31 +29,31 @@ public class RequestService {
 
     /** Request-urile care trb rezolvate de user */
     public static List<Request> getPersonalRequests(String username) {
-        User u = UserService.getUserByUsername(username);
-        if (!(u instanceof Staff s))
+        User<?> u = UserService.getUserByUsername(username);
+        if (!(u instanceof Staff<?> s))
             return null;
         return s.getPersonalRequests();
     }
 
     /** Request-urile care trb rezolvate de user */
-    public static List<Request> getPersonalRequests(Staff staff) {
+    public static List<Request> getPersonalRequests(Staff<?> staff) {
         return staff.getPersonalRequests();
     }
 
     /** Request-urile care trb rezolvate de user */
     public static void setPersonalRequests(String username, List<Request> requests) {
-        User u = UserService.getUserByUsername(username);
-        if (!(u instanceof Staff s))
+        User<?> u = UserService.getUserByUsername(username);
+        if (!(u instanceof Staff<?> s))
             return;
         s.setPersonalRequests(requests);
     }
 
     /** Request-urile care trb rezolvate de user */
-    public static void setPersonalRequests(Staff staff, List<Request> requests) {
+    public static void setPersonalRequests(Staff<?> staff, List<Request> requests) {
         staff.setPersonalRequests(requests);
     }
 
-    public static List<Request> getRequestsMadeByUser(User user) {
+    public static List<Request> getRequestsMadeByUser(User<?> user) {
         List<Request> requests = new ArrayList<>();
         for (Request request : RequestService.getAllRequests())
             if (request.getUsername().equals(user.getUsername()))
@@ -62,7 +62,7 @@ public class RequestService {
     }
 
     public static List<Request> getRequestsMadeByUser(String username) {
-        User u = UserService.getUserByUsername(username);
+        User<?> u = UserService.getUserByUsername(username);
         if (u == null)
             return null;
         return getRequestsMadeByUser(u);
@@ -70,14 +70,14 @@ public class RequestService {
 
     /** Adauga si in shared/personal requests */
     public static void addRequest(Request request) {
-        IMDB.getInstance().requests.add(request);
+        IMDB.getInstance().getRequests().add(request);
 
         RequestType type = request.getType();
         if (type == RequestType.DELETE_ACCOUNT || type == RequestType.OTHERS) {
             RequestHolder.addSharedRequest(request);
         } else {
-            User u = UserService.getUserByUsername(request.getUsername());
-            if (!(u instanceof Staff s))
+            User<?> u = UserService.getUserByUsername(request.getUsername());
+            if (!(u instanceof Staff<?> s))
                 return;
             s.getPersonalRequests().add(request);
         }

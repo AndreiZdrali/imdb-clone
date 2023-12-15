@@ -1,6 +1,7 @@
 package org.example.ui;
 
 import org.example.IMDB;
+import org.example.services.UserService;
 import org.example.ui.menus.MainMenuProvider;
 import org.example.ui.menus.MenuOption;
 import org.example.user.AccountType;
@@ -18,6 +19,11 @@ public class CLI extends UserInterface {
         scanner = new Scanner(System.in);
     }
 
+    @Override
+    public Scanner getScanner() {
+        return scanner;
+    }
+
     public void run() {
         currentUser = login();
 
@@ -27,16 +33,17 @@ public class CLI extends UserInterface {
         }
     }
 
-    private User login() {
+    private User<?> login() {
         System.out.println("Welcome back! Enter your credentials!");
 
         System.out.print("\tEmail: ");
         String email = scanner.nextLine();
         System.out.print("\tPassword: ");
         String password = scanner.nextLine();
+        System.out.println();
 
         //FIXME: AICI CEVA EROARE
-        for (User u : IMDB.getInstance().users) {
+        for (User<?> u : UserService.getUsers()) {
             if (u.checkLogin(email, password)) {
                 System.out.println("Welcome back, " + u.getUsername() + "!");
                 System.out.println("You have " + u.getNotifications().size() + " notifications!");
@@ -54,12 +61,18 @@ public class CLI extends UserInterface {
     }
 
     private void handleOptions(List<MenuOption> options) {
+        System.out.println();
         System.out.println("Choose an option:");
         for (int i = 0; i < options.size(); i++) {
-            System.out.println("\t" + i + ") " + options.get(i).toString());
+            System.out.println("\t" + (i + 1) + ") " + options.get(i).toString());
         }
 
+        System.out.print("> ");
         int option = scanner.nextInt();
+        //consume the next line
+        scanner.nextLine();
+        System.out.println();
+
         MenuOption selectedOption = options.get(option - 1);
 
         selectedOption.executeCLI();

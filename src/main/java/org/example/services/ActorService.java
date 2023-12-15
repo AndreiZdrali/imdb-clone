@@ -7,23 +7,23 @@ import java.util.List;
 
 public class ActorService {
     public static List<Actor> getActors() {
-        return IMDB.getInstance().actors;
+        return IMDB.getInstance().getActors();
     }
 
     public static void setActors(List<Actor> actors) {
-        IMDB.getInstance().actors = actors;
+        IMDB.getInstance().setActors(actors);
     }
 
     public static void addActor(Actor actor) {
-        IMDB.getInstance().actors.add(actor);
+        IMDB.getInstance().getActors().add(actor);
     }
 
     public static void removeActor(Actor actor) {
-        IMDB.getInstance().actors.remove(actor);
+        IMDB.getInstance().getActors().remove(actor);
     }
 
     public static Actor getActorByName(String name) {
-        for (Actor actor : IMDB.getInstance().actors)
+        for (Actor actor : getActors())
             if (actor.getName().equals(name))
                 return actor;
         return null;

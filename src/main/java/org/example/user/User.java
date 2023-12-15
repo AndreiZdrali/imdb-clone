@@ -31,7 +31,7 @@ import java.util.TreeSet;
         @JsonSubTypes.Type(value = Admin.class, name = "Admin")
 })
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public abstract class User {
+public abstract class User<T> {
     @JsonProperty("username")
     protected String username;
     @JsonProperty("experience")
@@ -115,6 +115,7 @@ public abstract class User {
     }
 
     @JsonDeserialize(builder = Information.InformationBuilder.class)
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public static class Information {
         @JsonProperty("credentials")
         private Credentials credentials;
@@ -220,6 +221,8 @@ public abstract class User {
 
             this.favoriteProductions = new TreeSet<>();
             this.favoriteActors = new TreeSet<>();
+
+            this.notifications = new ArrayList<>();
         }
 
         @JsonProperty("favoriteProductions")

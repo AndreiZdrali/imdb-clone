@@ -18,7 +18,7 @@ import org.example.services.ActorService;
 import org.example.services.ProductionService;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public abstract class Staff extends User implements StaffInterface {
+public abstract class Staff<T> extends User<T> implements StaffInterface {
     @JsonIgnore
     protected List<Request> personalRequests;
     @JsonIgnore

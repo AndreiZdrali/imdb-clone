@@ -13,13 +13,13 @@ import org.example.management.*;
 
 
 public class IMDB {
-    public List<User> users;
-    public List<Actor> actors;
-    public List<Production> productions;
-    public List<Request> requests;
-    public JSONContext jsonContext;
-    public Scanner scanner;
-    public UserInterface userInterface;
+    private List<User<?>> users;
+    private List<Actor> actors;
+    private List<Production> productions;
+    private List<Request> requests;
+    private JSONContext jsonContext;
+    private Scanner scanner;
+    private UserInterface userInterface;
 
     private static IMDB instance = null;
 
@@ -34,6 +34,30 @@ public class IMDB {
         return instance;
     }
 
+    public List<User<?>> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User<?>> users) {
+        this.users = users;
+    }
+
+    public List<Actor> getActors() {
+        return actors;
+    }
+
+    public void setActors(List<Actor> actors) {
+        this.actors = actors;
+    }
+
+    public List<Production> getProductions() {
+        return productions;
+    }
+
+    public void setProductions(List<Production> productions) {
+        this.productions = productions;
+    }
+
     public List<Request> getRequests() {
         return requests;
     }
@@ -42,12 +66,16 @@ public class IMDB {
         this.requests = requests;
     }
 
+    public Scanner getScanner() {
+        return scanner;
+    }
+
     public UserInterface getUserInterface() {
         return userInterface;
     }
 
-    public void addProduction(Production p) {
-        productions.add(p);
+    public void setUserInterface(UserInterface userInterface) {
+        this.userInterface = userInterface;
     }
 
     public void removeProduction(Production p) {

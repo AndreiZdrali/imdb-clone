@@ -1,7 +1,11 @@
 package org.example.ui.menus;
 
 import kotlin.NotImplementedError;
+import org.example.IMDB;
 import org.example.ui.cli.MainMenuCLI;
+import org.example.ui.cli.NotificationsCLI;
+
+import java.awt.*;
 
 public class MenuOption {
     private String description;
@@ -36,6 +40,11 @@ public class MenuOption {
         throw new NotImplementedError("GUI not implemented yet");
     }
 
+    @Override
+    public String toString() {
+        return getDescription();
+    }
+
     public static class List {
         public static final MenuOption VIEW_PRODUCTIONS_DETAILS = new MenuOption(
                 "View productions details",
@@ -52,6 +61,12 @@ public class MenuOption {
         public static final MenuOption VIEW_NOTIFICATIONS = new MenuOption(
                 "View your notifications",
                 MainMenuCLI::viewNotifications,
+                null
+        );
+
+        public static final MenuOption CLEAR_NOTIFICATIONS = new MenuOption(
+                "Clear your notifications",
+                NotificationsCLI::clearNotifications,
                 null
         );
 
@@ -100,6 +115,14 @@ public class MenuOption {
         public static final MenuOption ADD_DELETE_USER = new MenuOption(
                 "Add/Delete user",
                 MainMenuCLI::addDeleteUser,
+                null
+        );
+
+        public static final MenuOption BACK_TO_MAIN_MENU = new MenuOption(
+                "Back to main menu",
+                () -> {
+                    IMDB.getInstance().getUserInterface().setMenuProvider(MainMenuProvider.getInstance());
+                },
                 null
         );
 

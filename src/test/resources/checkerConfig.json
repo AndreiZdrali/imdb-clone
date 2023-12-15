@@ -42,8 +42,8 @@
     },
 
     {
-      "builder" : "org.example.Request$RequestBuilder",
-      "built" : "org.example.Request"
+      "builder" : "org.example.management.Request$RequestBuilder",
+      "built" : "org.example.management.Request"
     }
   ],
   "factories": [
@@ -55,11 +55,11 @@
   "observers": [
     {
       "observers": [
-        "org.example.User"
+        "org.example.user.User"
       ],
       "subjects": [
-        "org.example.Request",
-        "org.example.Rating"
+        "org.example.management.Request",
+        "org.example.production.Rating"
       ]
     }
   ]
