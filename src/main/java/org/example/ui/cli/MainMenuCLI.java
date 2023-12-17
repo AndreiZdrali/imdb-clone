@@ -2,6 +2,7 @@ package org.example.ui.cli;
 
 import kotlin.NotImplementedError;
 import org.example.IMDB;
+import org.example.services.ProductionService;
 import org.example.ui.menus.ActorsDetailsProvider;
 import org.example.ui.menus.NotificationsProvider;
 import org.example.ui.menus.ProductionsDetailsProvider;

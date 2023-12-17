@@ -26,7 +26,20 @@ public abstract class UserInterface {
         this.menuProvider = menuProvider;
     }
 
-    public Scanner getScanner() {
+    public int scanNextInt() {
         throw new RuntimeException("Not implemented");
     }
+
+    public double scanNextDouble() {
+        throw new RuntimeException("Not implemented");
+    }
+
+    public String scanNextLine() {
+        throw new RuntimeException("Not implemented");
+    }
+
+    //CRED CA E INUTIL
+//    public Scanner getScanner() {
+//        throw new RuntimeException("Not implemented");
+//    }
 }

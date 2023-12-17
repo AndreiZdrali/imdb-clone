@@ -18,6 +18,18 @@ public class Rating {
         this.comment = comment;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
     public String toString() {
         return "Username: " + username + "\n" +
                 "Rating: " + rating + "\n" +

@@ -1,6 +1,7 @@
 package org.example.production;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -42,13 +43,14 @@ public class Series extends Production {
 
     @Override
     public void displayInfo() {
-        System.out.println("Production: " + title);
+        //TODO: Rewrite
+        System.out.println("Title: " + title);
         System.out.println("Directors: " + directors);
         System.out.println("Actors: " + actors);
         System.out.println("Genres: " + genres);
         System.out.println("Ratings: " + ratings);
         System.out.println("Description: " + plot);
-        System.out.println("Grade: " + averageRating);
+        System.out.println("Rating: " + getAverageRating());
 
         System.out.println("Duration: " + duration);
         System.out.println("Year: " + releaseYear);
@@ -56,10 +58,13 @@ public class Series extends Production {
         System.out.println("Seasons: " + seasons);
     }
 
-    public String toString() {
-        return title + " - " + type;
+    @Override
+    public void displayShortInfo() {
+        //format: "{title} ({type}) | Year: {releaseYear} | Seasons: {numSeasons} ({duration} min total) | Rating: {averageRating} ({numberOfReviews} reviews)"
+        System.out.println(title + " (" + type + ") | Year: " + releaseYear + " | Seasons: " + numSeasons + " (" + duration + " min total) | Rating: " + getAverageRating() + " (" + ratings.size() + " reviews)");
     }
 
+    @JsonIgnoreProperties({"averageRating"})
     public static class SeriesBuilder extends ProductionBuilder {
         private int duration;
         private int releaseYear;
@@ -73,9 +78,8 @@ public class Series extends Production {
                             @JsonProperty("actors") List<String> actors,
                             @JsonProperty("genres") List<Genre> genres,
                             @JsonProperty("ratings") List<Rating> ratings,
-                            @JsonProperty("plot") String plot,
-                            @JsonProperty("averageRating") double averageRating) {
-            super(title, type, directors, actors, genres, ratings, plot, averageRating);
+                            @JsonProperty("plot") String plot) {
+            super(title, type, directors, actors, genres, ratings, plot);
         }
 
         @JsonProperty("releaseYear")

@@ -25,7 +25,6 @@ public class IMDB {
 
     private IMDB() {
         jsonContext = new JSONContext();
-        scanner = new Scanner(System.in);
     }
 
     public static IMDB getInstance() {
@@ -66,10 +65,6 @@ public class IMDB {
         this.requests = requests;
     }
 
-    public Scanner getScanner() {
-        return scanner;
-    }
-
     public UserInterface getUserInterface() {
         return userInterface;
     }
@@ -83,6 +78,8 @@ public class IMDB {
     }
 
     private void askForUserInterface() {
+        Scanner scanner = new Scanner(System.in);
+
         System.out.println("Choose user interface:");
         System.out.println("\t1) CLI");
         System.out.println("\t2) GUI");

@@ -19,9 +19,30 @@ public class CLI extends UserInterface {
         scanner = new Scanner(System.in);
     }
 
-    @Override
-    public Scanner getScanner() {
-        return scanner;
+    /** Display the input cursor, consumes the next line and returns the input int */
+    public int scanNextInt() {
+        System.out.print("> ");
+        int input = scanner.nextInt();
+        scanner.nextLine();
+        System.out.println();
+        return input;
+    }
+
+    /** Display the input cursor, consumes the next line and returns the input double */
+    public double scanNextDouble() {
+        System.out.print("> ");
+        double input = scanner.nextDouble();
+        scanner.nextLine();
+        System.out.println();
+        return input;
+    }
+
+    /** Display the input cursor and returns the input string */
+    public String scanNextLine() {
+        System.out.print("> ");
+        String input = scanner.nextLine();
+        System.out.println();
+        return input;
     }
 
     public void run() {
@@ -31,6 +52,19 @@ public class CLI extends UserInterface {
             List<MenuOption> options = menuProvider.getUserOptions(currentUser.getUserType());
             handleOptions(options);
         }
+    }
+
+    private void handleOptions(List<MenuOption> options) {
+        System.out.println("Choose an option:");
+        for (int i = 0; i < options.size(); i++) {
+            System.out.println("\t" + (i + 1) + ") " + options.get(i).toString());
+        }
+
+        int option = scanNextInt();
+
+        MenuOption selectedOption = options.get(option - 1);
+
+        selectedOption.executeCLI();
     }
 
     private User<?> login() {
@@ -57,24 +91,6 @@ public class CLI extends UserInterface {
 
         System.out.println("Invalid credentials!");
         login();
-        throw new RuntimeException("Nu stiu cum s-a ajuns aici");
-    }
-
-    private void handleOptions(List<MenuOption> options) {
-        System.out.println();
-        System.out.println("Choose an option:");
-        for (int i = 0; i < options.size(); i++) {
-            System.out.println("\t" + (i + 1) + ") " + options.get(i).toString());
-        }
-
-        System.out.print("> ");
-        int option = scanner.nextInt();
-        //consume the next line
-        scanner.nextLine();
-        System.out.println();
-
-        MenuOption selectedOption = options.get(option - 1);
-
-        selectedOption.executeCLI();
+        throw new RuntimeException("Eroare la login, nu stiu cum s-a ajuns aici");
     }
 }

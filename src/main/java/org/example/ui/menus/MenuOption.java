@@ -64,12 +64,6 @@ public class MenuOption {
                 null
         );
 
-        public static final MenuOption CLEAR_NOTIFICATIONS = new MenuOption(
-                "Clear your notifications",
-                NotificationsCLI::clearNotifications,
-                null
-        );
-
         public static final MenuOption SEARCH_FOR_LISTING = new MenuOption(
                 "Search for a listing",
                 MainMenuCLI::searchForListing,

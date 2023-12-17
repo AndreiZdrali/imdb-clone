@@ -1,10 +1,7 @@
 package org.example.production;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 @JsonTypeInfo (
@@ -32,8 +29,6 @@ public abstract class Production implements Comparable, Listing {
     protected List<Rating> ratings;
     @JsonProperty("plot")
     protected String plot;
-    @JsonProperty("averageRating")
-    protected double averageRating;
 
     public Production(ProductionBuilder builder) {
         this.title = builder.title;
@@ -43,10 +38,31 @@ public abstract class Production implements Comparable, Listing {
         this.genres = builder.genres;
         this.ratings = builder.ratings;
         this.plot = builder.plot;
-        this.averageRating = builder.averageRating;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public ProductionType getType() {
+        return type;
+    }
+
+    public List<Rating> getRatings() {
+        return ratings;
+    }
+
+    @JsonProperty("averageRating")
+    public double getAverageRating() {
+        return ratings.stream()
+                .mapToDouble(Rating::getRating)
+                .average()
+                .orElse(0);
     }
 
     public abstract void displayInfo();
+
+    public abstract void displayShortInfo();
 
     @Override
     public int compareTo(Object object) {
@@ -58,22 +74,7 @@ public abstract class Production implements Comparable, Listing {
             return 0;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-//    @JsonProperty("type")
-//    public String getType() {
-//        if (type != null)
-//            return type;
-//        else if (this instanceof Movie)
-//            return "Movie";
-//        else if (this instanceof Series)
-//            return "Series";
-//        else
-//            throw new RuntimeException("Unknown type, nu stiu cum s-a ajuns aici");
-//    }
-
+    @JsonIgnoreProperties({"averageRating"})
     public static abstract class ProductionBuilder {
         protected String title;
         protected ProductionType type;
@@ -82,7 +83,6 @@ public abstract class Production implements Comparable, Listing {
         protected List<Genre> genres;
         protected List<Rating> ratings;
         protected String plot;
-        protected double averageRating;
 
         // astea sunt obligatorii pentru fiecare productie
         public ProductionBuilder(@JsonProperty("title") String title,
@@ -91,8 +91,7 @@ public abstract class Production implements Comparable, Listing {
                                  @JsonProperty("actors") List<String> actors,
                                  @JsonProperty("genres") List<Genre> genres,
                                  @JsonProperty("ratings") List<Rating> ratings,
-                                 @JsonProperty("plot") String plot,
-                                 @JsonProperty("averageRating") double averageRating) {
+                                 @JsonProperty("plot") String plot) {
             this.title = title;
             this.type = type;
             this.directors = directors;
@@ -100,7 +99,6 @@ public abstract class Production implements Comparable, Listing {
             this.genres = genres;
             this.ratings = ratings;
             this.plot = plot;
-            this.averageRating = averageRating;
         }
     }
 }
