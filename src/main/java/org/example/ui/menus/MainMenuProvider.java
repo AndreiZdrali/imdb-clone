@@ -6,7 +6,9 @@ import java.util.List;
 public class MainMenuProvider extends MenuProvider {
     private static MainMenuProvider instance = null;
 
-    private MainMenuProvider() { }
+    private MainMenuProvider() {
+        sameOptions = false;
+    }
 
     public static MainMenuProvider getInstance() {
         if (instance == null)

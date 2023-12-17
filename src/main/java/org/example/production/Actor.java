@@ -2,6 +2,7 @@ package org.example.production;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.example.services.ActorService;
 
 import java.util.List;
 import java.util.Map;
@@ -33,6 +34,24 @@ public class Actor implements Comparable, Listing {
 
     public String getBiography() {
         return biography;
+    }
+
+    // pentru sortare in ActorService
+    public int getId() {
+        return ActorService.getActors().indexOf(this);
+    }
+
+    public void displayShortInfo() {
+        //format: "{name} | Performances: {numberOfPerformances} | Biography: {biography}"
+        System.out.println(name + " | Performances: " + performances.size() + " | Biography: " + biography);
+    }
+
+    public void displayInfo() {
+        System.out.println("Name: " + name);
+        System.out.println("Performances: ");
+        for (var performance : performances)
+            System.out.println(performance);
+        System.out.println("Biography: " + biography);
     }
 
     public int compareTo(Object object) {

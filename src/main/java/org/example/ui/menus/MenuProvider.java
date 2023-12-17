@@ -15,7 +15,7 @@ public abstract class MenuProvider {
     /**
      * If true, the same options will be used for all account types and are taken from the getRegularOptions() method.
      */
-    protected boolean sameOptions = false;
+    protected boolean sameOptions = true;
 
     public List<MenuOption> getUserOptions(AccountType accountType) {
         if (sameOptions)

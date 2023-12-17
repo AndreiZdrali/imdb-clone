@@ -4,26 +4,19 @@ import org.example.IMDB;
 import org.example.production.Production;
 import org.example.production.ProductionType;
 import org.example.services.ProductionService;
-import org.example.ui.menus.ProductionsDetailsProvider;
 import org.example.utils.filters.*;
 
-import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Scanner;
 
 public class ProductionsDetailsCLI {
-    private static FilterList<Production> filters = new FilterList<>();
-
-    public static void viewFilteredProductions() {
+    public static void viewSortedAndFilteredProductions() {
         //TODO: Apply filters
-        List<Production> filteredProductions = ProductionService.getProductions().stream()
-                .filter(p -> filters.stream().allMatch(f -> f.check(p)))
-                .toList();
+        List<Production> filteredProductions = ProductionService.getSortedAndFilteredProductions();
 
         System.out.println("There are " + filteredProductions.size() + " matching productions: ");
         for (var production : filteredProductions)
             production.displayShortInfo();
-
         System.out.println();
     }
 
@@ -39,7 +32,8 @@ public class ProductionsDetailsCLI {
             return;
         }
 
-        filters.add(new ProductionTypeFilter<>(ProductionType.values()[input - 1]));
+        Filter<Production> filter = new ProductionTypeFilter<>(ProductionType.values()[input - 1]);
+        ProductionService.addProductionFilter(filter);
     }
 
     public static void setMinRating() {
@@ -52,7 +46,8 @@ public class ProductionsDetailsCLI {
             return;
         }
 
-        filters.add((new MinRatingFilter<>(input)));
+        Filter<Production> filter = new MinRatingFilter<>(input);
+        ProductionService.addProductionFilter(filter);
     }
 
     public static void setMinReviews() {
@@ -65,11 +60,38 @@ public class ProductionsDetailsCLI {
             return;
         }
 
-        filters.add(new MinReviewsFilter<>(input));
+        Filter<Production> filter = new MinReviewsFilter<>(input);
+        ProductionService.addProductionFilter(filter);
     }
 
-    public static void clearFilters() {
-        filters.clear();
+    public static void setSortingMethod() {
+        System.out.println("Choose a sorting method: ");
+        System.out.println("\t1) By ID (ascending)");
+        System.out.println("\t2) By ID (descending)");
+        System.out.println("\t3) By title (alphabetically)");
+        System.out.println("\t4) By title (reverse alphabetically)");
+
+        int input = IMDB.getInstance().getUserInterface().scanNextInt();
+
+        if (input < 1 || input > 4) {
+            System.out.println("Invalid sorting method!");
+            return;
+        }
+
+        Comparator<Production> sortingMethod;
+        switch (input) {
+            case 1 -> sortingMethod = Comparator.comparing(Production::getId);
+            case 2 -> sortingMethod = Comparator.comparing(Production::getId).reversed();
+            case 3 -> sortingMethod = Comparator.comparing(Production::getTitle);
+            case 4 -> sortingMethod = Comparator.comparing(Production::getTitle).reversed();
+            default -> throw new RuntimeException("Invalid sorting method! Nu inteleg cum de s-a ajuns aici.");
+        }
+
+        ProductionService.setSortingMethod(sortingMethod);
+    }
+
+    public static void clearSortingAndFilters() {
+        ProductionService.clearSortingAndFilters();
     }
 
 }

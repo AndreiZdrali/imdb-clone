@@ -8,9 +8,7 @@ import java.util.List;
 public class NotificationsProvider extends MenuProvider {
     private static NotificationsProvider instance = null;
 
-    private NotificationsProvider() {
-        sameOptions = true;
-    }
+    private NotificationsProvider() { }
 
     public static NotificationsProvider getInstance() {
         if (instance == null)

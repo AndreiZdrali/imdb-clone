@@ -3,6 +3,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+import org.example.services.ProductionService;
 
 @JsonTypeInfo (
     use = JsonTypeInfo.Id.NAME,
@@ -50,6 +51,11 @@ public abstract class Production implements Comparable, Listing {
 
     public List<Rating> getRatings() {
         return ratings;
+    }
+
+    // pentru sortare in ProductionService
+    public int getId() {
+        return ProductionService.getProductions().indexOf(this);
     }
 
     @JsonProperty("averageRating")
