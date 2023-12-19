@@ -41,17 +41,21 @@ public class Actor implements Comparable, Listing {
         return ActorService.getActors().indexOf(this);
     }
 
+    public void displayInfo() {
+        System.out.println("Name: " + name);
+
+        String performancesString = String.join(", ",
+                performances.stream()
+                        .map(Performance::getTitle)
+                        .toList());
+        System.out.println("Performances: " + performancesString);
+
+        System.out.println("Biography: " + biography);
+    }
+
     public void displayShortInfo() {
         //format: "{name} | Performances: {numberOfPerformances} | Biography: {biography}"
         System.out.println(name + " | Performances: " + performances.size() + " | Biography: " + biography);
-    }
-
-    public void displayInfo() {
-        System.out.println("Name: " + name);
-        System.out.println("Performances: ");
-        for (var performance : performances)
-            System.out.println(performance);
-        System.out.println("Biography: " + biography);
     }
 
     public int compareTo(Object object) {
@@ -81,9 +85,16 @@ public class Actor implements Comparable, Listing {
             this.type = type;
         }
 
+        public String getTitle() {
+            return title;
+        }
+
+        public String getType() {
+            return type;
+        }
+
         public String toString() {
-            return "Title: " + title + "\n" +
-                    "Type: " + type + "\n";
+            return title + " (" + type + ")";
         }
     }
 }

@@ -11,12 +11,18 @@ import java.util.List;
 
 public class ProductionsDetailsCLI {
     public static void viewSortedAndFilteredProductions() {
-        //TODO: Apply filters
         List<Production> filteredProductions = ProductionService.getSortedAndFilteredProductions();
 
+        if (filteredProductions.isEmpty()) {
+            System.out.println("No productions found!");
+            return;
+        }
+
         System.out.println("There are " + filteredProductions.size() + " matching productions: ");
-        for (var production : filteredProductions)
-            production.displayShortInfo();
+        for (int i = 0; i < filteredProductions.size(); i++) {
+            System.out.print(i + 1 + ". ");
+            filteredProductions.get(i).displayShortInfo();
+        }
         System.out.println();
     }
 

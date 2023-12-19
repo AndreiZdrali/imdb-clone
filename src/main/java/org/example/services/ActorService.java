@@ -28,15 +28,15 @@ public class ActorService {
         IMDB.getInstance().getActors().remove(actor);
     }
 
+    public static void updateActor(Actor actor) {
+        //TODO: Implement updateActor
+    }
+
     public static Actor getActorByName(String name) {
         for (Actor actor : getActors())
             if (actor.getName().equals(name))
                 return actor;
         return null;
-    }
-
-    public static void updateActor(Actor actor) {
-        //TODO: Implement updateActor
     }
 
     public static void addActorFilter(Filter<Actor> filter) {

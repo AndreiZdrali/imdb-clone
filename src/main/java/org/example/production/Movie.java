@@ -22,12 +22,17 @@ public class Movie extends Production {
     @Override
     public void displayInfo() {
         //TODO: Rewrite
-        System.out.println("Title: " + title);
-        System.out.println("Directors: " + directors);
-        System.out.println("Actors: " + actors);
-        System.out.println("Genres: " + genres);
-        System.out.println("Ratings: " + ratings);
-        System.out.println("Description: " + plot);
+        System.out.println("Title: " + title + " (" + type + ")");
+        if (directors != null)
+            System.out.println("Directors: " + String.join(", ", directors));
+        if (actors != null)
+            System.out.println("Actors: " + String.join(", ", actors));
+        if (genres != null)
+            System.out.println("Genres: " + String.join(", ", genres.stream().map(Enum::toString).toList()));
+        if (ratings != null)
+            System.out.println("Ratings: " + String.join(", ", ratings.stream().map(Rating::compactInfo).toList()));
+        if (plot != null)
+            System.out.println("Description: " + plot);
         System.out.println("Rating: " + getAverageRating());
 
         System.out.println("Duration: " + duration);

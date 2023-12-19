@@ -83,6 +83,22 @@ public abstract class User<T> {
         return userType;
     }
 
+    public Information getInformation() {
+        return information;
+    }
+
+    public SortedSet<Production> getFavoriteProductions() {
+        return favoriteProductions;
+    }
+
+    public SortedSet<Actor> getFavoriteActors() {
+        return favoriteActors;
+    }
+
+    public SortedSet<Comparable> getFavorites() {
+        return favorites;
+    }
+
     public boolean checkLogin(String email, String password) {
         return information.credentials.getEmail().equals(email) && information.credentials.getPassword().equals(password);
     }

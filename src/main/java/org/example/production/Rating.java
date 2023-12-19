@@ -30,6 +30,10 @@ public class Rating {
         return comment;
     }
 
+    public String compactInfo() {
+        return "Username: " + username + " | Rating: " + rating + " | Comment: " + comment;
+    }
+
     public String toString() {
         return "Username: " + username + "\n" +
                 "Rating: " + rating + "\n" +

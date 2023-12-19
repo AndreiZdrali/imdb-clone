@@ -28,15 +28,16 @@ public class ProductionService {
         IMDB.getInstance().getProductions().remove(production);
     }
 
+    public static void updateProduction(Production production) {
+        //TODO: Implement updateProduction
+    }
+
+    /** Returns the production with the given title, or null if it doesn't exist */
     public static Production getProductionByTitle(String name) {
         for (Production production : getProductions())
             if (production.getTitle().equals(name))
                 return production;
         return null;
-    }
-
-    public static void updateProduction(Production production) {
-        //TODO: Implement updateProduction
     }
 
     public static void addProductionFilter(Filter<Production> filter) {

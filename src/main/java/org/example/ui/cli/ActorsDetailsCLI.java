@@ -14,9 +14,16 @@ public class ActorsDetailsCLI {
     public static void viewSortedAndFilteredActors() {
         List<Actor> filteredActors = ActorService.getSortedAndFilteredActors();
 
+        if (filteredActors.isEmpty()) {
+            System.out.println("No actors found!");
+            return;
+        }
+
         System.out.println("There are " + filteredActors.size() + " matching actors: ");
-        for (var actor : filteredActors)
-            actor.displayShortInfo();
+        for (int i = 0; i < filteredActors.size(); i++) {
+            System.out.print(i + 1 + ". ");
+            filteredActors.get(i).displayShortInfo();
+        }
         System.out.println();
     }
 

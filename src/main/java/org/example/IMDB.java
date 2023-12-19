@@ -18,7 +18,6 @@ public class IMDB {
     private List<Production> productions;
     private List<Request> requests;
     private JSONContext jsonContext;
-    private Scanner scanner;
     private UserInterface userInterface;
 
     private static IMDB instance = null;
@@ -71,10 +70,6 @@ public class IMDB {
 
     public void setUserInterface(UserInterface userInterface) {
         this.userInterface = userInterface;
-    }
-
-    public void removeProduction(Production p) {
-        //TODO: Implement removeProduction dupa enunt
     }
 
     private void askForUserInterface() {
