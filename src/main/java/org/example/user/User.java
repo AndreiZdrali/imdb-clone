@@ -103,11 +103,27 @@ public abstract class User<T> {
         return information.credentials.getEmail().equals(email) && information.credentials.getPassword().equals(password);
     }
     public void addFavorite(Comparable favorite) {
-        //TODO: Implement addFavorite
+        if (favorites.contains(favorite))
+            throw new RuntimeException("Already in favorites! Nu ar trb sa se fi ajuns aici");
+
+        favorites.add(favorite);
+
+        if (favorite instanceof Production production)
+            favoriteProductions.add(production);
+        else if (favorite instanceof Actor actor)
+            favoriteActors.add(actor);
     }
 
     public void removeFavorite(Comparable favorite) {
-        //TODO: Implement removeFavorite
+        if (!favorites.contains(favorite))
+            throw new RuntimeException("Not in favorites! Nu ar trb sa se fi ajuns aici");
+
+        favorites.remove(favorite);
+
+        if (favorite instanceof Production production)
+            favoriteProductions.remove(production);
+        else if (favorite instanceof Actor actor)
+            favoriteActors.remove(actor);
     }
 
     public void updateExperience() {

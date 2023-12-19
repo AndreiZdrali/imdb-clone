@@ -49,6 +49,7 @@ public class ProductionsDetailsCLI {
 
         if (input < 0 || input > 10) {
             System.out.println("Invalid rating!");
+            System.out.println();
             return;
         }
 
@@ -63,6 +64,7 @@ public class ProductionsDetailsCLI {
 
         if (input < 0) {
             System.out.println("Invalid number of reviews!");
+            System.out.println();
             return;
         }
 
@@ -81,6 +83,7 @@ public class ProductionsDetailsCLI {
 
         if (input < 1 || input > 4) {
             System.out.println("Invalid sorting method!");
+            System.out.println();
             return;
         }
 

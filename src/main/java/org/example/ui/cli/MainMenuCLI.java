@@ -6,10 +6,7 @@ import org.example.production.Listing;
 import org.example.production.Production;
 import org.example.services.ActorService;
 import org.example.services.ProductionService;
-import org.example.ui.menus.ActorsDetailsProvider;
-import org.example.ui.menus.FavoritesProvider;
-import org.example.ui.menus.NotificationsProvider;
-import org.example.ui.menus.ProductionsDetailsProvider;
+import org.example.ui.menus.*;
 import org.example.user.User;
 
 import java.util.ArrayList;
@@ -29,6 +26,7 @@ public class MainMenuCLI {
         System.out.println("You have " + user.getNotifications().size() + " notifications: ");
         for (var notification : user.getNotifications())
             System.out.println("\t-> " + notification);
+        System.out.println();
 
         IMDB.getInstance().getUserInterface().setMenuProvider(NotificationsProvider.getInstance());
     }
@@ -52,6 +50,7 @@ public class MainMenuCLI {
 
         if (matchingListings.isEmpty()) {
             System.out.println("No listings found!");
+            System.out.println();
             return;
         }
 
@@ -65,15 +64,15 @@ public class MainMenuCLI {
         System.out.println();
     }
 
-    //TODO: Implement the rest of the options
     public static void addDeleteFavorite() {
         IMDB.getInstance().getUserInterface().setMenuProvider(FavoritesProvider.getInstance());
     }
 
     public static void createRemoveRequest() {
-        throw new NotImplementedError("Not implemented yet");
+        IMDB.getInstance().getUserInterface().setMenuProvider(CreateRemoveRequestProvider.getInstance());
     }
 
+    //TODO: Implement the rest of the options
     public static void addDeleteListing() {
         throw new NotImplementedError("Not implemented yet");
     }

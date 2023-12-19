@@ -1,7 +1,7 @@
 package org.example.user;
 
 public class UserFactory {
-    public User getUser(AccountType userType) {
+    public User<?> getUser(AccountType userType) {
         User.Information information = new User.Information.InformationBuilder()
                 .setCredentials(new Credentials("username", "password"))
                 .setName("name")

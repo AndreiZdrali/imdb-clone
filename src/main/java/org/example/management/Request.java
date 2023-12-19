@@ -34,7 +34,6 @@ public class Request {
         this.description = builder.description;
     }
 
-    //TODO: Implement getters and setters
     public String getUsername() {
         return username;
     }
@@ -49,6 +48,17 @@ public class Request {
 
     public void notifyObservers() {
         //TODO: Subject notify specific observers
+    }
+
+    public void displayShortInfoForCreator() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        System.out.print(type + "created on " + createdDate.format(formatter));
+        switch(type) {
+            case DELETE_ACCOUNT, OTHERS -> System.out.print(": " + description);
+            case MOVIE_ISSUE -> System.out.print(" for movie " + movieTitle + ": " + description);
+            case ACTOR_ISSUE -> System.out.print(" for actor " + actorName + ": " + description);
+        }
+        System.out.println();
     }
 
     public String toString() {

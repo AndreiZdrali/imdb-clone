@@ -2,6 +2,7 @@ package org.example.services;
 
 import org.example.IMDB;
 import org.example.production.Actor;
+import org.example.user.Staff;
 import org.example.utils.filters.FilterList;
 import org.example.utils.filters.Filter;
 
@@ -36,6 +37,13 @@ public class ActorService {
         for (Actor actor : getActors())
             if (actor.getName().equals(name))
                 return actor;
+        return null;
+    }
+
+    public static Staff<?> getCreatorOfActor(Actor actor) {
+        for (Staff<?> staff : UserService.getStaff())
+            if (staff.getActorsContribution().contains(actor))
+                return staff;
         return null;
     }
 

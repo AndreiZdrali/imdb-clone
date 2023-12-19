@@ -16,6 +16,7 @@ public class ActorsDetailsCLI {
 
         if (filteredActors.isEmpty()) {
             System.out.println("No actors found!");
+            System.out.println();
             return;
         }
 
@@ -34,6 +35,7 @@ public class ActorsDetailsCLI {
 
         if (input < 0) {
             System.out.println("Invalid number of performances!");
+            System.out.println();
             return;
         }
 
@@ -52,6 +54,7 @@ public class ActorsDetailsCLI {
 
         if (input < 1 || input > 4) {
             System.out.println("Invalid sorting method!");
+            System.out.println();
             return;
         }
 

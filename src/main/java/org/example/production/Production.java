@@ -15,7 +15,7 @@ import org.example.services.ProductionService;
         @JsonSubTypes.Type(value = Series.class, name = "Series")
 })
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public abstract class Production implements Comparable, Listing {
+public abstract class Production implements Comparable<Production>, Listing {
     @JsonProperty("title")
     protected String title;
     @JsonProperty("type")
@@ -71,13 +71,14 @@ public abstract class Production implements Comparable, Listing {
     public abstract void displayShortInfo();
 
     @Override
-    public int compareTo(Object object) {
-        if (object instanceof Production prod)
-            return title.compareTo(prod.getTitle());
-        else if (object instanceof Actor actor)
-            return title.compareTo(actor.getName());
-        else
-            return 0;
+    public int compareTo(Production object) {
+//        if (object instanceof Production prod)
+//            return title.compareTo(prod.getTitle());
+//        else if (object instanceof Actor actor)
+//            return title.compareTo(actor.getName());
+//        else
+//            return 0;
+    return title.compareTo(object.getTitle());
     }
 
     @JsonIgnoreProperties({"averageRating"})

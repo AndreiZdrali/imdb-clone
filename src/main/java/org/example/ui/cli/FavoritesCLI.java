@@ -45,22 +45,68 @@ public class FavoritesCLI {
         List<Listing> matchingListings = new ArrayList<>();
 
         for (var production : ProductionService.getProductions())
-            if (production.getTitle().toLowerCase().contains(input.toLowerCase()))
+            if (production.getTitle().toLowerCase().contains(input.toLowerCase()) &&
+                    !user.getFavorites().contains(production))
                 matchingListings.add(production);
+
         for (var actor : ActorService.getActors())
-            if (actor.getName().toLowerCase().contains(input.toLowerCase()))
+            if (actor.getName().toLowerCase().contains(input.toLowerCase()) &&
+                    !user.getFavorites().contains(actor))
                 matchingListings.add(actor);
 
         if (matchingListings.isEmpty()) {
             System.out.println("No listings found!");
+            System.out.println();
             return;
         }
 
-        //TODO: Din lista de matching listings, sa aleg unul si sa il adaug la favorite
-        throw new UnsupportedOperationException("Not implemented yet!");
+        System.out.println("Enter the number of the listing you want to add to favorites (0 to cancel): ");
+        for (int i = 0; i < matchingListings.size(); i++) {
+            System.out.print("\t" + (i + 1) + ") ");
+            matchingListings.get(i).displayShortInfo();
+        }
+
+        int input2 = IMDB.getInstance().getUserInterface().scanNextInt();
+
+        if (input2 < 0 || input2 > matchingListings.size()) {
+            System.out.println("Invalid listing number!");
+            System.out.println();
+            return;
+        }
+
+        if (input2 == 0) {
+            System.out.println();
+            return;
+        }
+
+        user.addFavorite((Comparable) matchingListings.get(input2 - 1));
     }
 
     public static void removeFavorite() {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        User<?> user = IMDB.getInstance().getUserInterface().getCurrentUser();
+
+        System.out.println("Enter the number of the listing you want to remove from favorites (0 to cancel): ");
+        for (int i = 0; i < user.getFavorites().size(); i++) {
+            System.out.print("\t" + (i + 1) + ") ");
+            if (user.getFavorites().toArray()[i] instanceof Production production)
+                production.displayShortInfo();
+            else if (user.getFavorites().toArray()[i] instanceof Actor actor)
+                actor.displayShortInfo();
+        }
+
+        int input = IMDB.getInstance().getUserInterface().scanNextInt();
+
+        if (input == 0) {
+            System.out.println();
+            return;
+        }
+
+        if (input < 0 || input > user.getFavorites().size()) {
+            System.out.println("Invalid listing number!");
+            System.out.println();
+            return;
+        }
+
+        user.removeFavorite((Comparable) user.getFavorites().toArray()[input - 1]);
     }
 }

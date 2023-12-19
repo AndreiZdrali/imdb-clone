@@ -46,7 +46,8 @@ public class CLI extends UserInterface {
     }
 
     public void run() {
-        currentUser = login();
+        //currentUser = login();
+        currentUser = UserService.getUsers().get(UserService.getUsers().size() - 1);
 
         while (currentUser != null) {
             List<MenuOption> options = menuProvider.getUserOptions(currentUser.getUserType());
@@ -56,9 +57,8 @@ public class CLI extends UserInterface {
 
     private void handleOptions(List<MenuOption> options) {
         System.out.println("Choose an option:");
-        for (int i = 0; i < options.size(); i++) {
+        for (int i = 0; i < options.size(); i++)
             System.out.println("\t" + (i + 1) + ") " + options.get(i).toString());
-        }
 
         int option = scanNextInt();
 

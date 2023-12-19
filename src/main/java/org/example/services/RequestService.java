@@ -53,7 +53,7 @@ public class RequestService {
         staff.setPersonalRequests(requests);
     }
 
-    public static List<Request> getRequestsMadeByUser(User<?> user) {
+    public static List<Request> getRequestsCreatedByUser(User<?> user) {
         List<Request> requests = new ArrayList<>();
         for (Request request : RequestService.getAllRequests())
             if (request.getUsername().equals(user.getUsername()))
@@ -61,11 +61,11 @@ public class RequestService {
         return requests;
     }
 
-    public static List<Request> getRequestsMadeByUser(String username) {
+    public static List<Request> getRequestsCreatedByUser(String username) {
         User<?> u = UserService.getUserByUsername(username);
         if (u == null)
             return null;
-        return getRequestsMadeByUser(u);
+        return getRequestsCreatedByUser(u);
     }
 
     /** Adauga si in shared/personal requests */
@@ -76,7 +76,7 @@ public class RequestService {
         if (type == RequestType.DELETE_ACCOUNT || type == RequestType.OTHERS) {
             RequestHolder.addSharedRequest(request);
         } else {
-            User<?> u = UserService.getUserByUsername(request.getUsername());
+            User<?> u = UserService.getUserByUsername(request.getTo());
             if (!(u instanceof Staff<?> s))
                 return;
             s.getPersonalRequests().add(request);
