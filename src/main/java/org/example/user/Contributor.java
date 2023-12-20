@@ -7,6 +7,7 @@ import org.example.management.RequestsManager;
 import org.example.management.Request;
 import org.example.production.Actor;
 import org.example.production.Production;
+import org.example.services.RequestService;
 
 import java.util.List;
 import java.util.SortedSet;
@@ -19,7 +20,7 @@ public class Contributor<T> extends Staff<T> implements RequestsManager {
     }
 
     public void createRequest(Request r) {
-        //TODO: Implement createRequest
+        RequestService.addRequest(r);
     }
 
     public void removeRequest(Request r) {

@@ -52,7 +52,7 @@ public class Request {
 
     public void displayShortInfoForCreator() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        System.out.print(type + "created on " + createdDate.format(formatter));
+        System.out.print(type + " created on " + createdDate.format(formatter));
         switch(type) {
             case DELETE_ACCOUNT, OTHERS -> System.out.print(": " + description);
             case MOVIE_ISSUE -> System.out.print(" for movie " + movieTitle + ": " + description);

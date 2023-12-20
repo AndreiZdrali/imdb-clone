@@ -33,7 +33,7 @@ public class CreateRemoveRequestCLI {
         }
 
         for (int i = 0; i < requests.size(); i++) {
-            System.out.println(i + 1 + ". ");
+            System.out.print(i + 1 + ". ");
             requests.get(i).displayShortInfoForCreator();
         }
         System.out.println();
@@ -50,6 +50,11 @@ public class CreateRemoveRequestCLI {
             System.out.println("\t" + (i + 1) + ") " + RequestType.values()[i]);
 
         int input = IMDB.getInstance().getUserInterface().scanNextInt();
+
+        if (input == 0) {
+            System.out.println();
+            return;
+        }
 
         if (input < 0 || input > RequestType.values().length) {
             System.out.println("Invalid request type!");
@@ -76,7 +81,6 @@ public class CreateRemoveRequestCLI {
 
         Request request = requestBuilder.build();
 
-        //sa fac un review la request si sa intreb daca e ok de trimis
         System.out.println("Do you want to send this request?");
         System.out.print("-> Request contents: ");
         request.displayShortInfoForCreator();
@@ -162,6 +166,8 @@ public class CreateRemoveRequestCLI {
         //TODO: AICI AM RAMAS, NU E GATA, MAI AM AICI DE LUCRU
         Actor actor = matchingActors.get(input - 1);
 
+        requestBuilder.setActorName(actor.getName());
+
         System.out.println("Enter the description of your request: ");
 
         String description = IMDB.getInstance().getUserInterface().scanNextLine();
@@ -215,6 +221,8 @@ public class CreateRemoveRequestCLI {
         }
 
         Production production = matchingProductions.get(input - 1);
+
+        requestBuilder.setMovieTitle(production.getTitle());
 
         System.out.println("Enter the description of your request: ");
 
