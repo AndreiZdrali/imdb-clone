@@ -2,6 +2,7 @@ package org.example;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import kotlin.NotImplementedError;
 import org.example.management.Request;
 import org.example.management.RequestHolder;
 import org.example.production.Actor;
@@ -74,16 +75,15 @@ public class JSONContext {
         LoadAccountsJSONData();
 
         LinkRequestsToUsers();
+        LinkObserversToSubjects();
     }
 
-    //TODO: Implement Jackson pt User si subclase, ca la Production (cred ca e gata)
     public void LoadAccountsJSONData() {
         try {
             UserService.setUsers(mapper
                     .readValue(new File(accountsJSONPath), mapper.getTypeFactory().constructCollectionType(List.class, User.class)));
         } catch (IOException e) {
             e.printStackTrace();
-            //TODO: Posibil sa dau throw la eroare
         }
     }
 
@@ -102,7 +102,6 @@ public class JSONContext {
                     .readValue(actorsFile, mapper.getTypeFactory().constructCollectionType(List.class, Actor.class)));
         } catch (IOException e) {
             e.printStackTrace();
-            //TODO: Posibil sa dau throw la eroare
         }
     }
 
@@ -121,7 +120,6 @@ public class JSONContext {
                     .readValue(productionsFile, mapper.getTypeFactory().constructCollectionType(List.class, Production.class)));
         } catch (IOException e) {
             e.printStackTrace();
-            //TODO: Posibil sa dau throw la eroare
         }
     }
 
@@ -132,7 +130,6 @@ public class JSONContext {
                     .readValue(requestsFile, mapper.getTypeFactory().constructCollectionType(List.class, Request.class)));
         } catch (IOException e) {
             e.printStackTrace();
-            //TODO: Posibil sa dau throw la eroare
         }
     }
 
@@ -150,5 +147,10 @@ public class JSONContext {
                 if (request.getTo().equals(s.getUsername()))
                     s.addPersonalRequest(request);
         }
+    }
+
+    public void LinkObserversToSubjects() {
+        //TODO: Call attach on requests and ratings to specific users
+        throw new NotImplementedError();
     }
 }

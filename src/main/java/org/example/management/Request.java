@@ -1,19 +1,24 @@
 package org.example.management;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.example.serializers.LocalDateTimeToStringSerializer;
+import org.example.utils.Observer;
+import org.example.utils.Subject;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 @JsonDeserialize(builder = Request.RequestBuilder.class)
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class Request {
-    //private List<Observer> observers = new ArrayList<Observer>();
+public class Request implements Subject {
+    private List<Observer> observers;
 
     private RequestType type;
     @JsonSerialize(using = LocalDateTimeToStringSerializer.class, as = String.class)
@@ -23,6 +28,8 @@ public class Request {
     private String username;
     private String to;
     private String description;
+    @JsonIgnore
+    private RequestStatus status;
 
     public Request(RequestBuilder builder) {
         this.type = builder.type;
@@ -32,6 +39,9 @@ public class Request {
         this.username = builder.username;
         this.to = builder.to;
         this.description = builder.description;
+
+        this.status = RequestStatus.PENDING;
+        this.observers = new ArrayList<>();
     }
 
     public String getUsername() {
@@ -46,8 +56,25 @@ public class Request {
         return to;
     }
 
+    public RequestStatus getStatus() {
+        return status;
+    }
+
+    @Override
+    public void addObserver(Observer observer) {
+        observers.add(observer);
+    }
+
+    @Override
+    public void removeObserver(Observer observer) {
+        observers.remove(observer);
+    }
+
+    @Override
     public void notifyObservers() {
-        //TODO: Subject notify specific observers
+        for (var observer : observers) {
+            observer.update();
+        }
     }
 
     public void displayShortInfoForCreator() {

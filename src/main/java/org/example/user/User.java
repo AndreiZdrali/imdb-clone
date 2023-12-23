@@ -10,6 +10,7 @@ import org.example.serializers.LocalDateToStringSerializer;
 import org.example.serializers.ProductionToStringSerializer;
 import org.example.services.ActorService;
 import org.example.services.ProductionService;
+import org.example.utils.Observer;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -31,7 +32,7 @@ import java.util.TreeSet;
         @JsonSubTypes.Type(value = Admin.class, name = "Admin")
 })
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public abstract class User<T> {
+public abstract class User<T> implements Observer {
     @JsonProperty("username")
     protected String username;
     @JsonProperty("experience")
@@ -124,6 +125,10 @@ public abstract class User<T> {
             favoriteProductions.remove(production);
         else if (favorite instanceof Actor actor)
             favoriteActors.remove(actor);
+    }
+
+    public void update() {
+        //TODO: Implement update
     }
 
     public void updateExperience() {
