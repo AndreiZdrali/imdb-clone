@@ -77,7 +77,8 @@ public class Rating implements Subject {
     @Override
     public void notifyObservers(NotificationWrapper notificationWrapper) {
         for (Observer observer : observers)
-            observer.update(notificationWrapper);
+            if (observer != null)
+                observer.update(notificationWrapper);
     }
 
     public String toString() {

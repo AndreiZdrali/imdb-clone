@@ -1,5 +1,6 @@
 package org.example.services;
 
+import kotlin.NotImplementedError;
 import org.example.IMDB;
 import org.example.management.Request;
 import org.example.management.RequestHolder;
@@ -68,7 +69,7 @@ public class RequestService {
         return getRequestsCreatedByUser(u);
     }
 
-    /** Adauga in listere corespunzatoare */
+    /** Adauga in IMDB.requests si shared/personal in functie de tip */
     public static void addRequest(Request request) {
         IMDB.getInstance().getRequests().add(request);
 
@@ -78,15 +79,23 @@ public class RequestService {
         } else {
             User<?> u = UserService.getUserByUsername(request.getTo());
             if (!(u instanceof Staff<?> s))
-                return;
+                throw new RuntimeException("Ar trebui sa fie staff");
             s.getPersonalRequests().add(request);
         }
-
-        //TODO: Save JSON
     }
 
+    /** Sterge din IMDB.requests si shared/personal in functie de tip */
     public static void removeRequest(Request request) {
-        //TODO: Implement removeRequest dupa enunt
-        //Shared il scot cu RequestHolder.removeSharedRequest, personal direct din IMDB
+        IMDB.getInstance().getRequests().remove(request);
+
+        RequestType type = request.getType();
+        if (type == RequestType.DELETE_ACCOUNT || type == RequestType.OTHERS) {
+            RequestHolder.removeSharedRequest(request);
+        } else {
+            User<?> u = UserService.getUserByUsername(request.getTo());
+            if (!(u instanceof Staff<?> s))
+                throw new RuntimeException("Ar trebui sa fie staff");
+            s.getPersonalRequests().remove(request);
+        }
     }
 }

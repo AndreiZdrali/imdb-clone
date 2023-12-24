@@ -5,6 +5,8 @@ import java.util.List;
 
 /** Lista pentru toti adminii */
 public class RequestHolder {
+    private RequestHolder() {}
+
     private static List<Request> sharedRequests = new ArrayList<Request>();
 
     public static List<Request> getSharedRequests() {

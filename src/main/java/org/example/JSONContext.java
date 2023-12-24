@@ -171,13 +171,13 @@ public class JSONContext {
                 request.addObserver(user);
         }
 
-        // productions pentru staff
+        // productions + actors pentru staff
         for (Staff<?> staff : UserService.getStaff())
             for (Object listing : staff.getContributions())
                 if (listing instanceof Subject subject)
                     subject.addObserver(staff);
 
-        // productions pentru useri
+        // productions cu review pentru useri
         for (Production production : ProductionService.getProductions()) {
             for (Rating rating : production.getRatings()) {
                 User<?> user = UserService.getUserByUsername(rating.getUsername());
@@ -185,6 +185,15 @@ public class JSONContext {
                     production.addObserver(user);
                     rating.addObserver(user);
                 }
+            }
+        }
+
+        // favorite pentru useri
+        for (User<?> user : UserService.getUsers()) {
+            for (Comparable listing : user.getFavorites()) {
+                if (!(listing instanceof Subject subject))
+                    throw new RuntimeException("Cum nu e asta subject???????");
+                subject.addObserver(user);
             }
         }
     }

@@ -8,18 +8,20 @@ import org.example.production.Rating;
 public class NotificationWrapper {
     private NotificationType type;
     private Listing listing;
+    private Rating rating;
     private Request request;
 
-    public NotificationWrapper(NotificationType type, Listing listing, Request request) {
+    public NotificationWrapper(NotificationType type, Listing listing, Rating rating, Request request) {
         this.type = type;
         this.listing = listing;
+        this.rating = rating;
         this.request = request;
 
         switch (type) {
             case REQUEST_SOLVED:
                 break;
             case NEW_REVIEW:
-                if (listing == null)
+                if (listing == null || rating == null)
                     throw new IllegalArgumentException("Rating notification should have details");
                 break;
             case NEW_REQUEST:
@@ -37,6 +39,10 @@ public class NotificationWrapper {
 
     public Listing getListing() {
         return listing;
+    }
+
+    public Rating getRating() {
+        return rating;
     }
 
     public Request getRequest() {

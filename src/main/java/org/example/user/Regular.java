@@ -3,20 +3,11 @@ package org.example.user;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import kotlin.NotImplementedError;
-import org.example.IMDB;
-import org.example.management.NotificationType;
-import org.example.management.NotificationWrapper;
-import org.example.management.Request;
-import org.example.management.RequestsManager;
-import org.example.production.Actor;
-import org.example.production.Production;
-import org.example.production.Series;
+import org.example.management.*;
+import org.example.production.*;
 import org.example.services.RequestService;
 import org.example.services.UserService;
-
-import java.util.List;
-import java.util.SortedSet;
+import org.example.utils.NotificationsBuilder;
 
 @JsonDeserialize(builder = Regular.RegularBuilder.class)
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -33,16 +24,15 @@ public class Regular<T> extends User<T> implements RequestsManager {
         else
             request.addObserver(UserService.getUserByUsername(request.getTo()));
 
-        NotificationWrapper notification = new NotificationWrapper(NotificationType.NEW_REQUEST, null, request);
+        NotificationWrapper notification = new NotificationWrapper(NotificationType.NEW_REQUEST, null, null, request);
         request.notifyObservers(notification);
 
         RequestService.addRequest(request);
     }
 
     public void removeRequest(Request request) {
-        //TODO: throw la eroare???
         if (!request.getUsername().equals(this.username))
-            return;
+            throw new RuntimeException("Nici nu stiu cum s-a ajuns aici");
         RequestService.removeRequest(request);
     }
 
@@ -52,16 +42,27 @@ public class Regular<T> extends User<T> implements RequestsManager {
 
     @Override
     public void update(NotificationWrapper notification) {
+        Listing listing = notification.getListing();
+        Rating rating = notification.getRating();
+        Request request = notification.getRequest();
+
+        String notificationMessage = null;
+
         switch (notification.getType()) {
             case NEW_REQUEST:
                 break;
             case REQUEST_SOLVED:
-                throw new NotImplementedError("Sa dau notificare la user ca i-a fost rezolvata cererea");
+                notificationMessage = NotificationsBuilder.requestSolved(request);
+                break;
             case NEW_REVIEW:
-                throw new NotImplementedError("Sa dau notificare la user ca a fost adaugata o recenzie");
+                notificationMessage = NotificationsBuilder.newReview(listing, rating, false);
+                break;
             default:
                 throw new IllegalStateException("Unexpected NotificationType value: " + notification.getType());
         }
+
+        if (notificationMessage != null)
+            this.notifications.add(notificationMessage);
     }
 
     public static class RegularBuilder extends UserBuilder {

@@ -12,6 +12,7 @@ import org.example.serializers.ProductionToStringSerializer;
 import org.example.services.ActorService;
 import org.example.services.ProductionService;
 import org.example.utils.Observer;
+import org.example.utils.Subject;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -104,9 +105,16 @@ public abstract class User<T> implements Observer {
     public boolean checkLogin(String email, String password) {
         return information.credentials.getEmail().equals(email) && information.credentials.getPassword().equals(password);
     }
+
+    /** Adauga un listing la favorite il adauga ca observer */
     public void addFavorite(Comparable favorite) {
+        if (!(favorite instanceof Subject subject))
+            throw new RuntimeException("Nu e subiect????????");
+
+        subject.addObserver(this);
+
         if (favorites.contains(favorite))
-            throw new RuntimeException("Already in favorites! Nu ar trb sa se fi ajuns aici");
+            throw new RuntimeException("Nu ar trb sa pot sa adaug ceva ce e deja in favorites");
 
         favorites.add(favorite);
 
@@ -116,9 +124,15 @@ public abstract class User<T> implements Observer {
             favoriteActors.add(actor);
     }
 
+    /** Scoate un listing din favorite il scoate ca observer */
     public void removeFavorite(Comparable favorite) {
+        if (!(favorite instanceof Subject subject))
+            throw new RuntimeException("Nu e subiect????????");
+
+        subject.removeObserver(this);
+
         if (!favorites.contains(favorite))
-            throw new RuntimeException("Not in favorites! Nu ar trb sa se fi ajuns aici");
+            throw new RuntimeException("Nu ar trb sa pot sa scot ceva ce nu e in favorites");
 
         favorites.remove(favorite);
 
@@ -128,7 +142,6 @@ public abstract class User<T> implements Observer {
             favoriteActors.remove(actor);
     }
 
-    //TODO: Implement update in fiecare subclasa in functie de ce tipuri accepta
     @Override
     public abstract void update(NotificationWrapper notificationWrapper);
 

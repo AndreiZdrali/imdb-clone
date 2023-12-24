@@ -73,17 +73,24 @@ public class Request implements Subject {
     @Override
     public void notifyObservers(NotificationWrapper notificationWrapper) {
         for (var observer : observers)
-            observer.update(notificationWrapper);
+            if (observer != null)
+                observer.update(notificationWrapper);
+    }
+
+    public String shortInfoForCreator() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(type).append(" created on ").append(createdDate.format(formatter));
+        switch(type) {
+            case DELETE_ACCOUNT, OTHERS -> stringBuilder.append(": ").append(description);
+            case MOVIE_ISSUE -> stringBuilder.append(" for movie ").append(movieTitle).append(": ").append(description);
+            case ACTOR_ISSUE -> stringBuilder.append(" for actor ").append(actorName).append(": ").append(description);
+        }
+        return stringBuilder.toString();
     }
 
     public void displayShortInfoForCreator() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        System.out.print(type + " created on " + createdDate.format(formatter));
-        switch(type) {
-            case DELETE_ACCOUNT, OTHERS -> System.out.print(": " + description);
-            case MOVIE_ISSUE -> System.out.print(" for movie " + movieTitle + ": " + description);
-            case ACTOR_ISSUE -> System.out.print(" for actor " + actorName + ": " + description);
-        }
+        System.out.print(shortInfoForCreator());
         System.out.println();
     }
 

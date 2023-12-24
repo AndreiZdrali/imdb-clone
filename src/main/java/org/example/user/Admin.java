@@ -6,8 +6,9 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import kotlin.NotImplementedError;
 import org.example.management.NotificationWrapper;
 import org.example.management.NotificationType;
-import org.example.production.Actor;
-import org.example.production.Production;
+import org.example.management.Request;
+import org.example.production.*;
+import org.example.utils.NotificationsBuilder;
 
 import java.util.List;
 import java.util.SortedSet;
@@ -46,16 +47,30 @@ public class Admin<T> extends Staff<T> {
 
     @Override
     public void update(NotificationWrapper notification) {
+        Listing listing = notification.getListing();
+        Rating rating = notification.getRating();
+        Request request = notification.getRequest();
+
+        String notificationMessage = null;
+
         switch (notification.getType()) {
             case NEW_REQUEST:
-                throw new NotImplementedError("Sa dau notificare la admin ca a primit o cerere noua");
+                notificationMessage = NotificationsBuilder.newRequest(request);
+                break;
             case REQUEST_SOLVED:
                 break;
             case NEW_REVIEW:
-                throw new NotImplementedError("Notificare daca e review nou pe un listing adaugat de admin");
+                if (!this.contributions.contains((Comparable<?>) listing))
+                    throw new RuntimeException("Dc a primit notificare daca nu e adaugat de el?");
+
+                notificationMessage = NotificationsBuilder.newReview(listing, rating, true);
+                break;
             default:
                 throw new IllegalStateException("Unexpected NotificationType value: " + notification.getType());
         }
+
+        if (notificationMessage != null)
+            this.notifications.add(notificationMessage);
     }
 
     public static class AdminBuilder extends StaffBuilder {

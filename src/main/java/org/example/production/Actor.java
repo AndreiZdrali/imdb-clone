@@ -62,7 +62,8 @@ public class Actor implements Comparable, Listing, Subject {
     @Override
     public void notifyObservers(NotificationWrapper notification) {
         for (Observer observer : observers)
-            observer.update(notification);
+            if (observer != null)
+                observer.update(notification);
     }
 
     public void displayInfo() {

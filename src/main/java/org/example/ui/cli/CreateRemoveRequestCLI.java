@@ -99,6 +99,7 @@ public class CreateRemoveRequestCLI {
         requestsManager.createRequest(request);
 
         System.out.println("Request sent!");
+        System.out.println();
     }
 
     public static void removeRequest() {
@@ -107,7 +108,51 @@ public class CreateRemoveRequestCLI {
         if (!(user instanceof RequestsManager requestsManager))
             throw new RuntimeException("Nu ar trb sa ai acces la requests!");
 
-        throw new NotImplementedError();
+        List<Request> requests = RequestService.getRequestsCreatedByUser(user);
+
+        if (requests.isEmpty()) {
+            System.out.println("You don't have any active requests!");
+            System.out.println();
+            return;
+        }
+
+        System.out.println("Select the request you want to remove (0 to cancel): ");
+        for (int i = 0; i < requests.size(); i++) {
+            System.out.print("\t" + (i + 1) + ") ");
+            requests.get(i).displayShortInfoForCreator();
+        }
+
+        int input = IMDB.getInstance().getUserInterface().scanNextInt();
+
+        if (input == 0) {
+            System.out.println();
+            return;
+        }
+
+        if (input < 0 || input > requests.size()) {
+            System.out.println("Invalid request number!");
+            System.out.println();
+            return;
+        }
+
+        Request request = requests.get(input - 1);
+
+        System.out.println("Do you want to remove this request?");
+        System.out.print("-> Request contents: ");
+        request.displayShortInfoForCreator();
+
+        System.out.println("\t1) Yes");
+        System.out.println("\t2) No");
+
+        input = IMDB.getInstance().getUserInterface().scanNextInt();
+
+        if (input != 1) {
+            System.out.println("Request removal canceled!");
+            System.out.println();
+            return;
+        }
+
+        requestsManager.removeRequest(request);
     }
 
     private static boolean createDeleteAccountOrOthersRequest(Request.RequestBuilder requestBuilder) {
@@ -163,7 +208,6 @@ public class CreateRemoveRequestCLI {
             return false;
         }
 
-        //TODO: AICI AM RAMAS, NU E GATA, MAI AM AICI DE LUCRU
         Actor actor = matchingActors.get(input - 1);
 
         requestBuilder.setActorName(actor.getName());

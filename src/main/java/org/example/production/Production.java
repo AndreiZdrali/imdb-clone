@@ -90,7 +90,8 @@ public abstract class Production implements Comparable<Production>, Listing, Sub
     @Override
     public void notifyObservers(NotificationWrapper notification) {
         for (Observer observer : observers)
-            observer.update(notification);
+            if (observer != null)
+                observer.update(notification);
     }
 
     public abstract void displayInfo();

@@ -9,9 +9,12 @@ import org.example.management.NotificationWrapper;
 import org.example.management.RequestsManager;
 import org.example.management.Request;
 import org.example.production.Actor;
+import org.example.production.Listing;
 import org.example.production.Production;
+import org.example.production.Rating;
 import org.example.services.RequestService;
 import org.example.services.UserService;
+import org.example.utils.NotificationsBuilder;
 
 import java.util.List;
 import java.util.SortedSet;
@@ -31,23 +34,32 @@ public class Contributor<T> extends Staff<T> implements RequestsManager {
         else
             request.addObserver(UserService.getUserByUsername(request.getTo()));
 
-        NotificationWrapper notification = new NotificationWrapper(NotificationType.NEW_REQUEST, null, request);
+        NotificationWrapper notification = new NotificationWrapper(NotificationType.NEW_REQUEST, null, null, request);
         request.notifyObservers(notification);
 
         RequestService.addRequest(request);
     }
 
     public void removeRequest(Request r) {
-        //TODO: Implement removeRequest
+        if (!r.getUsername().equals(this.username))
+            throw new RuntimeException("Nici nu stiu cum s-a ajuns aici");
+        RequestService.removeRequest(r);
     }
 
     @Override
     public void update(NotificationWrapper notification) {
+        Listing listing = notification.getListing();
+        Rating rating = notification.getRating();
+        Request request = notification.getRequest();
+
+        String notificationMessage = null;
+
         switch (notification.getType()) {
             case NEW_REQUEST:
                 // cerere catre contributor
-                if (notification.getRequest().getTo().equals(this.username)) {
-                    throw new NotImplementedError("Notificare ca am primit o cerere noua");
+                if (request.getTo().equals(this.username)) {
+                    notificationMessage = NotificationsBuilder.newRequest(request);
+                    break;
                 }
                 // cerere facuta de contributor
                 else {
@@ -56,17 +68,24 @@ public class Contributor<T> extends Staff<T> implements RequestsManager {
             case REQUEST_SOLVED:
                 // cerere catre contributor
                 if (notification.getRequest().getTo().equals(this.username)) {
-                    throw new NotImplementedError("Notificare ca a fost rezolvata cererea");
+                    break;
                 }
                 // cerere facuta de contributor
                 else {
-                    throw new NotImplementedError("Sa dau notificare la contributor ca i-a fost rezolvata cererea");
+                    notificationMessage = NotificationsBuilder.requestSolved(request);
+                    break;
                 }
             case NEW_REVIEW:
-                throw new NotImplementedError("Sa dau notificare la contributor ca a fost adaugata o recenzie");
+                boolean addedByMe = this.contributions.contains((Comparable<?>) listing);
+
+                notificationMessage = NotificationsBuilder.newReview(listing, rating, addedByMe);
+                break;
             default:
                 throw new IllegalStateException("Unexpected NotificationType value: " + notification.getType());
         }
+
+        if (notificationMessage != null)
+            this.notifications.add(notificationMessage);
     }
 
     public static class ContributorBuilder extends StaffBuilder {
