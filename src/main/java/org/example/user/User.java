@@ -3,6 +3,7 @@ package org.example.user;
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import org.example.management.NotificationWrapper;
 import org.example.management.RequestsManager;
 import org.example.production.*;
 import org.example.serializers.ActorToStringSerializer;
@@ -127,11 +128,11 @@ public abstract class User<T> implements Observer {
             favoriteActors.remove(actor);
     }
 
-    public void update() {
-        //TODO: Implement update
-    }
+    //TODO: Implement update in fiecare subclasa in functie de ce tipuri accepta
+    @Override
+    public abstract void update(NotificationWrapper notificationWrapper);
 
-    public void updateExperience() {
+    public void updateExperience(ExperienceStrategy strategy) {
         //TODO: Implement updateExperience
     }
 

@@ -5,14 +5,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import kotlin.NotImplementedError;
 import org.example.management.Request;
 import org.example.management.RequestHolder;
+import org.example.management.RequestsManager;
 import org.example.production.Actor;
 import org.example.production.Production;
+import org.example.production.Rating;
 import org.example.services.ActorService;
 import org.example.services.ProductionService;
 import org.example.services.RequestService;
 import org.example.services.UserService;
+import org.example.user.Admin;
 import org.example.user.Staff;
 import org.example.user.User;
+import org.example.utils.Subject;
 
 import java.io.File;
 import java.io.IOException;
@@ -150,7 +154,38 @@ public class JSONContext {
     }
 
     public void LinkObserversToSubjects() {
-        //TODO: Call attach on requests and ratings to specific users
-        throw new NotImplementedError();
+        // requests publice
+        for (Request request : RequestService.getSharedRequests())
+            for (Admin<?> admin : UserService.getAdmins())
+                request.addObserver(admin);
+
+        // requests personale
+        for (Staff<?> staff : UserService.getStaff())
+            for (Request request : staff.getPersonalRequests())
+                request.addObserver(staff);
+
+        // requests create de user
+        for (Request request : RequestService.getAllRequests()) {
+            User<?> user = UserService.getUserByUsername(request.getUsername());
+            if (user instanceof RequestsManager)
+                request.addObserver(user);
+        }
+
+        // productions pentru staff
+        for (Staff<?> staff : UserService.getStaff())
+            for (Object listing : staff.getContributions())
+                if (listing instanceof Subject subject)
+                    subject.addObserver(staff);
+
+        // productions pentru useri
+        for (Production production : ProductionService.getProductions()) {
+            for (Rating rating : production.getRatings()) {
+                User<?> user = UserService.getUserByUsername(rating.getUsername());
+                if (user instanceof RequestsManager) {
+                    production.addObserver(user);
+                    rating.addObserver(user);
+                }
+            }
+        }
     }
 }

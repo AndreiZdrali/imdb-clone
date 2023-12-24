@@ -1,9 +1,15 @@
 package org.example.production;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+import org.example.management.NotificationWrapper;
 import org.example.services.ProductionService;
+import org.example.utils.Observer;
+import org.example.utils.Subject;
 
 @JsonTypeInfo (
     use = JsonTypeInfo.Id.NAME,
@@ -15,7 +21,10 @@ import org.example.services.ProductionService;
         @JsonSubTypes.Type(value = Series.class, name = "Series")
 })
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public abstract class Production implements Comparable<Production>, Listing {
+public abstract class Production implements Comparable<Production>, Listing, Subject {
+    @JsonIgnore
+    protected Set<Observer> observers;
+
     @JsonProperty("title")
     protected String title;
     @JsonProperty("type")
@@ -39,6 +48,8 @@ public abstract class Production implements Comparable<Production>, Listing {
         this.genres = builder.genres;
         this.ratings = builder.ratings;
         this.plot = builder.plot;
+
+        this.observers = new HashSet<>();
     }
 
     public String getTitle() {
@@ -64,6 +75,22 @@ public abstract class Production implements Comparable<Production>, Listing {
                 .mapToDouble(Rating::getRating)
                 .average()
                 .orElse(0);
+    }
+
+    @Override
+    public void addObserver(Observer observer) {
+        observers.add(observer);
+    }
+
+    @Override
+    public void removeObserver(Observer observer) {
+        observers.remove(observer);
+    }
+
+    @Override
+    public void notifyObservers(NotificationWrapper notification) {
+        for (Observer observer : observers)
+            observer.update(notification);
     }
 
     public abstract void displayInfo();

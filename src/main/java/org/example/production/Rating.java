@@ -1,17 +1,18 @@
 package org.example.production;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.example.management.NotificationWrapper;
 import org.example.utils.Observer;
 import org.example.utils.Subject;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Rating implements Subject {
-    private List<Observer> observers;
+    @JsonIgnore
+    private Set<Observer> observers;
 
     @JsonProperty("username")
     private String username;
@@ -35,7 +36,8 @@ public class Rating implements Subject {
         this.comment = comment;
 
         this.visible = Objects.requireNonNullElse(visible, true);
-        this.observers = new ArrayList<>();
+        this.observers = new HashSet<Observer>() {
+        };
     }
 
     public String getUsername() {
@@ -73,10 +75,9 @@ public class Rating implements Subject {
     }
 
     @Override
-    public void notifyObservers() {
-        for (Observer observer : observers) {
-            observer.update();
-        }
+    public void notifyObservers(NotificationWrapper notificationWrapper) {
+        for (Observer observer : observers)
+            observer.update(notificationWrapper);
     }
 
     public String toString() {

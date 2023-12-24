@@ -12,13 +12,13 @@ import org.example.utils.Subject;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @JsonDeserialize(builder = Request.RequestBuilder.class)
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Request implements Subject {
-    private List<Observer> observers;
+    @JsonIgnore
+    private Set<Observer> observers;
 
     private RequestType type;
     @JsonSerialize(using = LocalDateTimeToStringSerializer.class, as = String.class)
@@ -41,7 +41,7 @@ public class Request implements Subject {
         this.description = builder.description;
 
         this.status = RequestStatus.PENDING;
-        this.observers = new ArrayList<>();
+        this.observers = new HashSet<>();
     }
 
     public String getUsername() {
@@ -71,10 +71,9 @@ public class Request implements Subject {
     }
 
     @Override
-    public void notifyObservers() {
-        for (var observer : observers) {
-            observer.update();
-        }
+    public void notifyObservers(NotificationWrapper notificationWrapper) {
+        for (var observer : observers)
+            observer.update(notificationWrapper);
     }
 
     public void displayShortInfoForCreator() {

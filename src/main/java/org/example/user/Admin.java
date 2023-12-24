@@ -3,7 +3,9 @@ package org.example.user;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import org.example.management.Request;
+import kotlin.NotImplementedError;
+import org.example.management.NotificationWrapper;
+import org.example.management.NotificationType;
 import org.example.production.Actor;
 import org.example.production.Production;
 
@@ -40,6 +42,20 @@ public class Admin<T> extends Staff<T> {
 
     public void updateActor(Actor a) {
 
+    }
+
+    @Override
+    public void update(NotificationWrapper notification) {
+        switch (notification.getType()) {
+            case NEW_REQUEST:
+                throw new NotImplementedError("Sa dau notificare la admin ca a primit o cerere noua");
+            case REQUEST_SOLVED:
+                break;
+            case NEW_REVIEW:
+                throw new NotImplementedError("Notificare daca e review nou pe un listing adaugat de admin");
+            default:
+                throw new IllegalStateException("Unexpected NotificationType value: " + notification.getType());
+        }
     }
 
     public static class AdminBuilder extends StaffBuilder {

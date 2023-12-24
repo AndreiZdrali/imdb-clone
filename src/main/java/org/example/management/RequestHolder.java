@@ -3,9 +3,8 @@ package org.example.management;
 import java.util.ArrayList;
 import java.util.List;
 
-//TODO: Implement RequestHolder functionality
+/** Lista pentru toti adminii */
 public class RequestHolder {
-    //Lista pentru toti adminii
     private static List<Request> sharedRequests = new ArrayList<Request>();
 
     public static List<Request> getSharedRequests() {

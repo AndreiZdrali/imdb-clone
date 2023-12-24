@@ -68,7 +68,7 @@ public class RequestService {
         return getRequestsCreatedByUser(u);
     }
 
-    /** Adauga si in shared/personal requests */
+    /** Adauga in listere corespunzatoare */
     public static void addRequest(Request request) {
         IMDB.getInstance().getRequests().add(request);
 
