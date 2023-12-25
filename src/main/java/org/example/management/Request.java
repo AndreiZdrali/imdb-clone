@@ -60,6 +60,10 @@ public class Request implements Subject {
         return status;
     }
 
+    public void setStatus(RequestStatus status) {
+        this.status = status;
+    }
+
     @Override
     public Set<Observer> getObservers() {
         return observers;
@@ -96,6 +100,26 @@ public class Request implements Subject {
 
     public void displayShortInfoForCreator() {
         System.out.print(shortInfoForCreator());
+        System.out.println();
+    }
+
+    public String info() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.append("Request type: ").append(type).append("\n");
+        stringBuilder.append("Created on: ").append(createdDate.format(formatter)).append("\n");
+        switch(type) {
+            case DELETE_ACCOUNT, OTHERS -> { }
+            case MOVIE_ISSUE -> stringBuilder.append("Movie title: ").append(movieTitle).append("\n");
+            case ACTOR_ISSUE -> stringBuilder.append("Actor name: ").append(actorName).append("\n");
+        }
+        stringBuilder.append("Destination: ").append(description);
+        return stringBuilder.toString();
+    }
+
+    public void displayInfo() {
+        System.out.print(info());
         System.out.println();
     }
 

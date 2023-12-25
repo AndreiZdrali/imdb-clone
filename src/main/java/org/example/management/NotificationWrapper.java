@@ -11,6 +11,10 @@ public class NotificationWrapper {
     private Rating rating;
     private Request request;
 
+    /**  NotificationType.REQUEST_SOLVED => request != null
+     *  NotificationType.NEW_REVIEW => listing != null && rating != null
+     *  NotificationType.NEW_REQUEST => request != null
+     */
     public NotificationWrapper(NotificationType type, Listing listing, Rating rating, Request request) {
         this.type = type;
         this.listing = listing;

@@ -70,8 +70,8 @@ public class CLI extends UserInterface {
     }
 
     public void run() {
-        currentUser = login();
-        //currentUser = UserService.getUsers().get(UserService.getUsers().size() - 1);
+        //currentUser = login();
+        currentUser = UserService.getUsers().get(UserService.getUsers().size() - 1);
 
         while (currentUser != null) {
             List<MenuOption> options = menuProvider.getUserOptions(currentUser.getUserType());

@@ -9,13 +9,18 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import kotlin.NotImplementedError;
 import org.example.IMDB;
+import org.example.management.NotificationType;
+import org.example.management.NotificationWrapper;
 import org.example.management.Request;
+import org.example.management.RequestStatus;
 import org.example.production.*;
 import org.example.serializers.ActorToStringSerializer;
 import org.example.serializers.ProductionToStringSerializer;
 import org.example.services.ActorService;
 import org.example.services.ProductionService;
+import org.example.services.RequestService;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public abstract class Staff<T> extends User<T> implements StaffInterface {
@@ -130,11 +135,25 @@ public abstract class Staff<T> extends User<T> implements StaffInterface {
     }
 
     public void updateProduction(Production p) {
-
+        throw new NotImplementedError();
     }
 
     public void updateActor(Actor a) {
+        throw new NotImplementedError();
+    }
 
+    public void solveRequest(Request request, RequestStatus status) {
+        if (!personalRequests.contains(request) || !RequestService.getAllRequests().contains(request))
+            throw new RuntimeException("Dc incearca sa marcheze o cerere care nu-i a lui?");
+        if (request.getStatus() != RequestStatus.PENDING)
+            throw new RuntimeException("Dc e deja rezolvata?");
+
+        request.setStatus(status);
+
+        NotificationWrapper notification = new NotificationWrapper(NotificationType.REQUEST_SOLVED, null, null, request);
+        request.notifyObservers(notification);
+
+        RequestService.removeRequest(request);
     }
 
     public static class StaffBuilder extends UserBuilder {

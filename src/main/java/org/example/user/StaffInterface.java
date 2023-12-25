@@ -1,5 +1,7 @@
 package org.example.user;
 
+import org.example.management.Request;
+import org.example.management.RequestStatus;
 import org.example.production.Actor;
 import org.example.production.Production;
 
@@ -31,5 +33,9 @@ public interface StaffInterface {
 
     public void updateActor(Actor actor);
 
-    //TODO: Methods to handle requests
+    /** Removes the request from the lists
+     *  Sets the request's status and notifies the observers
+     *  Updates the creating user's experience
+     */
+    public void solveRequest(Request request, RequestStatus status);
 }

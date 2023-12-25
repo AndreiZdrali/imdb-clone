@@ -82,7 +82,7 @@ public class MainMenuCLI {
     }
 
     public static void solveRequest() {
-        throw new NotImplementedError("Not implemented yet");
+        IMDB.getInstance().getUserInterface().setMenuProvider(SolveRequestProvider.getInstance());
     }
 
     public static void addDeleteReview() {
