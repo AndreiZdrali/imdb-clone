@@ -76,38 +76,51 @@ public abstract class Staff<T> extends User<T> implements StaffInterface {
 
     //StaffInterface methods
     public void addPersonalRequest(Request request) {
-        //TODO: Implement logic dupa enunt (observer)
-        //TODO: Posibil sa trb defapt sa o fac in RequestService, DAR NU CRED
         personalRequests.add(request);
     }
 
     public void removePersonalRequest(Request request) {
-        //TODO: Implement logic dupa enunt, experienta utilizator (observer?)
-        //TODO: Posibil sa trb defapt sa o fac in RequestService, DAR NU CRED
         personalRequests.remove(request);
     }
 
-    //TODO: Implement methods from StaffInterface
     public void addProductionSystem(Production production) {
         productionsContribution.add(production);
         contributions.add(production);
 
+        production.addObserver(this);
+
         ProductionService.addProduction(production);
+        //TODO: Posibil sa trb sa adaug experienta la user
     }
 
-    public void addActorSystem(Actor a) {
-        actorsContribution.add(a);
-        contributions.add(a);
+    public void addActorSystem(Actor actor) {
+        actorsContribution.add(actor);
+        contributions.add(actor);
 
-        ActorService.addActor(a);
+        actor.addObserver(this);
+
+        ActorService.addActor(actor);
+        //TODO: Posibil sa trb sa adaug experienta la user
     }
 
-    public void removeProductionSystem(String name) {
+    public void removeProductionSystem(Production production) {
+        productionsContribution.remove(production);
+        contributions.remove(production);
+
+        production.removeObserver(this);
+
+        ProductionService.removeProduction(production);
         //TODO: Posibil sa trb sa scot experienta de la user
     }
 
-    public void removeActorSystem(String name) {
-        //TODO: Implement removeActorSystem
+    public void removeActorSystem(Actor actor) {
+        actorsContribution.remove(actor);
+        contributions.remove(actor);
+
+        actor.removeObserver(this);
+
+        ActorService.removeActor(actor);
+        //TODO: Posibil sa trb sa scot experienta de la user
     }
 
     public void updateProduction(Production p) {

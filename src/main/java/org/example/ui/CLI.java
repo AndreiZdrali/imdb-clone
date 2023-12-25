@@ -22,7 +22,14 @@ public class CLI extends UserInterface {
     /** Display the input cursor, consumes the next line and returns the input int */
     public int scanNextInt() {
         System.out.print("> ");
-        int input = scanner.nextInt();
+        int input = 0;
+        try {
+            input = scanner.nextInt();
+        } catch (Exception e) {
+            scanner.nextLine(); // consume the \n character
+            System.out.println("Invalid input! Expected an integer!");
+            input = scanNextInt();
+        }
         scanner.nextLine();
         System.out.println();
         return input;
@@ -31,7 +38,14 @@ public class CLI extends UserInterface {
     /** Display the input cursor, consumes the next line and returns the input double */
     public double scanNextDouble() {
         System.out.print("> ");
-        double input = scanner.nextDouble();
+        double input = 0;
+        try {
+            input = scanner.nextDouble();
+        } catch (Exception e) {
+            scanner.nextLine(); // consume the \n character
+            System.out.println("Invalid input! Expected a double!");
+            input = scanNextDouble();
+        }
         scanner.nextLine();
         System.out.println();
         return input;
@@ -42,6 +56,16 @@ public class CLI extends UserInterface {
         System.out.print("> ");
         String input = scanner.nextLine();
         System.out.println();
+        return input;
+    }
+
+    /** Display the input cursor, scan the next non-blank line; whitespace is considered blank */
+    public String scanNextLineNonBlank() {
+        String input = scanNextLine();
+        while (input.isBlank()) {
+            System.out.println("Invalid input! Expected a non-blank line!");
+            input = scanNextLine();
+        }
         return input;
     }
 

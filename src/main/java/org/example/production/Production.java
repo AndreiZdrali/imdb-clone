@@ -39,8 +39,11 @@ public abstract class Production implements Comparable<Production>, Listing, Sub
     protected List<Rating> ratings;
     @JsonProperty("plot")
     protected String plot;
+    @JsonProperty("releaseYear")
+    protected int releaseYear;
 
     public Production(ProductionBuilder builder) {
+
         this.title = builder.title;
         this.type = builder.type;
         this.directors = builder.directors;
@@ -48,8 +51,19 @@ public abstract class Production implements Comparable<Production>, Listing, Sub
         this.genres = builder.genres;
         this.ratings = builder.ratings;
         this.plot = builder.plot;
+        this.releaseYear = builder.releaseYear;
 
         this.observers = new HashSet<>();
+
+        //in caz ca e null in builder
+        if (this.directors == null)
+            this.directors = new ArrayList<>();
+        if (this.actors == null)
+            this.actors = new ArrayList<>();
+        if (this.genres == null)
+            this.genres = new ArrayList<>();
+        if (this.ratings == null)
+            this.ratings = new ArrayList<>();
     }
 
     public String getTitle() {
@@ -71,6 +85,8 @@ public abstract class Production implements Comparable<Production>, Listing, Sub
 
     @JsonProperty("averageRating")
     public double getAverageRating() {
+        if (ratings == null || ratings.isEmpty())
+            return 0;
         return ratings.stream()
                 .mapToDouble(Rating::getRating)
                 .average()
@@ -123,6 +139,7 @@ public abstract class Production implements Comparable<Production>, Listing, Sub
         protected List<Genre> genres;
         protected List<Rating> ratings;
         protected String plot;
+        protected int releaseYear;
 
         // astea sunt obligatorii pentru fiecare productie
         public ProductionBuilder(@JsonProperty("title") String title,
@@ -131,7 +148,8 @@ public abstract class Production implements Comparable<Production>, Listing, Sub
                                  @JsonProperty("actors") List<String> actors,
                                  @JsonProperty("genres") List<Genre> genres,
                                  @JsonProperty("ratings") List<Rating> ratings,
-                                 @JsonProperty("plot") String plot) {
+                                 @JsonProperty("plot") String plot,
+                                 @JsonProperty("releaseYear") int releaseYear) {
             this.title = title;
             this.type = type;
             this.directors = directors;
@@ -139,6 +157,7 @@ public abstract class Production implements Comparable<Production>, Listing, Sub
             this.genres = genres;
             this.ratings = ratings;
             this.plot = plot;
+            this.releaseYear = releaseYear;
         }
     }
 }

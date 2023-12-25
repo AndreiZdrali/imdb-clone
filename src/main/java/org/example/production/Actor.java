@@ -30,6 +30,9 @@ public class Actor implements Comparable, Listing, Subject {
         this.biography = biography;
 
         this.observers = new HashSet<>();
+
+        if (this.performances == null)
+            this.performances = new ArrayList<>();
     }
 
     public String getName() {

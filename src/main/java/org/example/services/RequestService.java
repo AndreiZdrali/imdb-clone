@@ -80,7 +80,7 @@ public class RequestService {
             User<?> u = UserService.getUserByUsername(request.getTo());
             if (!(u instanceof Staff<?> s))
                 throw new RuntimeException("Ar trebui sa fie staff");
-            s.getPersonalRequests().add(request);
+            s.addPersonalRequest(request);
         }
     }
 
@@ -95,7 +95,7 @@ public class RequestService {
             User<?> u = UserService.getUserByUsername(request.getTo());
             if (!(u instanceof Staff<?> s))
                 throw new RuntimeException("Ar trebui sa fie staff");
-            s.getPersonalRequests().remove(request);
+            s.removePersonalRequest(request);
         }
     }
 }

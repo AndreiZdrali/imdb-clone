@@ -48,7 +48,6 @@ public class Movie extends Production {
     @JsonIgnoreProperties({"averageRating"})
     public static class MovieBuilder extends ProductionBuilder {
         private int duration;
-        private int releaseYear;
 
         @JsonCreator
         public MovieBuilder(@JsonProperty("title") String title,
@@ -57,8 +56,9 @@ public class Movie extends Production {
                             @JsonProperty("actors") List<String> actors,
                             @JsonProperty("genres") List<Genre> genres,
                             @JsonProperty("ratings") List<Rating> ratings,
-                            @JsonProperty("plot") String plot) {
-            super(title, type, directors, actors, genres, ratings, plot);
+                            @JsonProperty("plot") String plot,
+                            @JsonProperty("releaseYear") int releaseYear) {
+            super(title, type, directors, actors, genres, ratings, plot, releaseYear);
         }
 
         @JsonProperty("duration")
@@ -69,12 +69,6 @@ public class Movie extends Production {
 
         public MovieBuilder setDuration(int duration) {
             this.duration = duration;
-            return this;
-        }
-
-        @JsonProperty("releaseYear")
-        public MovieBuilder setReleaseYear(int releaseYear) {
-            this.releaseYear = releaseYear;
             return this;
         }
 

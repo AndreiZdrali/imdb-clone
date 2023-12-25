@@ -12,9 +12,8 @@ import java.util.Map;
 @JsonDeserialize(builder = Series.SeriesBuilder.class)
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Series extends Production {
+    @JsonProperty("duration")
     private int duration;
-    @JsonProperty("releaseYear")
-    private int releaseYear;
     @JsonProperty("numSeasons")
     private int numSeasons;
     private Map<String, List<Episode>> seasons;
@@ -22,9 +21,12 @@ public class Series extends Production {
     public Series(SeriesBuilder builder) {
         super(builder);
 
-        this.releaseYear = builder.releaseYear;
         this.numSeasons = builder.numSeasons;
         this.seasons = builder.seasons;
+
+        if (this.seasons == null)
+            this.seasons = Map.of();
+
         this.duration = this.seasons.values().stream()
                 .flatMap(List::stream)
                 .mapToInt(Episode::getDuration)
@@ -71,26 +73,19 @@ public class Series extends Production {
 
     @JsonIgnoreProperties({"averageRating"})
     public static class SeriesBuilder extends ProductionBuilder {
-        private int duration;
-        private int releaseYear;
         private int numSeasons;
         private Map<String, List<Episode>> seasons;
 
         @JsonCreator
         public SeriesBuilder(@JsonProperty("title") String title,
-                            @JsonProperty("type") ProductionType type,
-                            @JsonProperty("directors") List<String> directors,
-                            @JsonProperty("actors") List<String> actors,
-                            @JsonProperty("genres") List<Genre> genres,
-                            @JsonProperty("ratings") List<Rating> ratings,
-                            @JsonProperty("plot") String plot) {
-            super(title, type, directors, actors, genres, ratings, plot);
-        }
-
-        @JsonProperty("releaseYear")
-        public SeriesBuilder setReleaseYear(int releaseYear) {
-            this.releaseYear = releaseYear;
-            return this;
+                             @JsonProperty("type") ProductionType type,
+                             @JsonProperty("directors") List<String> directors,
+                             @JsonProperty("actors") List<String> actors,
+                             @JsonProperty("genres") List<Genre> genres,
+                             @JsonProperty("ratings") List<Rating> ratings,
+                             @JsonProperty("plot") String plot,
+                             @JsonProperty("releaseYear") int releaseYear) {
+            super(title, type, directors, actors, genres, ratings, plot, releaseYear);
         }
 
         @JsonProperty("numSeasons")
