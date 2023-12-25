@@ -153,15 +153,15 @@ public class CreateRemoveRequestCLI {
         }
 
         requestsManager.removeRequest(request);
+
+        System.out.println("Request removed!");
+        System.out.println();
     }
 
     private static boolean createDeleteAccountOrOthersRequest(Request.RequestBuilder requestBuilder) {
         System.out.println("Enter the description of your request: ");
 
-        String description = IMDB.getInstance().getUserInterface().scanNextLine();
-
-        while (description.isBlank())
-            description = IMDB.getInstance().getUserInterface().scanNextLine();
+        String description = IMDB.getInstance().getUserInterface().scanNextLineNonBlank();
 
         requestBuilder.setDescription(description);
         requestBuilder.setTo("ADMIN");
@@ -172,10 +172,7 @@ public class CreateRemoveRequestCLI {
     private static boolean createActorIssueRequest(Request.RequestBuilder requestBuilder) {
         System.out.println("Enter the name of the actor: ");
 
-        String actorName = IMDB.getInstance().getUserInterface().scanNextLine();
-
-        while (actorName.isBlank())
-            actorName = IMDB.getInstance().getUserInterface().scanNextLine();
+        String actorName = IMDB.getInstance().getUserInterface().scanNextLineNonBlank();
 
         List<Actor> matchingActors = new ArrayList<>();
 
@@ -228,16 +225,11 @@ public class CreateRemoveRequestCLI {
     private static boolean createMovieIssueRequest(Request.RequestBuilder requestBuilder) {
         System.out.println("Enter the title of the production: ");
 
-        String productionTitle = IMDB.getInstance().getUserInterface().scanNextLine();
+        String productionTitle = IMDB.getInstance().getUserInterface().scanNextLineNonBlank();
 
-        while (productionTitle.isBlank())
-            productionTitle = IMDB.getInstance().getUserInterface().scanNextLine();
-
-        List<Production> matchingProductions = new ArrayList<>();
-
-        for (var production : IMDB.getInstance().getProductions())
-            if (production.getTitle().toLowerCase().contains(productionTitle.toLowerCase()))
-                matchingProductions.add(production);
+        List<Production> matchingProductions = ProductionService.getProductions().stream()
+                .filter(production -> production.getTitle().toLowerCase().contains(productionTitle.toLowerCase()))
+                .toList();
 
         if (matchingProductions.isEmpty()) {
             System.out.println("No productions found!");
@@ -268,12 +260,9 @@ public class CreateRemoveRequestCLI {
 
         requestBuilder.setMovieTitle(production.getTitle());
 
-        System.out.println("Enter the description of your request: ");
+        System.out.println("Enter the description of your request *: ");
 
-        String description = IMDB.getInstance().getUserInterface().scanNextLine();
-
-        while (description.isBlank())
-            description = IMDB.getInstance().getUserInterface().scanNextLine();
+        String description = IMDB.getInstance().getUserInterface().scanNextLineNonBlank();
 
         requestBuilder.setDescription(description);
         requestBuilder.setTo(ProductionService.getCreatorOfProduction(production).getUsername());

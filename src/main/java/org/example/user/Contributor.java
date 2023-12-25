@@ -82,7 +82,13 @@ public class Contributor<T> extends Staff<T> implements RequestsManager {
                     break;
                 }
             case NEW_REVIEW:
-                boolean addedByMe = this.contributions.contains((Comparable<?>) listing);
+                boolean addedByMe = false;
+                if (listing instanceof Production)
+                    addedByMe = this.productionsContribution.contains((Production) listing);
+                else if (listing instanceof Actor)
+                    addedByMe = this.actorsContribution.contains((Actor) listing);
+                else
+                    throw new IllegalStateException("Unknown listing type!");
 
                 notificationMessage = NotificationsBuilder.newReview(listing, rating, addedByMe);
                 break;

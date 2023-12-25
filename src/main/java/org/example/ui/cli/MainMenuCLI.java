@@ -86,7 +86,7 @@ public class MainMenuCLI {
     }
 
     public static void addDeleteReview() {
-        throw new NotImplementedError("Not implemented yet");
+        IMDB.getInstance().getUserInterface().setMenuProvider(AddDeleteReviewProdiver.getInstance());
     }
 
     public static void addDeleteUser() {

@@ -5,10 +5,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.management.*;
 import org.example.production.*;
+import org.example.services.ProductionService;
 import org.example.services.RequestService;
 import org.example.services.UserService;
 import org.example.utils.NotificationsBuilder;
 import org.example.utils.Observer;
+
+import java.util.List;
 
 @JsonDeserialize(builder = Regular.RegularBuilder.class)
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -42,8 +45,24 @@ public class Regular<T> extends User<T> implements RequestsManager {
         RequestService.removeRequest(request);
     }
 
-    public void addRating() {
-        //TODO: Implement addRating
+    public List<Rating> getReviews() {
+        return ProductionService.getProductions().stream()
+                .flatMap(production -> production.getRatings().stream())
+                .filter(rating -> rating.getUsername().equals(username))
+                .toList();
+    }
+
+    /** Adds the rating to the production, notifies the observers and updates the user's experience */
+    public void addRating(Production production, Rating rating) {
+        production.getRatings().add(rating);
+
+        //TODO: Notify si la rating cred ca e complet inutil
+        //rating.addObserver(this);
+
+        production.notifyObservers(new NotificationWrapper(
+                NotificationType.NEW_REVIEW,production, rating, null));
+
+        //TODO: Sa adaug experienta la user
     }
 
     @Override

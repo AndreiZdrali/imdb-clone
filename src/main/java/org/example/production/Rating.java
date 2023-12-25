@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.example.management.NotificationWrapper;
+import org.example.services.ProductionService;
 import org.example.utils.Observer;
 import org.example.utils.Subject;
 
@@ -29,15 +30,14 @@ public class Rating implements Subject {
 
     public Rating(@JsonProperty("username") String username,
                   @JsonProperty("rating") int rating,
-                  @JsonProperty("comment") String comment,
-                  @JsonProperty("visible") Boolean visible) {
+                  @JsonProperty("comment") String comment) {
         this.username = username;
         this.rating = rating;
         this.comment = comment;
 
-        this.visible = Objects.requireNonNullElse(visible, true);
-        this.observers = new HashSet<Observer>() {
-        };
+        this.observers = new HashSet<Observer>();
+
+        this.visible = true;
     }
 
     public String getUsername() {
@@ -52,8 +52,29 @@ public class Rating implements Subject {
         return comment;
     }
 
+    public Listing getListing() {
+        for (Production production : ProductionService.getProductions())
+            if (production.getRatings().contains(this))
+                return production;
+        return null;
+    }
+
+    /** Format: "Username: {username} | Rating: {rating} | Comment: {comment}" */
     public String compactInfo() {
         return "Username: " + username + " | Rating: " + rating + " | Comment: " + comment;
+    }
+
+    /** Format: "Listing: {listing} | Rating: {rating} | Comment: {comment}" */
+    public String compactInfoForCreator() {
+        Listing listing = getListing();
+        if (listing == null)
+            return "Listing: <???>" + " | Rating: " + rating + " | Comment: " + comment;
+        else if (listing instanceof Production production)
+            return "Listing: " + production.getTitle() + " | Rating: " + rating + " | Comment: " + comment;
+        else if (listing instanceof Actor actor)
+            return "Listing: " + actor.getName() + " | Rating: " + rating + " | Comment: " + comment;
+        else
+            throw new IllegalStateException("Unknown listing type!");
     }
 
     public void hide() {

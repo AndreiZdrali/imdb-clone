@@ -104,6 +104,9 @@ public abstract class Staff<T> extends User<T> implements StaffInterface {
     }
 
     public void removeProductionSystem(Production production) {
+        if (!productionsContribution.contains(production) || !contributions.contains(production))
+            throw new RuntimeException("Dc incearca sa stearga o productie pe care n-a facut-o?");
+
         productionsContribution.remove(production);
         contributions.remove(production);
 
@@ -114,6 +117,9 @@ public abstract class Staff<T> extends User<T> implements StaffInterface {
     }
 
     public void removeActorSystem(Actor actor) {
+        if (!actorsContribution.contains(actor) || !contributions.contains(actor))
+            throw new RuntimeException("Dc incearca sa stearga un actor pe care nu l-a adaugat?");
+
         actorsContribution.remove(actor);
         contributions.remove(actor);
 

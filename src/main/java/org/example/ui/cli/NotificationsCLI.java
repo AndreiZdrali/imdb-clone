@@ -8,10 +8,10 @@ public class NotificationsCLI {
     public static void clearNotifications() {
         User<?> user = IMDB.getInstance().getUserInterface().getCurrentUser();
 
-        //TODO: Sa vad cum fac sa salvez dupa asta, probabil in CLI.run() intre menu switch-uri
         user.getNotifications().clear();
 
         System.out.println("Notifications cleared!");
+        System.out.println();
 
         IMDB.getInstance().getUserInterface().setMenuProvider(MainMenuProvider.getInstance());
     }

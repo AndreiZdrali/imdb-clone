@@ -1,6 +1,7 @@
 package org.example.services;
 
 import org.example.IMDB;
+import org.example.production.Rating;
 import org.example.user.*;
 
 import java.util.List;

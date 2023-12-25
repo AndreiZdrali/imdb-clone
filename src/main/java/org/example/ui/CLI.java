@@ -70,8 +70,8 @@ public class CLI extends UserInterface {
     }
 
     public void run() {
-        //currentUser = login();
-        currentUser = UserService.getUsers().get(UserService.getUsers().size() - 1);
+        currentUser = login();
+        //currentUser = UserService.getUsers().get(UserService.getUsers().size() - 1);
 
         while (currentUser != null) {
             List<MenuOption> options = menuProvider.getUserOptions(currentUser.getUserType());
@@ -85,6 +85,12 @@ public class CLI extends UserInterface {
             System.out.println("\t" + (i + 1) + ") " + options.get(i).toString());
 
         int option = scanNextInt();
+
+        if (option < 1 || option > options.size()) {
+            System.out.println("Invalid option!");
+            System.out.println();
+            return;
+        }
 
         MenuOption selectedOption = options.get(option - 1);
 
