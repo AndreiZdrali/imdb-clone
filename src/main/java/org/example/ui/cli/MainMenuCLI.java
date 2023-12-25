@@ -72,11 +72,11 @@ public class MainMenuCLI {
         IMDB.getInstance().getUserInterface().setMenuProvider(CreateRemoveRequestProvider.getInstance());
     }
 
-    //TODO: Implement the rest of the options
     public static void addDeleteListing() {
-        throw new NotImplementedError("Not implemented yet");
+        IMDB.getInstance().getUserInterface().setMenuProvider(AddDeleteListingProvider.getInstance());
     }
 
+    //TODO: Implement the rest of the options
     public static void updateListing() {
         throw new NotImplementedError("Not implemented yet");
     }

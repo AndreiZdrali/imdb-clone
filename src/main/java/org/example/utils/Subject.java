@@ -2,7 +2,10 @@ package org.example.utils;
 
 import org.example.management.NotificationWrapper;
 
+import java.util.Set;
+
 public interface Subject {
+    Set<Observer> getObservers();
     void addObserver(Observer observer);
     void removeObserver(Observer observer);
 

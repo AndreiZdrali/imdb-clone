@@ -65,6 +65,11 @@ public class Rating implements Subject {
     }
 
     @Override
+    public Set<Observer> getObservers() {
+        return observers;
+    }
+
+    @Override
     public void addObserver(Observer observer) {
         observers.add(observer);
     }

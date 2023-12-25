@@ -50,6 +50,11 @@ public class Actor implements Comparable, Listing, Subject {
     }
 
     @Override
+    public Set<Observer> getObservers() {
+        return observers;
+    }
+
+    @Override
     public void addObserver(Observer observer) {
         observers.add(observer);
     }

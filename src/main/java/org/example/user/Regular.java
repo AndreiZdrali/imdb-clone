@@ -8,6 +8,7 @@ import org.example.production.*;
 import org.example.services.RequestService;
 import org.example.services.UserService;
 import org.example.utils.NotificationsBuilder;
+import org.example.utils.Observer;
 
 @JsonDeserialize(builder = Regular.RegularBuilder.class)
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -18,6 +19,7 @@ public class Regular<T> extends User<T> implements RequestsManager {
 
     public void createRequest(Request request) {
         request.addObserver(this);
+
         if (request.getTo().equals("ADMIN"))
             for (Admin<?> admin : UserService.getAdmins())
                 request.addObserver(admin);
@@ -32,7 +34,11 @@ public class Regular<T> extends User<T> implements RequestsManager {
 
     public void removeRequest(Request request) {
         if (!request.getUsername().equals(this.username))
-            throw new RuntimeException("Nici nu stiu cum s-a ajuns aici");
+            throw new RuntimeException("Nu ar trb sa poata sa stearga o cerere care nu e a lui");
+
+        for (Observer observer : request.getObservers())
+            request.removeObserver(observer);
+
         RequestService.removeRequest(request);
     }
 

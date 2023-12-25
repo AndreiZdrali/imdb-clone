@@ -17,6 +17,7 @@ public class FavoritesCLI {
 
         if (user.getFavorites().isEmpty()) {
             System.out.println("You don't have any favorites yet!");
+            System.out.println();
             return;
         }
 

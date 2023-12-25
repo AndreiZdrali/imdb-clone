@@ -15,6 +15,7 @@ import org.example.production.Rating;
 import org.example.services.RequestService;
 import org.example.services.UserService;
 import org.example.utils.NotificationsBuilder;
+import org.example.utils.Observer;
 
 import java.util.List;
 import java.util.SortedSet;
@@ -28,6 +29,7 @@ public class Contributor<T> extends Staff<T> implements RequestsManager {
 
     public void createRequest(Request request) {
         request.addObserver(this);
+
         if (request.getTo().equals("ADMIN"))
             for (Admin<?> admin : UserService.getAdmins())
                 request.addObserver(admin);
@@ -40,10 +42,14 @@ public class Contributor<T> extends Staff<T> implements RequestsManager {
         RequestService.addRequest(request);
     }
 
-    public void removeRequest(Request r) {
-        if (!r.getUsername().equals(this.username))
+    public void removeRequest(Request request) {
+        if (!request.getUsername().equals(this.username))
             throw new RuntimeException("Nici nu stiu cum s-a ajuns aici");
-        RequestService.removeRequest(r);
+
+        for (Observer observer : request.getObservers())
+            request.removeObserver(observer);
+
+        RequestService.removeRequest(request);
     }
 
     @Override
