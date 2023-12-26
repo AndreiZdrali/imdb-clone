@@ -100,7 +100,8 @@ public class IMDB {
     public void run() {
         jsonContext.LoadJSONData();
 
-        askForUserInterface();
+        //askForUserInterface();
+        userInterface = new GUI();
 
         userInterface.run();
     }

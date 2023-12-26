@@ -4,6 +4,7 @@ import org.example.IMDB;
 import org.example.services.UserService;
 import org.example.ui.menus.MainMenuProvider;
 import org.example.ui.menus.MenuOption;
+import org.example.ui.menus.MenuProvider;
 import org.example.user.AccountType;
 import org.example.user.User;
 
@@ -19,7 +20,18 @@ public class CLI extends UserInterface {
         scanner = new Scanner(System.in);
     }
 
-    /** Display the input cursor, consumes the next line and returns the input int */
+    @Override
+    public MenuProvider getMenuProvider() {
+        return menuProvider;
+    }
+
+    @Override
+    public void setMenuProvider(MenuProvider menuProvider) {
+        this.menuProvider = menuProvider;
+    }
+
+
+    @Override
     public int scanNextInt() {
         System.out.print("> ");
         int input = 0;
@@ -35,7 +47,7 @@ public class CLI extends UserInterface {
         return input;
     }
 
-    /** Display the input cursor, consumes the next line and returns the input double */
+    @Override
     public double scanNextDouble() {
         System.out.print("> ");
         double input = 0;
@@ -51,7 +63,7 @@ public class CLI extends UserInterface {
         return input;
     }
 
-    /** Display the input cursor and returns the input string */
+    @Override
     public String scanNextLine() {
         System.out.print("> ");
         String input = scanner.nextLine();
@@ -59,7 +71,7 @@ public class CLI extends UserInterface {
         return input;
     }
 
-    /** Display the input cursor, scan the next non-blank line; whitespace is considered blank */
+    @Override
     public String scanNextLineNonBlank() {
         String input = scanNextLine();
         while (input.isBlank()) {
@@ -69,6 +81,7 @@ public class CLI extends UserInterface {
         return input;
     }
 
+    @Override
     public void run() {
         do {
             currentUser = login();
@@ -124,7 +137,6 @@ public class CLI extends UserInterface {
         String password = scanner.nextLine();
         System.out.println();
 
-        //FIXME: AICI CEVA EROARE
         for (User<?> u : UserService.getUsers()) {
             if (u.checkLogin(email, password)) {
                 System.out.println("Welcome back, " + u.getUsername() + "!");

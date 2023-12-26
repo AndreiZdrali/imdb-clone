@@ -1,16 +1,22 @@
 package org.example.ui;
 
 import kotlin.NotImplementedError;
-import org.example.ui.UserInterface;
-import org.example.ui.menus.MenuProvider;
-import org.example.user.User;
+import org.example.ui.gui.AppFrame;
+
+import javax.swing.*;
 
 public class GUI extends UserInterface {
-    public GUI() {
-        throw new NotImplementedError("GUI not implemented yet");
+    private AppFrame appFrame;
+
+    public GUI() { }
+
+    @Override
+    public void setView(String viewName) {
+        appFrame.setView(viewName);
     }
 
+    @Override
     public void run() {
-        throw new NotImplementedError("GUI not implemented yet");
+        appFrame = new AppFrame();
     }
 }
