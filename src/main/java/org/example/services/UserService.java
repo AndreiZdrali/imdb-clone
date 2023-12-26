@@ -3,6 +3,7 @@ package org.example.services;
 import org.example.IMDB;
 import org.example.production.Rating;
 import org.example.user.*;
+import org.example.utils.Subject;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -49,8 +50,25 @@ public class UserService {
         IMDB.getInstance().getUsers().add(user);
     }
 
-    public static void removeUser(User<?> user) {
+    /** Deletes the user and all of its reviews and requests
+     *  If the user is a contributor also move his contributions
+     *  to the shared pool and remove him from their observers list
+     */
+    public static void deleteUser(User<?> user) {
         IMDB.getInstance().getUsers().remove(user);
+
+        for (var production : ProductionService.getProductions())
+            production.getRatings().removeIf(rating -> rating.getUsername().equals(user.getUsername()));
+
+        for (var request : RequestService.getRequestsCreatedByUser(user))
+            RequestService.removeRequest(request);
+
+        if (user instanceof Contributor<?> contributor) {
+            for (var c : contributor.getContributions()) {
+                ((Subject) c).removeObserver(contributor);
+                //TODO: Add to shared pool
+            }
+        }
     }
 
     public static User<?> getUserByUsername(String username) {

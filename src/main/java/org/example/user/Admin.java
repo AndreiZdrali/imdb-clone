@@ -8,6 +8,7 @@ import org.example.management.NotificationWrapper;
 import org.example.management.NotificationType;
 import org.example.management.Request;
 import org.example.production.*;
+import org.example.services.UserService;
 import org.example.utils.NotificationsBuilder;
 
 import java.util.List;
@@ -20,30 +21,14 @@ public class Admin<T> extends Staff<T> {
         super(builder);
     }
 
-//    //TODO: Override methods from Staff (nu cred ca trb)
-//    public void addProductionSystem(Production production) {
-//
-//    }
-//
-//    public void addActorSystem(Actor a) {
-//
-//    }
-//
-//    public void removeProductionSystem(String name) {
-//
-//    }
-//
-//    public void removeActorSystem(String name) {
-//
-//    }
-//
-//    public void updateProduction(Production p) {
-//
-//    }
-//
-//    public void updateActor(Actor a) {
-//
-//    }
+    public void addUser(User<?> user) {
+        throw new NotImplementedError();
+    }
+
+    /** @see UserService#deleteUser(User) */
+    public void deleteUser(User<?> user) {
+        UserService.deleteUser(user);
+    }
 
     @Override
     public void update(NotificationWrapper notification) {
@@ -81,8 +66,8 @@ public class Admin<T> extends Staff<T> {
             super(username, experience, information, userType);
         }
 
-        public Admin build() {
-            return new Admin(this);
+        public Admin<?> build() {
+            return new Admin<>(this);
         }
     }
 }

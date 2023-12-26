@@ -41,6 +41,7 @@ public class ProductionService {
         return null;
     }
 
+    /** Returns the production, or null if it doesn't exist */
     public static Staff<?> getCreatorOfProduction(Production production) {
         for (Staff<?> staff : UserService.getStaff())
             if (staff.getProductionsContribution().contains(production))

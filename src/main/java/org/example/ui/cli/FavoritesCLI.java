@@ -38,10 +38,7 @@ public class FavoritesCLI {
 
         System.out.println("Enter the listing name: ");
 
-        String input = IMDB.getInstance().getUserInterface().scanNextLine();
-
-        while (input.isBlank())
-            input = IMDB.getInstance().getUserInterface().scanNextLine();
+        String input = IMDB.getInstance().getUserInterface().scanNextLineNonBlank();
 
         List<Listing> matchingListings = new ArrayList<>();
 
@@ -66,8 +63,14 @@ public class FavoritesCLI {
             System.out.print("\t" + (i + 1) + ") ");
             matchingListings.get(i).displayShortInfo();
         }
+        System.out.println();
 
         int input2 = IMDB.getInstance().getUserInterface().scanNextInt();
+
+        if (input2 == 0) {
+            System.out.println();
+            return;
+        }
 
         if (input2 < 0 || input2 > matchingListings.size()) {
             System.out.println("Invalid listing number!");
@@ -75,12 +78,10 @@ public class FavoritesCLI {
             return;
         }
 
-        if (input2 == 0) {
-            System.out.println();
-            return;
-        }
-
         user.addFavorite((Comparable) matchingListings.get(input2 - 1));
+
+        System.out.println("Added to favorites!");
+        System.out.println();
     }
 
     public static void removeFavorite() {

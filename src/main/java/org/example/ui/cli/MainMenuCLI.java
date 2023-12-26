@@ -34,10 +34,7 @@ public class MainMenuCLI {
     public static void searchForListing() {
         System.out.println("Enter the listing name: ");
 
-        String input = IMDB.getInstance().getUserInterface().scanNextLine();
-
-        while (input.isBlank())
-            input = IMDB.getInstance().getUserInterface().scanNextLine();
+        String input = IMDB.getInstance().getUserInterface().scanNextLineNonBlank();
 
         List<Listing> matchingListings = new ArrayList<>();
 
@@ -90,7 +87,7 @@ public class MainMenuCLI {
     }
 
     public static void addDeleteUser() {
-        throw new NotImplementedError("Not implemented yet");
+        IMDB.getInstance().getUserInterface().setMenuProvider(AddDeleteUserProvider.getInstance());
     }
 
     public static void logout() {

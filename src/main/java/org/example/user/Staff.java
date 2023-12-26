@@ -27,7 +27,7 @@ public abstract class Staff<T> extends User<T> implements StaffInterface {
     @JsonIgnore
     protected List<Request> personalRequests;
     @JsonIgnore
-    public SortedSet<Comparable> contributions;
+    protected SortedSet<Comparable> contributions;
     @JsonProperty("productionsContribution")
     @JsonSerialize(using = ProductionToStringSerializer.class, as = String.class)
     protected SortedSet<Production> productionsContribution;

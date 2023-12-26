@@ -11,6 +11,7 @@ import org.example.services.ActorService;
 import org.example.services.ProductionService;
 import org.example.services.RequestService;
 import org.example.services.UserService;
+import org.example.user.Contributor;
 import org.example.user.User;
 
 import java.time.LocalDateTime;
@@ -52,6 +53,7 @@ public class CreateRemoveRequestCLI {
         int input = IMDB.getInstance().getUserInterface().scanNextInt();
 
         if (input == 0) {
+            System.out.println("Request canceled!");
             System.out.println();
             return;
         }
@@ -174,11 +176,15 @@ public class CreateRemoveRequestCLI {
 
         String actorName = IMDB.getInstance().getUserInterface().scanNextLineNonBlank();
 
-        List<Actor> matchingActors = new ArrayList<>();
+        List<Actor> matchingActors = ActorService.getActors().stream()
+                .filter(actor -> actor.getName().toLowerCase().contains(actorName.toLowerCase()))
+                .toList();
 
-        for (var actor : ActorService.getActors())
-            if (actor.getName().toLowerCase().contains(actorName.toLowerCase()))
-                matchingActors.add(actor);
+        User<?> user = IMDB.getInstance().getUserInterface().getCurrentUser();
+        if (user instanceof Contributor<?> contributor)
+            matchingActors = matchingActors.stream()
+                    .filter(actor -> !contributor.getContributions().contains(actor))
+                    .toList();
 
         if (matchingActors.isEmpty()) {
             System.out.println("No actors found!");
@@ -230,6 +236,12 @@ public class CreateRemoveRequestCLI {
         List<Production> matchingProductions = ProductionService.getProductions().stream()
                 .filter(production -> production.getTitle().toLowerCase().contains(productionTitle.toLowerCase()))
                 .toList();
+
+        User<?> user = IMDB.getInstance().getUserInterface().getCurrentUser();
+        if (user instanceof Contributor<?> contributor)
+            matchingProductions = matchingProductions.stream()
+                    .filter(production -> !contributor.getContributions().contains(production))
+                    .toList();
 
         if (matchingProductions.isEmpty()) {
             System.out.println("No productions found!");

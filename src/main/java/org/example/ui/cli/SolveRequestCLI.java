@@ -97,8 +97,7 @@ public class SolveRequestCLI {
         if (input == 1) {
             staff.solveRequest(request, RequestStatus.SOLVED);
             System.out.println("Request marked as solved!");
-        }
-        else {
+        } else {
             staff.solveRequest(request, RequestStatus.REJECTED);
             System.out.println("Request marked as rejected!");
         }

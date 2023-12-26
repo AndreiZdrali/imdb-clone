@@ -51,7 +51,7 @@ public abstract class User<T> implements Observer {
     @JsonSerialize(using = ActorToStringSerializer.class, as = String.class)
     protected SortedSet<Actor> favoriteActors;
     @JsonIgnore
-    public SortedSet<Comparable> favorites;
+    protected SortedSet<Comparable> favorites;
 
     @JsonProperty("notifications")
     protected List<String> notifications;
@@ -153,6 +153,21 @@ public abstract class User<T> implements Observer {
         //TODO: Implement logout
     }
 
+    public String infoForCreator() {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.append("Username: ").append(username).append("\n");
+        stringBuilder.append("Account Type: ").append(userType).append("\n");
+        stringBuilder.append("\tEmail: ").append(information.credentials.getEmail()).append("\n");
+        stringBuilder.append("\tName: ").append(information.name).append("\n");
+        stringBuilder.append("\tCountry: ").append(information.country).append("\n");
+        stringBuilder.append("\tAge: ").append(information.age).append("\n");
+        stringBuilder.append("\tGender: ").append(information.gender).append("\n");
+        stringBuilder.append("\tBirth date: ").append(information.birthDate).append("\n");
+
+        return stringBuilder.toString();
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -189,6 +204,30 @@ public abstract class User<T> implements Observer {
             this.age = builder.age;
             this.gender = builder.gender;
             this.birthDate = builder.birthDate;
+        }
+
+        public Credentials getCredentials() {
+            return credentials;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public String getCountry() {
+            return country;
+        }
+
+        public int getAge() {
+            return age;
+        }
+
+        public String getGender() {
+            return gender;
+        }
+
+        public LocalDate getBirthDate() {
+            return birthDate;
         }
 
         public static class InformationBuilder {
