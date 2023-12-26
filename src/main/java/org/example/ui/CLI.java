@@ -26,8 +26,8 @@ public class CLI extends UserInterface {
         try {
             input = scanner.nextInt();
         } catch (Exception e) {
-            scanner.nextLine(); // consume the \n character
             System.out.println("Invalid input! Expected an integer!");
+            scanner.nextLine(); // consume the \n character
             input = scanNextInt();
         }
         scanner.nextLine();
@@ -42,8 +42,8 @@ public class CLI extends UserInterface {
         try {
             input = scanner.nextDouble();
         } catch (Exception e) {
-            scanner.nextLine(); // consume the \n character
             System.out.println("Invalid input! Expected a double!");
+            scanner.nextLine(); // consume the \n character
             input = scanNextDouble();
         }
         scanner.nextLine();
@@ -70,13 +70,13 @@ public class CLI extends UserInterface {
     }
 
     public void run() {
-        //currentUser = login();
-        currentUser = UserService.getUsers().get(UserService.getUsers().size() - 1);
-
-        while (currentUser != null) {
-            List<MenuOption> options = menuProvider.getUserOptions(currentUser.getUserType());
-            handleOptions(options);
-        }
+        do {
+            currentUser = login();
+            while (currentUser != null) {
+                List<MenuOption> options = menuProvider.getUserOptions(currentUser.getUserType());
+                handleOptions(options);
+            }
+        } while (!askForExit());
     }
 
     private void handleOptions(List<MenuOption> options) {
@@ -95,6 +95,24 @@ public class CLI extends UserInterface {
         MenuOption selectedOption = options.get(option - 1);
 
         selectedOption.executeCLI();
+    }
+
+    private boolean askForExit() {
+        System.out.println("Do you want to exit?");
+        System.out.println("\t1) Yes");
+        System.out.println("\t2) No");
+
+        int option = scanNextInt();
+
+        if (option == 1)
+            return true;
+        else if (option == 2)
+            return false;
+        else {
+            System.out.println("Invalid option!");
+            System.out.println();
+            return askForExit();
+        }
     }
 
     private User<?> login() {
@@ -120,7 +138,6 @@ public class CLI extends UserInterface {
         }
 
         System.out.println("Invalid credentials!");
-        login();
-        throw new RuntimeException("Eroare la login, nu stiu cum s-a ajuns aici");
+        return login();
     }
 }

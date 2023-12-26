@@ -91,6 +91,6 @@ public class MainMenuCLI {
     }
 
     public static void logout() {
-        throw new NotImplementedError("Not implemented yet");
+        IMDB.getInstance().getUserInterface().setCurrentUser(null);
     }
 }

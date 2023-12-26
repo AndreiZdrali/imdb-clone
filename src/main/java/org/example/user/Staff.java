@@ -56,6 +56,7 @@ public abstract class Staff<T> extends User<T> implements StaffInterface {
     }
 
     public SortedSet<Comparable> getContributions() {
+        //TODO: sa bag si alea shared
         return contributions;
     }
 
@@ -64,6 +65,7 @@ public abstract class Staff<T> extends User<T> implements StaffInterface {
     }
 
     public SortedSet<Production> getProductionsContribution() {
+        //TODO: sa bag si alea shared
         return productionsContribution;
     }
 
@@ -72,6 +74,7 @@ public abstract class Staff<T> extends User<T> implements StaffInterface {
     }
 
     public SortedSet<Actor> getActorsContribution() {
+        //TODO: sa bag si alea shared
         return actorsContribution;
     }
 

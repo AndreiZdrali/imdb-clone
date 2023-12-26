@@ -63,7 +63,6 @@ public class FavoritesCLI {
             System.out.print("\t" + (i + 1) + ") ");
             matchingListings.get(i).displayShortInfo();
         }
-        System.out.println();
 
         int input2 = IMDB.getInstance().getUserInterface().scanNextInt();
 

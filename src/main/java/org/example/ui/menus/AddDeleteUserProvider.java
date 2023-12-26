@@ -32,6 +32,6 @@ public class AddDeleteUserProvider extends MenuProvider {
         ));
         regularOptions.add(MenuOption.List.BACK_TO_MAIN_MENU);
 
-        return null;
+        return regularOptions;
     }
 }

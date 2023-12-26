@@ -10,6 +10,7 @@ public class UserInformationHelper {
 
     public static String generateUsername(String name) {
         List<String> usernameParts = Arrays.asList(name.toLowerCase().split(" "));
+        usernameParts = new java.util.ArrayList<>(usernameParts);
 
         while (UserService.getUserByUsername(String.join("_", usernameParts)) != null)
             usernameParts.add(String.valueOf((int) (Math.random() * 10)));

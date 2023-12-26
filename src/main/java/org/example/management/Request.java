@@ -107,6 +107,7 @@ public class Request implements Subject {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         StringBuilder stringBuilder = new StringBuilder();
 
+        stringBuilder.append("From: ").append(username).append("\n");
         stringBuilder.append("Request type: ").append(type).append("\n");
         stringBuilder.append("Created on: ").append(createdDate.format(formatter)).append("\n");
         switch(type) {
@@ -114,7 +115,7 @@ public class Request implements Subject {
             case MOVIE_ISSUE -> stringBuilder.append("Movie title: ").append(movieTitle).append("\n");
             case ACTOR_ISSUE -> stringBuilder.append("Actor name: ").append(actorName).append("\n");
         }
-        stringBuilder.append("Destination: ").append(description);
+        stringBuilder.append("Description: ").append(description);
         return stringBuilder.toString();
     }
 

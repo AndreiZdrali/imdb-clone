@@ -22,7 +22,7 @@ public class Admin<T> extends Staff<T> {
     }
 
     public void addUser(User<?> user) {
-        throw new NotImplementedError();
+        UserService.addUser(user);
     }
 
     /** @see UserService#deleteUser(User) */

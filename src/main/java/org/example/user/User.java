@@ -158,12 +158,12 @@ public abstract class User<T> implements Observer {
 
         stringBuilder.append("Username: ").append(username).append("\n");
         stringBuilder.append("Account Type: ").append(userType).append("\n");
-        stringBuilder.append("\tEmail: ").append(information.credentials.getEmail()).append("\n");
-        stringBuilder.append("\tName: ").append(information.name).append("\n");
-        stringBuilder.append("\tCountry: ").append(information.country).append("\n");
-        stringBuilder.append("\tAge: ").append(information.age).append("\n");
-        stringBuilder.append("\tGender: ").append(information.gender).append("\n");
-        stringBuilder.append("\tBirth date: ").append(information.birthDate).append("\n");
+        stringBuilder.append("Email: ").append(information.credentials.getEmail()).append("\n");
+        stringBuilder.append("Name: ").append(information.name).append("\n");
+        stringBuilder.append("Country: ").append(information.country).append("\n");
+        stringBuilder.append("Age: ").append(information.age).append("\n");
+        stringBuilder.append("Gender: ").append(information.gender).append("\n");
+        stringBuilder.append("Birth date: ").append(information.birthDate);
 
         return stringBuilder.toString();
     }

@@ -67,8 +67,8 @@ public class Rating implements Subject {
     /** Format: "Listing: {listing} | Rating: {rating} | Comment: {comment}" */
     public String compactInfoForCreator() {
         Listing listing = getListing();
-        if (listing == null)
-            return "Listing: <???>" + " | Rating: " + rating + " | Comment: " + comment;
+        if (listing == null) //adica inca nu a fost adaugat
+            return "Rating: " + rating + " | Comment: " + comment;
         else if (listing instanceof Production production)
             return "Listing: " + production.getTitle() + " | Rating: " + rating + " | Comment: " + comment;
         else if (listing instanceof Actor actor)

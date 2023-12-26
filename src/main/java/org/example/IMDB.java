@@ -97,7 +97,6 @@ public class IMDB {
         }
     }
 
-    //TODO: Implement run
     public void run() {
         jsonContext.LoadJSONData();
 

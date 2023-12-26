@@ -41,6 +41,13 @@ public class AddDeleteUserCLI {
         System.out.println("Email: ");
         String email = IMDB.getInstance().getUserInterface().scanNextLineNonBlank();
 
+        for (var u : UserService.getUsers()) {
+            if (u.getInformation().getCredentials().getEmail().equals(email)) {
+                System.out.println("Email already in use!");
+                email = IMDB.getInstance().getUserInterface().scanNextLineNonBlank();
+            }
+        }
+
         System.out.println("Real name: ");
         String realName = IMDB.getInstance().getUserInterface().scanNextLineNonBlank();
 
@@ -81,7 +88,7 @@ public class AddDeleteUserCLI {
 
         System.out.println("Do you want to add user " + newUser.getUsername() + "?");
         System.out.println("-> User information: ");
-        System.out.println(user.infoForCreator());
+        System.out.println(newUser.infoForCreator());
 
         System.out.println("\t1) Yes");
         System.out.println("\t2) No");
@@ -96,7 +103,7 @@ public class AddDeleteUserCLI {
 
         admin.addUser(newUser);
 
-        System.out.println("User added!");
+        System.out.println("User added with password: \"" + password + "\"!");
         System.out.println();
     }
 
@@ -125,7 +132,7 @@ public class AddDeleteUserCLI {
 
         System.out.println("Enter the number of the user you want to delete (0 to cancel): ");
         for (int i = 0; i < matchingUsers.size(); i++) {
-            System.out.print(i + 1 + ". ");
+            System.out.print("\t" + (i + 1) + ") ");
             System.out.println(matchingUsers.get(i).getUsername());
         }
 
