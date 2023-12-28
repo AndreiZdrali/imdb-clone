@@ -1,15 +1,13 @@
 package org.example.ui.gui;
 
 import org.example.IMDB;
-import org.example.services.UserService;
 import org.example.user.User;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Arrays;
 
 public class LoginView extends JPanel {
-    private JTextField userName;
+    private JTextField email;
     private JPasswordField password;
     private JButton loginButton;
     private JButton exitButton;
@@ -17,33 +15,34 @@ public class LoginView extends JPanel {
     public LoginView() {
         setLayout(new GridLayout(3, 2));
 
-        userName = new JTextField();
+        email = new JTextField();
         password = new JPasswordField();
 
         loginButton = new JButton("Login");
+        loginButton.addActionListener(e -> loginButtonActionListener());
+
         exitButton = new JButton("Exit");
-
-        loginButton.addActionListener(e -> {
-            String userNameText = userName.getText();
-            String passwordText = new String(password.getPassword());
-
-            for (User<?> user : IMDB.getInstance().getUsers()) {
-                if (user.checkLogin(userNameText, passwordText)) {
-                    IMDB.getInstance().getUserInterface().setCurrentUser(user);
-                    IMDB.getInstance().getUserInterface().setView(AppFrame.ViewsList.MAIN_MENU);
-                    return;
-                }
-            }
-            JOptionPane.showMessageDialog(this, "Invalid username or password!", "Error", JOptionPane.ERROR_MESSAGE);
-        });
-
         exitButton.addActionListener(e -> System.exit(0));
 
-        add(new JLabel("Username:"));
-        add(userName);
+        add(new JLabel("Email:"));
+        add(email);
         add(new JLabel("Password:"));
         add(password);
         add(loginButton);
         add(exitButton);
+    }
+
+    private void loginButtonActionListener() {
+        String userNameText = email.getText();
+        String passwordText = new String(password.getPassword());
+
+        for (User<?> user : IMDB.getInstance().getUsers()) {
+            if (user.checkLogin(userNameText, passwordText)) {
+                IMDB.getInstance().getUserInterface().setCurrentUser(user);
+                IMDB.getInstance().getUserInterface().setView(MenuOption.List.MAIN_MENU.getName());
+                return;
+            }
+        }
+        JOptionPane.showMessageDialog(this, "Invalid email or password!", "Error", JOptionPane.ERROR_MESSAGE);
     }
 }

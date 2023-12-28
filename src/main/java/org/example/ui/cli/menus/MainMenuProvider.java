@@ -1,4 +1,4 @@
-package org.example.ui.menus;
+package org.example.ui.cli.menus;
 
 import java.util.ArrayList;
 import java.util.List;

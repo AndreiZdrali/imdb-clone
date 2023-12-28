@@ -1,4 +1,4 @@
-package org.example.ui.menus;
+package org.example.ui.cli.menus;
 
 import kotlin.NotImplementedError;
 import org.example.exceptions.UnauthorizedAccessException;
@@ -25,7 +25,6 @@ public abstract class MenuProvider {
             case Regular -> getRegularOptions();
             case Contributor -> getContributorOptions();
             case Admin -> getAdminOptions();
-            default -> throw new NotImplementedError("Account type not existent");
         };
     }
 

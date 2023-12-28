@@ -1,9 +1,7 @@
 package org.example.ui;
 
-import org.example.ui.menus.MenuProvider;
+import org.example.ui.cli.menus.MenuProvider;
 import org.example.user.User;
-
-import javax.swing.*;
 
 public abstract class UserInterface {
     protected User<?> currentUser = null;

@@ -1,4 +1,4 @@
-package org.example.ui.cli;
+package org.example.ui.cli.flow;
 
 import kotlin.NotImplementedError;
 import org.example.IMDB;

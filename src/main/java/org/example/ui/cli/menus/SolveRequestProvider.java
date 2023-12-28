@@ -1,6 +1,6 @@
-package org.example.ui.menus;
+package org.example.ui.cli.menus;
 
-import org.example.ui.cli.SolveRequestCLI;
+import org.example.ui.cli.flow.SolveRequestCLI;
 
 import java.util.ArrayList;
 import java.util.List;

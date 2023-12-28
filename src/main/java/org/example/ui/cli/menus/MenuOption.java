@@ -1,11 +1,8 @@
-package org.example.ui.menus;
+package org.example.ui.cli.menus;
 
 import kotlin.NotImplementedError;
 import org.example.IMDB;
-import org.example.ui.cli.MainMenuCLI;
-import org.example.ui.cli.NotificationsCLI;
-
-import java.awt.*;
+import org.example.ui.cli.flow.MainMenuCLI;
 
 public class MenuOption {
     private String description;

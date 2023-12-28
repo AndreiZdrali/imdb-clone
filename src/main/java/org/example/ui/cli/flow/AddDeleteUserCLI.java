@@ -1,4 +1,4 @@
-package org.example.ui.cli;
+package org.example.ui.cli.flow;
 
 import org.example.IMDB;
 import org.example.services.ProductionService;

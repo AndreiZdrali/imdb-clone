@@ -1,6 +1,6 @@
-package org.example.ui.menus;
+package org.example.ui.cli.menus;
 
-import org.example.ui.cli.ProductionsDetailsCLI;
+import org.example.ui.cli.flow.ProductionsDetailsCLI;
 
 import java.util.List;
 import java.util.ArrayList;

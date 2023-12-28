@@ -1,12 +1,11 @@
-package org.example.ui.cli;
+package org.example.ui.cli.flow;
 
 import kotlin.NotImplementedError;
 import org.example.IMDB;
 import org.example.production.Listing;
-import org.example.production.Production;
 import org.example.services.ActorService;
 import org.example.services.ProductionService;
-import org.example.ui.menus.*;
+import org.example.ui.cli.menus.*;
 import org.example.user.User;
 
 import java.util.ArrayList;

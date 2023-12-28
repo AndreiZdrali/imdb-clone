@@ -1,6 +1,6 @@
-package org.example.ui.menus;
+package org.example.ui.cli.menus;
 
-import org.example.ui.cli.FavoritesCLI;
+import org.example.ui.cli.flow.FavoritesCLI;
 
 import java.util.ArrayList;
 import java.util.List;
