@@ -44,6 +44,11 @@ public class AppFrame extends JFrame {
         setVisible(true);
     }
 
+    public void setView(String viewName) {
+        currentCardName = viewName;
+        cardLayout.show(cardPanel, viewName);
+    }
+
     private JPanel createSidePanel(List<MenuOption> options) {
         JPanel sidePanel = new JPanel(new GridBagLayout());
         sidePanel.setPreferredSize(new Dimension(180, 0));
@@ -70,11 +75,6 @@ public class AppFrame extends JFrame {
         sidePanel.add(logoutButton, gbc);
 
         return sidePanel;
-    }
-
-    public void setView(String viewName) {
-        currentCardName = viewName;
-        cardLayout.show(cardPanel, viewName);
     }
 
     private JPanel createCardPanel(List<MenuOption> options) {
@@ -129,15 +129,20 @@ public class AppFrame extends JFrame {
         options.add(MenuOption.List.HOME);
         options.add(MenuOption.List.PRODUCTIONS);
         options.add(MenuOption.List.ACTORS);
+        options.add(MenuOption.List.NOTIFICATIONS);
         options.add(MenuOption.List.FAVORITES);
 
         switch (accountType) {
             case Regular:
-                options.add(MenuOption.List.HOME);
+                options.add(MenuOption.List.CREATE_REMOVE_REQUEST);
                 break;
             case Contributor:
+                options.add(MenuOption.List.CREATE_REMOVE_REQUEST);
+                options.add(MenuOption.List.SOLVE_REQUEST);
                 break;
             case Admin:
+                options.add(MenuOption.List.SOLVE_REQUEST);
+                options.add(MenuOption.List.MANAGE_USERS);
                 break;
             default:
                 throw new NotImplementedError();

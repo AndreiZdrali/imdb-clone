@@ -27,18 +27,42 @@ public class MenuOption {
     public static class List {
         public static final MenuOption HOME = new MenuOption(
                 new HomeView(),
-                "Home");
+                "Home"
+        );
 
         public static final MenuOption PRODUCTIONS = new MenuOption(
                 new ProductionsView(),
-                "View productions");
+                "Productions"
+        );
 
         public static final MenuOption ACTORS = new MenuOption(
                 new ActorsView(),
-                "View actors");
+                "Actors"
+        );
+
+        public static final MenuOption NOTIFICATIONS = new MenuOption(
+                new NotificationsView(),
+                "Notifications"
+        );
 
         public static final MenuOption FAVORITES = new MenuOption(
                 new FavoritesView(),
-                "View favorites");
+                "Favorites"
+        );
+
+        public static final MenuOption CREATE_REMOVE_REQUEST = new MenuOption(
+                new CreateRemoveRequestView(),
+                "My requests"
+        );
+
+        public static final MenuOption SOLVE_REQUEST = new MenuOption(
+                new SolveRequestView(),
+                "Solve a request"
+        );
+
+        public static final MenuOption MANAGE_USERS = new MenuOption(
+                new ManageUsersView(),
+                "Manage Users"
+        );
     }
 }
