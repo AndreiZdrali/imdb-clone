@@ -22,18 +22,15 @@ public class FavoritesProvider extends MenuProvider{
 
         regularOptions.add(new MenuOption(
                 "View favorites",
-                FavoritesCLI::viewFavorites,
-                null
+                FavoritesCLI::viewFavorites
         ));
         regularOptions.add(new MenuOption(
                 "Add favorite",
-                FavoritesCLI::addFavorite,
-                null
+                FavoritesCLI::addFavorite
         ));
         regularOptions.add(new MenuOption(
                 "Remove favorite",
-                FavoritesCLI::removeFavorite,
-                null
+                FavoritesCLI::removeFavorite
         ));
         regularOptions.add(MenuOption.List.BACK_TO_MAIN_MENU);
 

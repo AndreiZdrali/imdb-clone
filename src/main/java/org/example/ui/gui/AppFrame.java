@@ -7,21 +7,25 @@ import org.example.user.User;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class AppFrame extends JFrame {
-    JPanel mainPanel;
-    JPanel sidePanel;
+    private JPanel mainPanel;
+    private JPanel sidePanel;
     private JPanel cardPanel;
     private CardLayout cardLayout;
 
+    private String currentCardName = "";
+
     public AppFrame() {
         super("IMDB");
+
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
 
         mainPanel = new JPanel(new BorderLayout());
+        mainPanel.setPreferredSize(new Dimension(900, 500));
 
         User<?> user = IMDB.getInstance().getUserInterface().getCurrentUser();
         List<MenuOption> options = getUserOptions(user.getUserType());
@@ -34,34 +38,51 @@ public class AppFrame extends JFrame {
 
         setContentPane(mainPanel);
 
+        setResizable(false);
         pack();
+        setLocationRelativeTo(null);
         setVisible(true);
     }
 
     private JPanel createSidePanel(List<MenuOption> options) {
         JPanel sidePanel = new JPanel(new GridBagLayout());
+        sidePanel.setPreferredSize(new Dimension(180, 0));
+        sidePanel.setBackground(Color.WHITE);
+
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
-        gbc.anchor = GridBagConstraints.WEST;
+        gbc.anchor = GridBagConstraints.NORTH;
 
+        //main buttons
         for (MenuOption option : options) {
-            JButton button = new JButton(option.getName());
-            button.addActionListener(e -> setView(option.getName()));
-            sidePanel.add(button, gbc);
+            sidePanel.add(createSideButtonPanel(option.getName(), () -> setView(option.getName())), gbc);
             gbc.gridy++;
         }
+
+        //logout button
+        gbc.weighty = 1;
+        gbc.anchor = GridBagConstraints.SOUTH;
+
+        JPanel logoutButton = createSideButtonPanel("Logout", () -> System.exit(0));
+        logoutButton.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Color.BLACK));
+
+        sidePanel.add(logoutButton, gbc);
 
         return sidePanel;
     }
 
+    public void setView(String viewName) {
+        currentCardName = viewName;
+        cardLayout.show(cardPanel, viewName);
+    }
+
     private JPanel createCardPanel(List<MenuOption> options) {
         JPanel cardPanel = new JPanel();
+        cardPanel.setPreferredSize(new Dimension(720, 0));
+        cardPanel.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, Color.BLACK));
 
         cardPanel.setLayout(new CardLayout());
-
-        //toti au login dar nu apare in sidebar
-        cardPanel.add(MenuOption.List.LOGIN.getPanel(), MenuOption.List.LOGIN.getName());
 
         for (MenuOption option : options)
             cardPanel.add(option.getPanel(), option.getName());
@@ -69,30 +90,59 @@ public class AppFrame extends JFrame {
         return cardPanel;
     }
 
+    private JPanel createSideButtonPanel(String text, Runnable onClick) {
+        JPanel button = new JPanel();
+
+        button.setPreferredSize(new Dimension(180, 50));
+        button.setBackground(Color.WHITE);
+        button.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK));
+        button.setLayout(new GridBagLayout());
+        button.add(new JLabel(text));
+
+        button.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent evt) {
+                if (!currentCardName.equals(text))
+                    button.setBackground(Color.LIGHT_GRAY);
+            }
+
+            public void mouseExited(MouseEvent evt) {
+                if (currentCardName.equals(text))
+                    button.setBackground(Color.GRAY);
+                else
+                    button.setBackground(Color.WHITE);
+            }
+
+            public void mouseClicked(MouseEvent evt) {
+                for (Component component : sidePanel.getComponents())
+                    component.setBackground(Color.WHITE);
+                button.setBackground(Color.GRAY);
+
+                onClick.run();
+            }
+        });
+
+        return button;
+    }
+
     private List<MenuOption> getUserOptions(AccountType accountType) {
         List<MenuOption> options = new ArrayList<>();
+        options.add(MenuOption.List.HOME);
+        options.add(MenuOption.List.PRODUCTIONS);
+        options.add(MenuOption.List.ACTORS);
+        options.add(MenuOption.List.FAVORITES);
 
         switch (accountType) {
             case Regular:
-                options.add(MenuOption.List.MAIN_MENU);
-                options.add(MenuOption.List.PRODUCTIONS);
+                options.add(MenuOption.List.HOME);
                 break;
             case Contributor:
-                options.add(MenuOption.List.MAIN_MENU);
-                options.add(MenuOption.List.PRODUCTIONS);
                 break;
             case Admin:
-                options.add(MenuOption.List.MAIN_MENU);
-                options.add(MenuOption.List.PRODUCTIONS);
                 break;
             default:
                 throw new NotImplementedError();
         }
 
         return options;
-    }
-
-    public void setView(String viewName) {
-        cardLayout.show(cardPanel, viewName);
     }
 }

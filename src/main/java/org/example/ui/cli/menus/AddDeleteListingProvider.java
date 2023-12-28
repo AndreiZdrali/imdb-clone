@@ -22,28 +22,23 @@ public class AddDeleteListingProvider extends MenuProvider {
 
         regularOptions.add(new MenuOption(
                 "View your contributions",
-                AddDeleteListingCLI::viewContributions,
-                null
+                AddDeleteListingCLI::viewContributions
         ));
         regularOptions.add(new MenuOption(
                 "Add a new movie",
-                AddDeleteListingCLI::addMovie,
-                null
+                AddDeleteListingCLI::addMovie
         ));
         regularOptions.add(new MenuOption(
                 "Add a new series",
-                AddDeleteListingCLI::addSeries,
-                null
+                AddDeleteListingCLI::addSeries
         ));
         regularOptions.add(new MenuOption(
                 "Add a new actor",
-                AddDeleteListingCLI::addActor,
-                null
+                AddDeleteListingCLI::addActor
         ));
         regularOptions.add(new MenuOption(
                 "Delete a listing",
-                AddDeleteListingCLI::deleteListing,
-                null
+                AddDeleteListingCLI::deleteListing
         ));
         regularOptions.add(MenuOption.List.BACK_TO_MAIN_MENU);
 

@@ -22,18 +22,15 @@ public class CreateRemoveRequestProvider extends MenuProvider {
 
         regularOptions.add(new MenuOption(
                 "View your active requests",
-                CreateRemoveRequestCLI::viewMyRequests,
-                null
+                CreateRemoveRequestCLI::viewMyRequests
         ));
         regularOptions.add(new MenuOption(
                 "Create a request",
-                CreateRemoveRequestCLI::createRequest,
-                null
+                CreateRemoveRequestCLI::createRequest
         ));
         regularOptions.add(new MenuOption(
                 "Remove a request",
-                CreateRemoveRequestCLI::removeRequest,
-                null
+                CreateRemoveRequestCLI::removeRequest
         ));
         regularOptions.add(MenuOption.List.BACK_TO_MAIN_MENU);
 

@@ -22,8 +22,7 @@ public class NotificationsProvider extends MenuProvider {
 
         regularOptions.add(new MenuOption(
                 "Clear your notifications",
-                NotificationsCLI::clearNotifications,
-                null
+                NotificationsCLI::clearNotifications
         ));
         regularOptions.add(MenuOption.List.BACK_TO_MAIN_MENU);
 

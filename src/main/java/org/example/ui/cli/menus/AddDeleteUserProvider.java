@@ -22,13 +22,11 @@ public class AddDeleteUserProvider extends MenuProvider {
 
         regularOptions.add(new MenuOption(
                 "Add a new user",
-                AddDeleteUserCLI::addUser,
-                null
+                AddDeleteUserCLI::addUser
         ));
         regularOptions.add(new MenuOption(
                 "Delete a user",
-                AddDeleteUserCLI::deleteUser,
-                null
+                AddDeleteUserCLI::deleteUser
         ));
         regularOptions.add(MenuOption.List.BACK_TO_MAIN_MENU);
 

@@ -1,12 +1,12 @@
-package org.example.ui.gui;
+package org.example.ui.gui.views;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class MainMenuView extends JPanel {
+public class HomeView extends JPanel {
     private JButton logoutButton;
 
-    public MainMenuView() {
+    public HomeView() {
         setLayout(new GridLayout(1, 1));
 
         logoutButton = new JButton("Logout");

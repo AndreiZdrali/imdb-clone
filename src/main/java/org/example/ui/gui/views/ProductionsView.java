@@ -1,4 +1,4 @@
-package org.example.ui.gui;
+package org.example.ui.gui.views;
 
 import kotlin.NotImplementedError;
 
@@ -6,6 +6,6 @@ import javax.swing.*;
 
 public class ProductionsView extends JPanel {
     public ProductionsView() {
-        throw new NotImplementedError();
+        add(new JLabel("Not implemented yet!"));
     }
 }

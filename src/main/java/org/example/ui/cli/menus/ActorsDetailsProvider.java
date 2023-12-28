@@ -22,23 +22,19 @@ public class ActorsDetailsProvider extends MenuProvider {
 
         regularOptions.add(new MenuOption(
                 "View sorted and filtered results",
-                ActorsDetailsCLI::viewSortedAndFilteredActors,
-                null
+                ActorsDetailsCLI::viewSortedAndFilteredActors
         ));
         regularOptions.add(new MenuOption(
                 "Set minimum number of performances",
-                ActorsDetailsCLI::setMinPerformances,
-                null
+                ActorsDetailsCLI::setMinPerformances
         ));
         regularOptions.add(new MenuOption(
                 "Set sorting method",
-                ActorsDetailsCLI::setSortingMethod,
-                null
+                ActorsDetailsCLI::setSortingMethod
         ));
         regularOptions.add(new MenuOption(
                 "Clear sorting and filters",
-                ActorsDetailsCLI::clearSortingAndFilters,
-                null
+                ActorsDetailsCLI::clearSortingAndFilters
         ));
         regularOptions.add(MenuOption.List.BACK_TO_MAIN_MENU);
 

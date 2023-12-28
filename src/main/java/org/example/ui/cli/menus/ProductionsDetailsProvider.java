@@ -22,33 +22,27 @@ public class ProductionsDetailsProvider extends MenuProvider {
 
         regularOptions.add(new MenuOption(
                 "View sorted and filtered results",
-                ProductionsDetailsCLI::viewSortedAndFilteredProductions,
-                null
+                ProductionsDetailsCLI::viewSortedAndFilteredProductions
         ));
         regularOptions.add(new MenuOption(
                 "Set production type",
-                ProductionsDetailsCLI::setProductionType,
-                null
+                ProductionsDetailsCLI::setProductionType
         ));
         regularOptions.add(new MenuOption(
                 "Set minimum rating",
-                ProductionsDetailsCLI::setMinRating,
-                null
+                ProductionsDetailsCLI::setMinRating
         ));
         regularOptions.add(new MenuOption(
                 "Set minimum number of reviews",
-                ProductionsDetailsCLI::setMinReviews,
-                null
+                ProductionsDetailsCLI::setMinReviews
         ));
         regularOptions.add(new MenuOption(
                 "Set sorting method",
-                ProductionsDetailsCLI::setSortingMethod,
-                null
+                ProductionsDetailsCLI::setSortingMethod
         ));
         regularOptions.add(new MenuOption(
                 "Clear filters",
-                ProductionsDetailsCLI::clearSortingAndFilters,
-                null
+                ProductionsDetailsCLI::clearSortingAndFilters
         ));
         regularOptions.add(MenuOption.List.BACK_TO_MAIN_MENU);
 

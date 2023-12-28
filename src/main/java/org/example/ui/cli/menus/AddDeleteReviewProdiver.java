@@ -22,18 +22,15 @@ public class AddDeleteReviewProdiver extends MenuProvider {
 
         regularOptions.add(new MenuOption(
                 "View your reviews",
-                AddDeleteReviewCLI::viewReviews,
-                null
+                AddDeleteReviewCLI::viewReviews
         ));
         regularOptions.add(new MenuOption(
                 "Add a review",
-                AddDeleteReviewCLI::addReview,
-                null
+                AddDeleteReviewCLI::addReview
         ));
         regularOptions.add(new MenuOption(
                 "Delete a review",
-                AddDeleteReviewCLI::deleteReview,
-                null
+                AddDeleteReviewCLI::deleteReview
         ));
         regularOptions.add(MenuOption.List.BACK_TO_MAIN_MENU);
 

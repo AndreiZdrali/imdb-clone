@@ -1,5 +1,10 @@
 package org.example.ui.gui;
 
+import org.example.ui.gui.views.ActorsView;
+import org.example.ui.gui.views.FavoritesView;
+import org.example.ui.gui.views.HomeView;
+import org.example.ui.gui.views.ProductionsView;
+
 import javax.swing.*;
 
 public class MenuOption {
@@ -20,12 +25,8 @@ public class MenuOption {
     }
 
     public static class List {
-        public static final MenuOption LOGIN = new MenuOption(
-                new LoginView(),
-                "login");
-
-        public static final MenuOption MAIN_MENU = new MenuOption(
-                new MainMenuView(),
+        public static final MenuOption HOME = new MenuOption(
+                new HomeView(),
                 "Home");
 
         public static final MenuOption PRODUCTIONS = new MenuOption(

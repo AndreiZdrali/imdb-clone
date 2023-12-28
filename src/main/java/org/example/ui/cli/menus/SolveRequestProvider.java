@@ -22,13 +22,11 @@ public class SolveRequestProvider extends MenuProvider {
 
         regularOptions.add(new MenuOption(
                 "View your pending requests",
-                SolveRequestCLI::viewPendingRequests,
-                null
+                SolveRequestCLI::viewPendingRequests
         ));
         regularOptions.add(new MenuOption(
                 "Mark a request as solved",
-                SolveRequestCLI::markRequestAsSolved,
-                null
+                SolveRequestCLI::markRequestAsSolved
         ));
         regularOptions.add(MenuOption.List.BACK_TO_MAIN_MENU);
 
