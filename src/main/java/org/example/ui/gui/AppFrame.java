@@ -38,6 +38,8 @@ public class AppFrame extends JFrame {
 
         setContentPane(mainPanel);
 
+        setView(MenuOption.List.HOME.getName());
+
         setResizable(false);
         pack();
         setLocationRelativeTo(null);
@@ -61,7 +63,10 @@ public class AppFrame extends JFrame {
 
         //main buttons
         for (MenuOption option : options) {
-            sidePanel.add(createSideButtonPanel(option.getName(), () -> setView(option.getName())), gbc);
+            JPanel button = createSideButtonPanel(option.getName(), () -> setView(option.getName()));
+            sidePanel.add(button, gbc);
+            if (option.getName().equals(MenuOption.List.HOME.getName()))
+                button.setBackground(Color.GRAY);
             gbc.gridy++;
         }
 
