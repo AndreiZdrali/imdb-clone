@@ -20,23 +20,47 @@ public class Movie extends Production {
     }
 
     @Override
-    public void displayInfo() {
-        //TODO: Rewrite
-        System.out.println("Title: " + title + " (" + type + ")");
+    public String info() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Title: ").append(title).append(" (").append(type).append(")\n");
         if (directors != null)
-            System.out.println("Directors: " + String.join(", ", directors));
+            sb.append("Directors: ").append(String.join(", ", directors)).append("\n");
         if (actors != null)
-            System.out.println("Actors: " + String.join(", ", actors));
+            sb.append("Actors: ").append(String.join(", ", actors)).append("\n");
         if (genres != null)
-            System.out.println("Genres: " + String.join(", ", genres.stream().map(Enum::toString).toList()));
+            sb.append("Genres: ").append(String.join(", ", genres.stream().map(Enum::toString).toList())).append("\n");
         if (ratings != null)
-            System.out.println("Ratings: " + String.join(", ", ratings.stream().map(Rating::compactInfo).toList()));
+            sb.append("Ratings: ").append(String.join(", ", ratings.stream().map(Rating::compactInfo).toList())).append("\n");
         if (plot != null)
-            System.out.println("Description: " + plot);
-        System.out.println("Rating: " + getAverageRating());
+            sb.append("Description: ").append(plot).append("\n");
+        sb.append("Rating: ").append(getAverageRating()).append("\n");
 
-        System.out.println("Duration: " + duration);
-        System.out.println("Year: " + releaseYear);
+        sb.append("Duration: ").append(duration).append("\n");
+        sb.append("Year: ").append(releaseYear).append("\n");
+
+        return sb.toString();
+    }
+
+    @Override
+    public void displayInfo() {
+        System.out.println(info());
+
+        //TODO: Rewrite
+//        System.out.println("Title: " + title + " (" + type + ")");
+//        if (directors != null)
+//            System.out.println("Directors: " + String.join(", ", directors));
+//        if (actors != null)
+//            System.out.println("Actors: " + String.join(", ", actors));
+//        if (genres != null)
+//            System.out.println("Genres: " + String.join(", ", genres.stream().map(Enum::toString).toList()));
+//        if (ratings != null)
+//            System.out.println("Ratings: " + String.join(", ", ratings.stream().map(Rating::compactInfo).toList()));
+//        if (plot != null)
+//            System.out.println("Description: " + plot);
+//        System.out.println("Rating: " + getAverageRating());
+//
+//        System.out.println("Duration: " + duration);
+//        System.out.println("Year: " + releaseYear);
     }
 
     @Override

@@ -115,6 +115,8 @@ public abstract class Production implements Comparable<Production>, Listing, Sub
                 observer.update(notification);
     }
 
+    public abstract String info();
+
     public abstract void displayInfo();
 
     public abstract void displayShortInfo();
