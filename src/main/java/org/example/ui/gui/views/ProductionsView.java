@@ -6,7 +6,6 @@ import org.example.production.Production;
 import org.example.services.ProductionService;
 import org.example.user.Admin;
 import org.example.user.Contributor;
-import org.example.user.Staff;
 import org.example.user.User;
 
 import javax.swing.*;
@@ -121,13 +120,7 @@ public class ProductionsView extends JPanel {
             case Regular -> {
                 buttonsPanel.add(addReviewButton);
             }
-            case Contributor -> {
-                buttonsPanel.add(addReviewButton);
-                buttonsPanel.add(editProductionButton);
-                buttonsPanel.add(addProductionButton);
-                buttonsPanel.add(deleteProductionButton);
-            }
-            case Admin -> {
+            case Contributor, Admin -> {
                 buttonsPanel.add(editProductionButton);
                 buttonsPanel.add(addProductionButton);
                 buttonsPanel.add(deleteProductionButton);
@@ -136,7 +129,14 @@ public class ProductionsView extends JPanel {
         }
 
         addReviewButton.addActionListener(e -> {
-            throw new NotImplementedError();
+            int row = productionsTable.getSelectedRow();
+            String title = (String) productionsTable.getValueAt(row, 1);
+            Production production = ProductionService.getProductionByTitle(title);
+
+            AddReviewDialog addReviewDialog = new AddReviewDialog(production);
+            addReviewDialog.setVisible(true);
+
+            tableModel.fireTableDataChanged();
         });
 
         editProductionButton.addActionListener(e -> {
@@ -144,11 +144,33 @@ public class ProductionsView extends JPanel {
         });
 
         addProductionButton.addActionListener(e -> {
-            throw new NotImplementedError();
+            JPanel addProductionPanel = new AddProductionDialog();
+            int result = JOptionPane.showConfirmDialog(
+                    null,
+                    addProductionPanel,
+                    "Add production",
+                    JOptionPane.OK_CANCEL_OPTION
+            );
+
+            //TODO: AICI AM RAMAS
+            if (result == JOptionPane.OK_OPTION)
+                return;
         });
 
         deleteProductionButton.addActionListener(e -> {
-            throw new NotImplementedError();
+            int result = JOptionPane.showConfirmDialog(
+                    null,
+                    "Are you sure you want to delete this production?",
+                    "Delete production",
+                    JOptionPane.YES_NO_OPTION
+            );
+
+            if (result == JOptionPane.YES_OPTION) {
+                int row = productionsTable.getSelectedRow();
+                String title = (String) productionsTable.getValueAt(row, 1);
+                ProductionService.removeProduction(ProductionService.getProductionByTitle(title));
+                tableModel.removeRow(row);
+            }
         });
 
         rightPanel.add(scrollPane, BorderLayout.CENTER);
@@ -177,8 +199,6 @@ public class ProductionsView extends JPanel {
                 addReviewButton.setEnabled(true);
             }
             case Contributor -> {
-                addReviewButton.setEnabled(true);
-
                 Contributor<?> contributor = (Contributor<?>) user;
                 if (contributor.getProductionsContribution().contains(production)) {
                     editProductionButton.setEnabled(true);

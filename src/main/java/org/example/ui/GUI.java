@@ -29,7 +29,7 @@ public class GUI extends UserInterface {
 //        LoginFrame loginFrame = new LoginFrame();
 //        loginFrame.setVisible(true);
 
-        currentUser = UserService.getUsers().get(0); //contributor
+        currentUser = UserService.getUsers().get(1); //regular
 
         if (IMDB.getInstance().getUserInterface().getCurrentUser() == null) {
             System.out.println("No user logged in!");
