@@ -6,11 +6,13 @@ import org.example.production.Production;
 import org.example.services.ProductionService;
 import org.example.user.Admin;
 import org.example.user.Contributor;
+import org.example.user.Staff;
 import org.example.user.User;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class ProductionsView extends JPanel {
@@ -65,8 +67,8 @@ public class ProductionsView extends JPanel {
 
         productionsTable.setModel(tableModel);
 
-        productionsTable.getColumnModel().getColumn(0).setPreferredWidth(30);
-        productionsTable.getColumnModel().getColumn(1).setPreferredWidth(150);
+        productionsTable.getColumnModel().getColumn(0).setPreferredWidth(20);
+        productionsTable.getColumnModel().getColumn(1).setPreferredWidth(200);
         productionsTable.getColumnModel().getColumn(2).setPreferredWidth(40);
 
         for (Production production : ProductionService.getProductions()) {
@@ -77,9 +79,9 @@ public class ProductionsView extends JPanel {
             });
         }
 
-        productionsTable.addMouseListener(new java.awt.event.MouseAdapter() {
+        productionsTable.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+            public void mouseReleased(MouseEvent evt) {
                 tableOnClick(evt);
             }
         });
@@ -98,6 +100,8 @@ public class ProductionsView extends JPanel {
         rightPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         infoArea = new JTextArea("Select a production to view more information");
+        infoArea.setLineWrap(true);
+        infoArea.setWrapStyleWord(true);
         infoArea.setEditable(false);
 
         JScrollPane scrollPane = new JScrollPane(infoArea);
@@ -115,7 +119,6 @@ public class ProductionsView extends JPanel {
         deleteProductionButton.setEnabled(false);
 
         User<?> user = IMDB.getInstance().getUserInterface().getCurrentUser();
-
         switch (user.getUserType()) {
             case Regular -> {
                 buttonsPanel.add(addReviewButton);
@@ -168,7 +171,11 @@ public class ProductionsView extends JPanel {
             if (result == JOptionPane.YES_OPTION) {
                 int row = productionsTable.getSelectedRow();
                 String title = (String) productionsTable.getValueAt(row, 1);
-                ProductionService.removeProduction(ProductionService.getProductionByTitle(title));
+
+                if (!(user instanceof Staff<?> staff))
+                    throw new RuntimeException("Dc incearca sa stearga o productie un user care nu-i staff?");
+
+                staff.removeProductionSystem(ProductionService.getProductionByTitle(title));
                 tableModel.removeRow(row);
             }
         });
@@ -198,16 +205,9 @@ public class ProductionsView extends JPanel {
             case Regular -> {
                 addReviewButton.setEnabled(true);
             }
-            case Contributor -> {
-                Contributor<?> contributor = (Contributor<?>) user;
-                if (contributor.getProductionsContribution().contains(production)) {
-                    editProductionButton.setEnabled(true);
-                    deleteProductionButton.setEnabled(true);
-                }
-            }
-            case Admin -> {
-                Admin<?> admin = (Admin<?>) user;
-                if (admin.getProductionsContribution().contains(production)) {
+            case Contributor, Admin -> {
+                Staff<?> staff = (Staff<?>) user;
+                if (staff.getProductionsContribution().contains(production)) {
                     editProductionButton.setEnabled(true);
                     deleteProductionButton.setEnabled(true);
                 }
