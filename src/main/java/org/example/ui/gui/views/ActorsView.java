@@ -23,6 +23,7 @@ public class ActorsView extends JPanel {
     JTable actorsTable;
     DefaultTableModel tableModel;
     JTextArea infoArea;
+    JButton addFavoriteButton;
     JButton editActorButton;
     JButton addActorButton;
     JButton deleteActorButton;
@@ -87,7 +88,7 @@ public class ActorsView extends JPanel {
         return leftPanel;
     }
 
-    private JPanel createRightPanel() {
+    protected JPanel createRightPanel() {
         JPanel rightPanel = new JPanel(new BorderLayout());
         rightPanel.setPreferredSize(new Dimension(650, 0));
         rightPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -102,6 +103,7 @@ public class ActorsView extends JPanel {
         JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         buttonsPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
 
+        addFavoriteButton = new JButton("Favorites");
         editActorButton = new JButton("Edit");
         addActorButton = new JButton("Add");
         deleteActorButton = new JButton("Delete");
@@ -111,14 +113,38 @@ public class ActorsView extends JPanel {
 
         User<?> user = IMDB.getInstance().getUserInterface().getCurrentUser();
         switch (user.getUserType()) {
-            case Regular -> { }
+            case Regular -> {
+                buttonsPanel.add(addFavoriteButton);
+            }
             case Contributor, Admin -> {
+                buttonsPanel.add(addFavoriteButton);
                 buttonsPanel.add(editActorButton);
                 buttonsPanel.add(addActorButton);
                 buttonsPanel.add(deleteActorButton);
             }
             default -> throw new IllegalStateException("Unexpected value: " + user.getUserType());
         }
+
+        addFavoriteButton.addActionListener(e -> {
+            int row = actorsTable.getSelectedRow();
+            if (row < 0)
+                return;
+
+            String name = (String) actorsTable.getValueAt(row, 1);
+            Actor actor = ActorService.getActorByName(name);
+
+            if (user.getFavorites().contains(actor)) {
+                JOptionPane.showMessageDialog(
+                        null,
+                        "This actor is already in your favorites!",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE
+                );
+                return;
+            }
+
+            user.addFavorite(actor);
+        });
 
         deleteActorButton.addActionListener(e -> {
             int result = JOptionPane.showConfirmDialog(

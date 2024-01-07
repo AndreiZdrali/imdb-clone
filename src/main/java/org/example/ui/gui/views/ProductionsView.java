@@ -24,6 +24,7 @@ public class ProductionsView extends JPanel {
     JTable productionsTable;
     DefaultTableModel tableModel;
     JTextArea infoArea;
+    JButton addFavoriteButton;
     JButton addReviewButton;
     JButton editProductionButton;
     JButton addProductionButton;
@@ -39,7 +40,7 @@ public class ProductionsView extends JPanel {
         add(rightPanel, BorderLayout.CENTER);
     }
 
-    private JPanel createLeftPanel() {
+    protected JPanel createLeftPanel() {
         JPanel leftPanel = new JPanel(new BorderLayout());
         leftPanel.setPreferredSize(new Dimension(320, 0));
         leftPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -94,7 +95,7 @@ public class ProductionsView extends JPanel {
         return leftPanel;
     }
 
-    private JPanel createRightPanel() {
+    protected JPanel createRightPanel() {
         JPanel rightPanel = new JPanel(new BorderLayout());
         rightPanel.setPreferredSize(new Dimension(650, 0));
         rightPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -109,6 +110,7 @@ public class ProductionsView extends JPanel {
         JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         buttonsPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
 
+        addFavoriteButton = new JButton("Favorite");
         addReviewButton = new JButton("Add review");
         editProductionButton = new JButton("Edit");
         addProductionButton = new JButton("Add");
@@ -121,9 +123,11 @@ public class ProductionsView extends JPanel {
         User<?> user = IMDB.getInstance().getUserInterface().getCurrentUser();
         switch (user.getUserType()) {
             case Regular -> {
+                buttonsPanel.add(addFavoriteButton);
                 buttonsPanel.add(addReviewButton);
             }
             case Contributor, Admin -> {
+                buttonsPanel.add(addFavoriteButton);
                 buttonsPanel.add(editProductionButton);
                 buttonsPanel.add(addProductionButton);
                 buttonsPanel.add(deleteProductionButton);
@@ -131,8 +135,32 @@ public class ProductionsView extends JPanel {
             default -> throw new IllegalStateException("Unexpected value: " + user.getUserType());
         }
 
+        addFavoriteButton.addActionListener(e -> {
+            int row = productionsTable.getSelectedRow();
+            if (row < 0)
+                return;
+
+            String title = (String) productionsTable.getValueAt(row, 1);
+            Production production = ProductionService.getProductionByTitle(title);
+
+            if (user.getFavorites().contains(production)) {
+                JOptionPane.showMessageDialog(
+                        null,
+                        "This production is already in your favorites!",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE
+                );
+                return;
+            }
+
+            user.addFavorite(production);
+        });
+
         addReviewButton.addActionListener(e -> {
             int row = productionsTable.getSelectedRow();
+            if (row < 0)
+                return;
+
             String title = (String) productionsTable.getValueAt(row, 1);
             Production production = ProductionService.getProductionByTitle(title);
 
@@ -186,7 +214,7 @@ public class ProductionsView extends JPanel {
         return rightPanel;
     }
 
-    private void tableOnClick(MouseEvent evt) {
+    protected void tableOnClick(MouseEvent evt) {
         int row = productionsTable.rowAtPoint(evt.getPoint());
         int col = productionsTable.columnAtPoint(evt.getPoint());
         if (row < 0 || col < 0)
